@@ -12,12 +12,68 @@ License URI: https://www.gnu.org/licenses/gpl-3.0.html
 Flash Order is a WordPress plugin that streamlines online ordering, manages tables, and enables fast checkouts to enhance the eCommerce experience.
 
 == Description ==
-Flash Order è un plugin WordPress avanzato progettato per ottimizzare l\'esperienza di ordinazione online e la gestione dei tavoli nei ristoranti o in altre attività. Per funzionare necessita di WooCommerce, questo plugin consente ai proprietari di negozi online di offrire un processo di checkout rapido e senza intoppi, migliorando significativamente la soddisfazione del cliente e le conversioni.
+Flash Order is an advanced WordPress plugin designed to optimize online ordering and table management for restaurants and other businesses. Ideal for WooCommerce users, this plugin enables online store owners to offer a fast and seamless checkout process, significantly improving customer satisfaction and boosting conversions.
 
-Con Flash Order, i clienti possono effettuare ordini con pochi clic, grazie a un\'interfaccia user-friendly e mobile-friendly che si adatta perfettamente a qualsiasi dispositivo. Il plugin è anche altamente personalizzabile, permettendo ai proprietari di adattare l\'interfaccia e le funzionalità alle specifiche esigenze del loro business.
+With Flash Order, customers can place orders in just a few clicks, thanks to its user-friendly, mobile-responsive interface that works flawlessly on any device. The plugin supports a complete product catalog and facilitates real-time order management, streamlining the workflow for business owners.
 
-Una delle funzionalità distintive di Flash Order è la capacità di gestire i tavoli, una caratteristica essenziale per ristoranti, bar e caffetterie. I gestori possono facilmente assegnare e monitorare gli ordini per ciascun tavolo, ottimizzando così il servizio e riducendo i tempi di attesa. Questa funzione si integra perfettamente con il sistema di ordinazione online, consentendo una gestione centralizzata di ordini e prenotazioni, sia per gli ordini online che per quelli effettuati in loco.
+One of the standout features of Flash Order is its table management capability, essential for restaurants, bars, and cafés. Managers can easily assign and monitor orders for each table, optimizing service and reducing wait times. This feature integrates smoothly with the online ordering system, allowing for centralized management of both online and on-site orders.
 
-Con funzionalità come la gestione dell\'inventario, il monitoraggio degli ordini e la possibilità di offrire promozioni e sconti, Flash Order è uno strumento potente per qualsiasi attività che desidera migliorare la propria presenza online e offrire un\'esperienza d\'acquisto eccezionale. Inoltre, il plugin si integra perfettamente con WooCommerce e altri strumenti di eCommerce, garantendo una compatibilità senza problemi e una facile configurazione.
+Additionally, Flash Order offers secure payment options, supporting multiple payment methods to accommodate diverse customer preferences. The plugin is highly customizable, allowing business owners to tailor the interface and functionalities to meet their specific needs.
 
-In sintesi, Flash Order è la soluzione completa per chi desidera migliorare la gestione degli ordini e dei tavoli, ottimizzare il processo di checkout e offrire un servizio clienti di alto livello.
+With features like inventory management, order tracking, and the ability to offer promotions and discounts, Flash Order is a powerful tool for any business looking to enhance their online presence and provide an exceptional shopping experience. Moreover, the plugin integrates seamlessly with WooCommerce and other eCommerce tools, ensuring smooth compatibility and easy setup.
+
+In summary, Flash Order is the complete solution for businesses seeking to improve order and table management, optimize checkout processes, and deliver top-tier customer service.
+
+== Installation ==
+
+1. Upload `Flash-Odrer` directory to the `/wp-content/plugins/` directory
+2. Activate the plugin through the 'Plugins' menu in WordPress
+3. Go to the `Settings` page in the new FlashOrder Menu section and create the pages with the button 
+or alternatively add a shortcode for the pages you are interested in wherever you want on your site
+
+Menu page `<?php do_action('FO_front_order_ajax_section'); ?>`
+Manage orders `<?php do_action('FO_manage_order_section'); ?>`
+Manage tables `<?php do_action('FO_manage_tables_section'); ?>`
+Manage restaurant `<?php do_action('FO_manage_restaurant_section'); ?>`
+
+== Frequently Asked Questions ==
+
+1. Is Flash Order compatible with WooCommerce?
+Yes, Flash Order integrates seamlessly with WooCommerce, allowing for smooth order management and advanced store customization.
+
+2. Can I manage tables with Flash Order?
+Absolutely. Flash Order includes a dedicated table management feature, allowing you to assign, monitor, and manage orders for each table within your venue.
+
+3. Is Flash Order mobile-friendly?
+Yes, Flash Order has a mobile-responsive interface, ensuring an optimal ordering experience on any device, including smartphones and tablets.
+
+4. How customizable is Flash Order?
+Flash Order offers various customization options, allowing you to adapt the interface, payment methods, and general settings to suit the specific needs of your business.
+
+5. What payment methods does Flash Order support?
+Flash Order supports multiple payment methods integrated with WooCommerce, providing secure options for your customers, including credit cards, PayPal, and other local methods.
+
+6. How does Flash Order handle product inventory?
+The plugin facilitates real-time inventory management, automatically updating product availability based on received orders.
+
+7. Can I offer discounts or promotions with Flash Order?
+Yes, Flash Order supports customizable discounts and promotions, which can be configured directly from the plugin’s settings.
+
+8. Does Flash Order require technical expertise to install?
+No, Flash Order is designed to be easily installed and configured, even without technical expertise. However, basic knowledge of WordPress and WooCommerce can be helpful.
+
+9. What should I do if I encounter issues with Flash Order?
+If you experience any issues, you can consult the official plugin documentation or contact the plugin’s technical support for assistance.
+
+10. Is Flash Order regularly updated?
+Yes, Flash Order receives regular updates to include new features, security improvements, and compatibility with the latest versions of WordPress and WooCommerce.
+
+
+
+
+
+
+
+
+
+
