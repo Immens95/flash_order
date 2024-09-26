@@ -26,7 +26,7 @@ In summary, Flash Order is the complete solution for businesses seeking to impro
 
 == Installation ==
 
-1. Upload `Flash-Odrer` directory to the `/wp-content/plugins/` directory
+1. Upload `flash_odrer` directory to the `/wp-content/plugins/` directory
 2. Activate the plugin through the 'Plugins' menu in WordPress
 3. Go to the `Settings` page in the new FlashOrder Menu section and create the pages with the button 
 or alternatively add a shortcode for the pages you are interested in wherever you want on your site
