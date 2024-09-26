@@ -68,7 +68,6 @@ if ( isset($_GET['table']) && $_GET['table'] != '' ) {
 
 	</div>
 
-
 <?php 
 echo wp_kses_post(FO_list_view_selector()); 
 // FO_debug(get_post_types());
