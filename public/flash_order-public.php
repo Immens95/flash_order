@@ -727,8 +727,8 @@ if ( ! function_exists('FO_Catering_cpt') ) {
 	// Register Custom Post Type
 	function FO_Catering_cpt() {
 		$labels = array(
-			'name'                  => _x( 'Catering', 'Post Type General Name', 'flash_order' ),
-			'singular_name'         => _x( 'Catering', 'Post Type Singular Name', 'flash_order' ),
+			'name'                  => esc_html__( 'Catering', 'flash_order' ),
+			'singular_name'         => esc_html__( 'Catering', 'flash_order' ),
 			'menu_name'             => esc_html__( 'Catering', 'flash_order' ),
 			'name_admin_bar'        => esc_html__( 'Catering', 'flash_order' ),
 			'archives'              => esc_html__( 'Catering Archives', 'flash_order' ),
