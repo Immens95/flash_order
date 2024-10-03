@@ -44,7 +44,7 @@
             }
         
             if(!QRinput::check($mode, $size, $setData)) {
-                throw new Exception('Error m:'.$mode.',s:'.$size.',d:'.join(',',$setData));
+                throw new Exception('Error m:'.esc_attr($mode).',s:'.esc_attr($size).',d:'.join(',',esc_attr($setData)));
                 return null;
             }
             

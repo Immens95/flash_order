@@ -236,9 +236,11 @@
             if (QR_LOG_DIR !== false) {
                 if ($err != '') {
                     if ($outfile !== false) {
-                        file_put_contents(QR_LOG_DIR.basename($outfile).'-errors.txt', date('Y-m-d H:i:s').': '.$err, FILE_APPEND);
+                        // file_put_contents(QR_LOG_DIR.basename($outfile).'-errors.txt', gmdate('Y-m-d H:i:s').': '.$err, FILE_APPEND);
+                        WP_Filesystem_SSH2::put_contents(QR_LOG_DIR.basename($outfile).'-errors.txt', gmdate('Y-m-d H:i:s').': '.$err, FILE_APPEND);
                     } else {
-                        file_put_contents(QR_LOG_DIR.'errors.txt', date('Y-m-d H:i:s').': '.$err, FILE_APPEND);
+                        // file_put_contents(QR_LOG_DIR.'errors.txt', gmdate('Y-m-d H:i:s').': '.$err, FILE_APPEND);
+                        WP_Filesystem_SSH2::put_contents(QR_LOG_DIR.basename($outfile).'-errors.txt', gmdate('Y-m-d H:i:s').': '.$err, FILE_APPEND);
                     }
                 }    
             }
@@ -250,7 +252,7 @@
             $width = count($frame);
             for($y=0;$y<$width;$y++) {
                 for($x=0;$x<$width;$x++) {
-                    echo ord($frame[$y][$x]).',';
+                    echo esc_attr(ord($frame[$y][$x])).',';
                 }
             }
         }
@@ -282,7 +284,7 @@
 
             foreach($GLOBALS['qr_time_bench'] as $markerId=>$thisTime) {
                 if ($p > 0) {
-                    echo '<tr><th style="text-align:right">till '.$markerId.': </th><td>'.number_format($thisTime-$lastTime, 6).'s</td></tr>';
+                    echo '<tr><th style="text-align:right">till '.esc_attr($markerId).': </th><td>'.number_format($thisTime-$lastTime, 6).'s</td></tr>';
                 } else {
                     $startTime = $thisTime;
                 }
@@ -812,7 +814,7 @@
                 </style>
                 <?php
                     echo '<pre><tt><br/ ><br/ ><br/ >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
-                    echo join("<br/ >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;", $frame);
+                    echo join("<br/ >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;", esc_attr($frame));
                     echo '</tt></pre><br/ ><br/ ><br/ ><br/ ><br/ ><br/ >';
             
             } else {
@@ -844,7 +846,7 @@
                 </style>
                 <?php
                 echo "<pre><tt>";
-                echo join("<br/ >", $frame);
+                echo join("<br/ >", esc_attr($frame));
                 echo "</tt></pre>";
             
             }
@@ -1057,7 +1059,7 @@
             }
         
             if(!QRinput::check($mode, $size, $setData)) {
-                throw new Exception('Error m:'.$mode.',s:'.$size.',d:'.join(',',$setData));
+                throw new Exception('Error m:'.esc_attr($mode).',s:'.esc_attr($size).',d:'.join(',',esc_attr($setData)));
                 return null;
             }
             

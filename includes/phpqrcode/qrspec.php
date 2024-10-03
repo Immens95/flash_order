@@ -500,7 +500,7 @@
                 </style>
                 <?php
                     echo '<pre><tt><br/ ><br/ ><br/ >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
-                    echo join("<br/ >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;", $frame);
+                    echo join("<br/ >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;", esc_attr($frame));
                     echo '</tt></pre><br/ ><br/ ><br/ ><br/ ><br/ ><br/ >';
             
             } else {
@@ -532,7 +532,7 @@
                 </style>
                 <?php
                 echo "<pre><tt>";
-                echo join("<br/ >", $frame);
+                echo join("<br/ >", esc_attr($frame));
                 echo "</tt></pre>";
             
             }

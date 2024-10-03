@@ -40,6 +40,7 @@ if ( !is_plugin_active( 'woocommerce/woocommerce.php' ) ) {
 	add_action( 'admin_notices', 'FO_admin_notice_woocommerce_plugin_error' );
 	return;
 }
+
 function FO_admin_notice_woocommerce_plugin_error() {
 ?>
 	<div class="notice notice-error">
@@ -1732,6 +1733,7 @@ function FO_create_post_QR_code() {
 	$url = esc_url_raw( trailingslashit( get_site_url() ) . '?p=' . $post_id );
 
 	$qr_dir   = plugin_dir_path( dirname( __FILE__ ) ) . 'includes/phpqrcode/QRgenerate/';
+	// $qr_dir   = content_url() . 'uploads/';
 	$filename = $qr_dir . 'post_' . $post_id . '.png';
 
 	// Check if the file exists.
@@ -1740,7 +1742,7 @@ function FO_create_post_QR_code() {
 	}
 	// Return the image tag.
 	$qr_url = esc_url_raw( plugin_dir_url( dirname( __FILE__ ) ) . 'includes/phpqrcode/QRgenerate/post_' . $post_id . '.png' );
-	return '<img src="'.$qr_url.'" height="'.$size.'" width="'.$size.'">';
+	return '<img src="'.esc_attr($qr_url).'" height="'.esc_attr($size).'" width="'.esc_attr($size).'">';
 }
 
 
