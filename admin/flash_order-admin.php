@@ -214,7 +214,7 @@ function FO_general_setting( $setting = array() ){
 function FO_save_settings( $args, $assoc_id = '', $debug = false ){
     if ( isset($_POST["update"]) && current_user_can( 'manage_options' ) ) {
         FO_debug($_POST);
-        if ( !wp_verify_nonce( $_POST['_fononce_save_settings'], 'FO_save_settings' ) ) {
+        if ( isset($_POST['_fononce_save_settings']) && !wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['_fononce_save_settings'])), 'FO_save_settings' ) ) {
             return;
         }
         if ( isset( $_POST[$args] ) ) { 
@@ -225,11 +225,11 @@ function FO_save_settings( $args, $assoc_id = '', $debug = false ){
                 }
             }
         } //$_SERVER['SERVER_NAME']
-        if ($debug) {
+        // if ($debug) {
             FO_debug($_POST);
-        }
+        // }
         $url = 'Location: '.$_SERVER['REQUEST_URI'];
-        header( $url );
+        // header( $url );
     }
 }
 

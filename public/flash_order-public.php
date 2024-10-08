@@ -4398,7 +4398,7 @@ function FO_flash_tab_order( $tavoli = array() ){
 					<?php foreach ($value as $k => $product) { 
 						$macro_cat = get_the_terms( $product->get_id(), 'macro_categories');
 						$product_child = $product->get_children();
-						if ( !empty( $product_child ) ) { ?>
+						if ( !empty( $product_child ) && $macro_cat ) { ?>
 							<div class="fo_tab_variantcont" fomacrocat="<?php echo esc_attr($macro_cat[0]->slug);?>" foprodidtarget="<?php echo esc_attr($product->get_id());?>" fo_modificable="true" style="display:none;">
 							<?php 
 								$product_attr = $product->get_attributes();
