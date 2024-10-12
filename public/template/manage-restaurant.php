@@ -4,7 +4,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 //test 
-echo FO_create_post_QR_code();
+echo FO_create_post_QR_code();//phpcs:ignore
 //------------------
 
 FO_access_denied();

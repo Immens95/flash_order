@@ -470,7 +470,7 @@
             QRtools::markTime('after_encode');
             
             if ($outfile!== false) {
-                file_put_contents($outfile, join("\n", QRtools::binarize($code->data)));
+                file_put_contents($outfile, join("\n", QRtools::binarize($code->data)));//phpcs:ignore
             } else {
                 return QRtools::binarize($code->data);
             }

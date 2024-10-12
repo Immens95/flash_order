@@ -1486,7 +1486,7 @@ function FO_taxonomy_add_custom_field() {
 	$nonce = wp_create_nonce( 'FO_tax_image_nonce' );
     ?>
     <div class="form-field term-image-wrap">
-        <label for="cat-image"><?php esc_html_e( 'Image' ); ?></label>
+        <label for="cat-image"><?php esc_html_e( 'Image', 'flash_order' ); ?></label>
         <p><a href="#" class="aw_upload_image_button button button-secondary"><?php esc_html_e('Carica Immagine', 'flash_order' ); ?></a></p>
         <img width="250px" src="" id="tax-img-src" style="display:none;padding:10px;margin:10px;" />
         <input type="text" name="taxonomy_image" id="tax-image" size="40" />
@@ -1499,7 +1499,7 @@ function FO_taxonomy_edit_custom_field($term) {
     $nonce = wp_create_nonce( 'FO_tax_image_nonce' );
     ?>
     <tr class="form-field term-image-wrap">
-        <th scope="row"><label for="taxonomy_image"><?php esc_html_e( 'Image' ); ?></label></th>
+        <th scope="row"><label for="taxonomy_image"><?php esc_html_e( 'Image', 'flash_order' ); ?></label></th>
         <td>
             <p><a href="#" class="aw_upload_image_button button button-secondary"><?php esc_html_e('Carica Immagine', 'flash_order' ); ?></a></p><br/>
             <img width="250px" src="<?php echo esc_attr($image); ?>" id="tax-img-src" style="padding:10px;margin:10px;" />
@@ -6132,13 +6132,13 @@ function FO_add_pickup_delivery_section(){
 
 function FO_view_Pickup_Delivery( $order_id ){
 	$delivery_type = get_post_meta( $order_id, 'delivery_type', true );
-		if ($delivery_type == 'delivery'){ $delivery_type = esc_html__('Consegna a Domicilio'); }
-		if ($delivery_type == 'pickup'){ $delivery_type = esc_html__('Ritiro in Sede'); }
+		if ($delivery_type == 'delivery'){ $delivery_type = esc_html__('Consegna a Domicilio', 'flash_order'); }
+		if ($delivery_type == 'pickup'){ $delivery_type = esc_html__('Ritiro in Sede', 'flash_order'); }
 	$fo_delivery_date = get_post_meta( $order_id, 'fo_delivery_date', true );
 	$fo_delivery_time = get_post_meta( $order_id, 'fo_delivery_time', true );
 
-	echo '<p>'.esc_html__("Tipo Ordine: ").'<strong>'.esc_attr($delivery_type).'</strong></p>';
-	echo '<p>'.esc_html__("Data: ").'<strong>'.esc_attr($fo_delivery_date).'</strong> '.esc_html__("Ora: ").'<strong>'.esc_attr($fo_delivery_time).'</strong></p>';
+	echo '<p>'.esc_html__("Tipo Ordine: ", 'flash_order').'<strong>'.esc_attr($delivery_type).'</strong></p>';
+	echo '<p>'.esc_html__("Data: ", 'flash_order').'<strong>'.esc_attr($fo_delivery_date).'</strong> '.esc_html__("Ora: ", 'flash_order').'<strong>'.esc_attr($fo_delivery_time).'</strong></p>';
 }
 
 function FO_validate_pickup_delivery_section(){
@@ -6146,8 +6146,8 @@ function FO_validate_pickup_delivery_section(){
     if ( !wp_verify_nonce( $_POST['_fononce_pickup_delivery_section'], 'FO_pickup_delivery_section_nonce' ) ) {
 		return;
 	}	//_fononce_stat_update_nonce: jQuery('input[name="_fononce_stat_update_nonce"]').val(),
-	if (!$_POST['fo_delivery_date']) wc_add_notice(esc_html__('Seleziona una data!') , 'error');
-	if (!$_POST['fo_delivery_time']) wc_add_notice(esc_html__('Seleziona un\'orario!') , 'error');
+	if (!$_POST['fo_delivery_date']) wc_add_notice(esc_html__('Seleziona una data!', 'flash_order') , 'error');
+	if (!$_POST['fo_delivery_time']) wc_add_notice(esc_html__('Seleziona un\'orario!', 'flash_order') , 'error');
 }
 
 function FO_save_pickup_delivery_section($order_id){

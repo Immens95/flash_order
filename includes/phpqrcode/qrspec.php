@@ -562,10 +562,10 @@
                 
                 if (QR_CACHEABLE) {
                     if (file_exists($fileName)) {
-                        self::$frames[$version] = self::unserial(file_get_contents($fileName));
+                        self::$frames[$version] = self::unserial(file_get_contents($fileName));//phpcs:ignore
                     } else {
                         self::$frames[$version] = self::createFrame($version);
-                        file_put_contents($fileName, self::serial(self::$frames[$version]));
+                        file_put_contents($fileName, self::serial(self::$frames[$version]));//phpcs:ignore
                     }
                 } else {
                     self::$frames[$version] = self::createFrame($version);

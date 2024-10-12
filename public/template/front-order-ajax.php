@@ -116,7 +116,7 @@ echo wp_kses_post(FO_list_view_selector());
 					<input id="table_name" type="number" name="table_name" value="<?php echo esc_attr($table_link_num);?>">
 					<div class="spinner-button-big" onclick="jQuery(this).prev().val(parseInt(jQuery(this).prev().val()) + 1)">+</div> -->
 					<select class="fo-select" name="table_name_cpt">
-						<option value=""> <?php esc_html_e( 'Seleziona il Tavolo', 'flash_order_pro' );?> </option>
+						<option value=""> <?php esc_html_e( 'Seleziona il Tavolo', 'flash_order' );?> </option>
 						<?php foreach ($tavoli as $tavolo) { ?>
 							<option value="<?php echo esc_attr($tavolo->ID);?>">
 								<?php echo esc_attr($tavolo->post_title);?>

@@ -876,10 +876,10 @@
                 
                 if (QR_CACHEABLE) {
                     if (file_exists($fileName)) {
-                        self::$frames[$version] = self::unserial(file_get_contents($fileName));
+                        self::$frames[$version] = self::unserial(file_get_contents($fileName));//phpcs:ignore
                     } else {
                         self::$frames[$version] = self::createFrame($version);
-                        file_put_contents($fileName, self::serial(self::$frames[$version]));
+                        file_put_contents($fileName, self::serial(self::$frames[$version]));//phpcs:ignore
                     }
                 } else {
                     self::$frames[$version] = self::createFrame($version);
@@ -2621,12 +2621,12 @@
 
             if (QR_CACHEABLE) {
                 if (file_exists($fileName)) {
-                    $bitMask = self::unserial(file_get_contents($fileName));
+                    $bitMask = self::unserial(file_get_contents($fileName));//phpcs:ignore
                 } else {
                     $bitMask = $this->generateMaskNo($maskNo, $width, $s, $d);
                     if (!file_exists(QR_CACHE_DIR.'mask_'.$maskNo))
-                        mkdir(QR_CACHE_DIR.'mask_'.$maskNo);
-                    file_put_contents($fileName, self::serial($bitMask));
+                        mkdir(QR_CACHE_DIR.'mask_'.$maskNo);//phpcs:ignore
+                    file_put_contents($fileName, self::serial($bitMask));//phpcs:ignore
                 }
             } else {
                 $bitMask = $this->generateMaskNo($maskNo, $width, $s, $d);
@@ -2768,7 +2768,7 @@
             
                 $howManuOut = 8-(QR_FIND_FROM_RANDOM % 9);
                 for ($i = 0; $i <  $howManuOut; $i++) {
-                    $remPos = rand (0, count($checked_masks)-1);
+                    $remPos = wp_rand (0, count($checked_masks)-1);
                     unset($checked_masks[$remPos]);
                     $checked_masks = array_values($checked_masks);
                 }
@@ -3280,7 +3280,7 @@
             QRtools::markTime('after_encode');
             
             if ($outfile!== false) {
-                file_put_contents($outfile, join("\n", QRtools::binarize($code->data)));
+                file_put_contents($outfile, join("\n", QRtools::binarize($code->data)));//phpcs:ignore
             } else {
                 return QRtools::binarize($code->data);
             }
