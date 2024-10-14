@@ -2198,10 +2198,10 @@ function FOP_set_inactive_tables_from_date( $type = 'OBJECT' ){
 	$result = FOP_get_active_tables();
 	$limit_date_expiry = intval( FO_get_meta('limit_date_expiry') ) * 3600;
 
-	$date_to_compare = date('Y-m-d H:i:s', time() - $limit_date_expiry );
+	$date_to_compare = gmdate('Y-m-d H:i:s', time() - $limit_date_expiry );
 
 // FO_debug( $limit_date_expiry );
-// FO_debug( date('Y-m-d H:i:s', time() - $limit_date_expiry ) );
+// FO_debug( gmdate('Y-m-d H:i:s', time() - $limit_date_expiry ) );
 // FO_debug( $result[0]->last_update );
 
 	foreach ($result as $key => $value) {
@@ -2230,7 +2230,7 @@ function FOP_insert_table( $args ){
   	'last_update' 	=> wp_date('Y-m-d H:i:s')
   	);
   $final = wp_parse_args( $args, $default_args );
-  $final['orders'] = json_encode( (array)$final['orders'] );
+  $final['orders'] = wp_json_encode( (array)$final['orders'] );
 
   $table = $wpdb->prefix . "flash_order_table";
   $result = $wpdb->insert( $table, array( 'table_number'=>$final['table_number'], 'table_id'=>$final['table_id'], 'start_time'=>$final['start_time'], 'orders'=>$final['orders'], 'status'=>$final['status'], 'prev_status'=>$final['prev_status'], 'end_time'=>$final['end_time'], 'totals'=>$final['totals'], 'info'=>$final['info'], 'receipt'=>$final['receipt'], 'other'=>$final['other'], 'last_update'=>$final['last_update'] ) );
@@ -2264,7 +2264,7 @@ function FOP_update_table( $id, $args ){
 	$meta_order = ($meta->orders!='')?json_decode( $meta->orders ):array();
 	$args_order = ($meta->orders!='')?json_decode( $args['orders'] ):array();
 // FO_debug( count(array_diff( $final_args, (array)$meta )) );
-	$final['orders'] = json_encode( array_unique(array_merge( (array)$meta_order, (array)$args_order )) );
+	$final['orders'] = wp_json_encode( array_unique(array_merge( (array)$meta_order, (array)$args_order )) );
 	// if ( count(array_diff( $args, (array)$meta )) ) {
 		$result = $wpdb->update( $table, array( 
 			'table_number'=> $final['table_number'], 
@@ -3200,7 +3200,7 @@ foreach ($_POST['foindex'] as $K => $E) {
 	  // $order->update_meta_data( 'Product-'.$k, $v );
 	  // $order->add_product( wc_get_product( $k ), $v );
 	// }
-	$order->update_meta_data( 'Table', sanitize_text_field($_POST['table_name']) ); //Add the custom field
+	$order->update_meta_data( 'Table', sanitize_text_field(wp_unslash($_POST['table_name'])) ); //Add the custom field
 	$order->update_meta_data( 'order_note', sanitize_text_field($_POST['order_note']) ); //Add the custom field
 	$order->update_meta_data( 'table_surname', sanitize_text_field($_POST['table_surname']) );
 
