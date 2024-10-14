@@ -158,8 +158,8 @@ function FO_create_all_necessary_pages(){
 	// $response['flash-orders'] = '1.0.1';
 	FO_create_page( 'flash-orders-ajax','<!-- wp:shortcode -->[FO_front_order_ajax_section]<!-- /wp:shortcode -->', '1.0.2' );
 		$response['flash-orders-ajax'] = '1.0.2';
-	FO_create_page( 'manage-orders','<!-- wp:shortcode -->[FO_manage_order_section]<!-- /wp:shortcode -->', '1.0.1');
-		$response['manage-orders'] = '1.0.1';
+	// FO_create_page( 'manage-orders','<!-- wp:shortcode -->[FO_manage_order_section]<!-- /wp:shortcode -->', '1.0.1');
+		// $response['manage-orders'] = '1.0.1';
 	FO_create_page( 'manage-tables','<!-- wp:shortcode -->[FO_manage_tables_section]<!-- /wp:shortcode -->', '1.0.2' );
 		$response['manage-tables'] = '1.0.2';
 	FO_create_page( 'manage-restaurant','<!-- wp:shortcode -->[FO_manage_restaurant_section]<!-- /wp:shortcode -->', '1.0.1' );
@@ -241,38 +241,57 @@ function FO_create_page( $page_name, $content = '', $version = '1.0.0' ){
 	}
 }
 
+/**
+ * Recursive sanitation for an array
+ * 
+ * @param $array
+ *
+ * @return mixed
+ */
+function FO_recursive_sanitize_text_field($array) {
+    foreach ( $array as $key => &$value ) {
+        if ( is_array( $value ) ) {
+            $value = recursive_sanitize_text_field($value);
+        }
+        else {
+            $value = sanitize_text_field( $value );
+        }
+    }
+    return $array;
+}
+
 function FO_delete_page(){
-	// if ( !wp_verify_nonce( $_POST['_fononce_manage_pages'], 'FO_manage_pages' ) ) {
-	// 	return;
-	// }
-	$response = array();
-	$page_name = $_POST['page'];
-	$fo_page_id = FO_get_meta('page_id_'.$page_name);
-	$fo_version = FO_get_meta('page_version_'.$page_name);
+    if ( !wp_verify_nonce( sanitize_text_field(wp_unslash($_POST['nonce'])), 'FO_manage_pages' ) ) {
+        return;
+    }
+    $response = array();
+    $page_name = $_POST['page'];
+    $fo_page_id = FO_get_meta('page_id_'.$page_name);
+    $fo_version = FO_get_meta('page_version_'.$page_name);
 
-	$query_page_name = new WP_Query( array(
-	        'post_type'              => 'page',
-	        'title'                  => $page_name,
-	        'post_status'            => 'all',
-	        'posts_per_page'         => 1,
-	        'no_found_rows'          => true,
-	    )
-	);
+    $query_page_name = new WP_Query( array(
+            'post_type'              => 'page',
+            'title'                  => $page_name,
+            'post_status'            => 'all',
+            'posts_per_page'         => 1,
+            'no_found_rows'          => true,
+        )
+    );
 
-	if( $query_page_name ) {
-		wp_delete_post( $fo_page_id );
-		// FO_delete_meta( 'last_update_'.$page_name );
-		FO_delete_meta('page_version_'.$page_name );
-		FO_delete_meta('page_id_'.$page_name );
-		$response['deleted'] = 'deleted page -> '.$page_name;
-	}
+    if( $query_page_name ) {
+        wp_delete_post( $fo_page_id );
+        // FO_delete_meta( 'last_update_'.$page_name );
+        FO_delete_meta('page_version_'.$page_name );
+        FO_delete_meta('page_id_'.$page_name );
+        $response['deleted'] = 'deleted page -> '.$page_name;
+    }
 
-	wp_send_json(array(
-    	'response' 	=> $response,
-    	// 'time_exec' => $time,
-		'post' => $_POST,
-	));
-	die();
+    wp_send_json(array(
+        'response'  => $response,
+        // 'time_exec' => $time,
+        'post' => $_POST,
+    ));
+    die();
 }
 add_action('wp_ajax_FO_delete_page', 'FO_delete_page');
 add_action('wp_ajax_nopriv_FO_delete_page', 'FO_delete_page');
@@ -295,7 +314,19 @@ add_filter( 'display_post_states', 'FO_display_post_states', 10, 2 );
 // add_action( 'init', 'FO_add_role' );
 
 function FO_get_page_id_by_title( $title, $post_type = 'post' ) {
-	$page = get_page_by_title( $title, OBJECT, $post_type );
+	// $page = get_page_by_title( $title, OBJECT, $post_type ); //deprecated function
+	$page = get_posts(
+	    array(
+	        'post_type'              => 'page',
+	        'title'                  => $post_type,
+	        'post_status'            => 'all',
+	        'numberposts'            => 1,
+	        'update_post_term_cache' => false,
+	        'update_post_meta_cache' => false,           
+	        'orderby'                => 'post_date ID',
+	        'order'                  => 'ASC',
+	    )
+	);
 	return $page->ID;
 }
 

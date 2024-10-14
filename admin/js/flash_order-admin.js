@@ -101,13 +101,14 @@ function FO_create_refresh_pages(){
 }
 
 function FO_delete_page( page ){
+	console.log(jQuery('#_fononce_manage_pages').val());
 	jQuery.ajax({
 		type: 'POST',
 		url: ajaxurl,
 		data: {
 			action: 'FO_delete_page',
 			page: page,
-			// nonce: flash_orders_ajax_vars.nonce,
+			nonce: jQuery('#_fononce_manage_pages').val(),
 		},
 		success: function(response) {
 			console.log(' ...ajax-response... ');

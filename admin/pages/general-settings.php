@@ -50,6 +50,13 @@ if ( isset($_GET['sub']) ){//phpcs:ignore
 <!-- global --><div class="FOSetting_Board" board="global">
 <?php
 
+
+    $nonce_save = wp_create_nonce( 'FO_save_settings' );
+    echo '<input type="hidden" id="_fononce_save_settings" name="_fononce_save_settings" value="'.esc_attr($nonce_save).'" />';
+
+    $nonce = wp_create_nonce( 'FO_manage_pages' );
+    echo '<input type="hidden" id="_fononce_manage_pages" name="_fononce_manage_pages" value="'.esc_attr($nonce).'" />';
+
 // do_action('fo_setting_general_head');
 
 // FO_create_QR_code( array( 'size' => '150', 'post_id' => get_the_ID() ) );

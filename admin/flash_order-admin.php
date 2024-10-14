@@ -213,23 +213,26 @@ function FO_general_setting( $setting = array() ){
 
 function FO_save_settings( $args, $assoc_id = '', $debug = false ){
     if ( isset($_POST["update"]) && current_user_can( 'manage_options' ) ) {
-        FO_debug($_POST);
         if ( isset($_POST['_fononce_save_settings']) && !wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['_fononce_save_settings'])), 'FO_save_settings' ) ) {
             return;
         }
         if ( isset( $_POST[$args] ) ) { 
-            foreach ($_POST[$args] as $key => $value) {
+            $sany_args = FO_recursive_sanitize_text_field(array_map('esc_attr',wp_unslash($_POST[$args])));
+            foreach ($sany_args as $key => $value) {
                 if ( isset( $_POST[$args][$key] ) ) {
                 // FO_debug($key);
-                    FO_update_meta( $key, $value, $assoc_id ); 
+                    FO_update_meta( sanitize_text_field(wp_unslash($key)), sanitize_text_field(wp_unslash($value)), $assoc_id ); 
                 }
             }
         } //$_SERVER['SERVER_NAME']
         // if ($debug) {
             FO_debug($_POST);
         // }
-        $url = 'Location: '.$_SERVER['REQUEST_URI'];
-        // header( $url );
+        if (isset($_SERVER['REQUEST_URI'])) {
+            $req_uri = sanitize_text_field(wp_unslash($_SERVER['REQUEST_URI']));
+            $url = 'Location: '. $req_uri;
+            header( $url );
+        }
     }
 }
 
@@ -247,8 +250,6 @@ function FO_get_post_by_post_name( $slug = '', $post_type = '' ) {
 }
 
 function FO_manage_pages( $setting = array() ){
-    // $nonce = wp_create_nonce( 'FO_manage_pages' );
-    // echo '<input type="hidden" id="_fononce_manage_pages" name="_fononce_manage_pages" value="'.esc_attr($nonce).'" />';
     $fo_pages = FO_get_meta_by_assoc_id( 'page_id', 'OBJECT' );
 ?>
     <div class="FOsettingEl"style="max-width:100%;flex-basis:100%;">
@@ -289,7 +290,6 @@ function FO_manage_pages( $setting = array() ){
     </div>
 <?php
 }
-
 
 
 
