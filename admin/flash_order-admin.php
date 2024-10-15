@@ -217,7 +217,7 @@ function FO_save_settings( $args, $assoc_id = '', $debug = false ){
             return;
         }
         if ( isset( $_POST[$args] ) ) { 
-            $sany_args = FO_recursive_sanitize_text_field(array_map('esc_attr',wp_unslash($_POST[$args])));
+            $sany_args = FO_recursive_sanitize_text_field(wp_unslash($_POST[$args]));//phpcs:ignore
             foreach ($sany_args as $key => $value) {
                 if ( isset( $_POST[$args][$key] ) ) {
                 // FO_debug($key);

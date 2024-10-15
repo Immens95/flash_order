@@ -261,11 +261,11 @@ function FO_recursive_sanitize_text_field($array) {
 }
 
 function FO_delete_page(){
-    if ( !wp_verify_nonce( sanitize_text_field(wp_unslash($_POST['nonce'])), 'FO_manage_pages' ) ) {
+    if ( !isset($_POST['nonce']) && !wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['nonce'])), 'FO_manage_pages' ) ) {
         return;
     }
     $response = array();
-    $page_name = $_POST['page'];
+    $page_name = (isset($_POST['page'])) ? sanitize_text_field(wp_unslash($_POST['page'])):'';
     $fo_page_id = FO_get_meta('page_id_'.$page_name);
     $fo_version = FO_get_meta('page_version_'.$page_name);
 
@@ -532,7 +532,7 @@ function FO_init_page_maker(){
 	if ( isset( $_SERVER["REDIRECT_URL"]) ) {
 	foreach( $pages as $page ) {
 		// FO_debug($page->meta_key);
-			if ( str_contains( $_SERVER["REDIRECT_URL"], $page->meta_key ) ) {
+			if ( str_contains( sanitize_text_field(wp_unslash($_SERVER["REDIRECT_URL"])), $page->meta_key ) ) {
 				?>
  				
  				<?php
@@ -542,7 +542,7 @@ function FO_init_page_maker(){
 		}
 	} // FO_debug($_SERVER["REDIRECT_URL"]);
 }
-add_action( 'wp_body_open', 'FO_init_page_maker' );
+// add_action( 'wp_body_open', 'FO_init_page_maker' );
 
 
 
@@ -848,10 +848,10 @@ function fo_save_data_metabox($post_id) {
 	if (!isset($_POST['_fononce'])) {
 		return;
 	}
-	if ( !wp_verify_nonce( $_POST['_fononce'], 'fo_data_metabox' ) ) {
+	if ( !wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['_fononce'])), 'fo_data_metabox' ) ) {
 		return $post_id;
 	}
-	$fo_delivery_date = (isset($_POST['fo_delivery_date']) ? sanitize_text_field($_POST['fo_delivery_date']) : '');
+	$fo_delivery_date = (isset($_POST['fo_delivery_date']) ? sanitize_text_field(wp_unslash($_POST['fo_delivery_date'])) : '');
 	update_post_meta($post_id, 'fo_delivery_date', $fo_delivery_date);
 }
 add_action('save_post', 'fo_save_data_metabox');
@@ -1354,7 +1354,7 @@ echo '</div>';
 function FO_tax_field_variation( $taxonomy, $loop, $variation_data, $variation ){
 	$Tax = json_decode($variation_data[$taxonomy][0]);
 	$fo_check = '';
-// FO_debug($Tax);
+// FO_debug($variation_data);
 	echo '<div class="fo-vari-tabs-panel">';
 		echo '<div class="fo-vari-title">'.esc_attr($taxonomy).'</div>';
 		echo '<ul class="categorychecklist form-no-clear">';
@@ -1363,7 +1363,7 @@ function FO_tax_field_variation( $taxonomy, $loop, $variation_data, $variation )
 		$fo_check = ( FO_in_array( $value->slug, $Tax ) )? 'checked="checked"': '';
 		echo '<li>';
 			echo '<label class="selectit">';
-				echo '<input name="'.esc_attr($taxonomy).'['.esc_attr($loop).'][]" type="checkbox" value="'.esc_attr($value->slug).'" '.esc_attr($fo_check).'>';
+				echo '<input name="'.esc_attr($taxonomy).'['.esc_attr($variation->ID).']['.esc_attr($key).']" type="checkbox" value="'.esc_attr($value->slug).'" '.esc_attr($fo_check).'>';
 					echo esc_attr($value->slug);
 			echo '</label>';
 		echo '</li>';
@@ -1382,25 +1382,52 @@ function FO_in_array( $search_for, $haystack = array() ){
 }
 
 add_action( 'woocommerce_save_product_variation', 'FO_save_custom_field_variations', 10, 2 );
-function FO_save_custom_field_variations( $variation_id, $i ) {
-	if ( !wp_verify_nonce( $_POST['_fononce'], 'FO_custom_field_to_variations_nonce' ) ) {
+add_action( 'woocommerce_update_product_variation', 'FO_update_custom_field_variations', 10, 2 );
+function FO_update_custom_field_variations( $variation_id, $product ){
+	if ( !isset($_POST['_fononce']) && !wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['_fononce'])), 'FO_custom_field_to_variations_nonce' ) ) {
 		return $variation_id;
 	}
-	$price_to_add = $_POST['price_to_add'][$i];
-   if ( isset( $price_to_add ) ) update_post_meta( $variation_id, 'price_to_add', $price_to_add );
-
-   $Ingredienti = $_POST['Ingredienti'][$i];
-   if ( isset( $Ingredienti ) ) update_post_meta( $variation_id, 'Ingredienti', wp_json_encode( $Ingredienti ) );
-
-   $Allergeni = $_POST['Allergeni'][$i];
-   if ( isset( $Allergeni ) ) update_post_meta( $variation_id, 'Allergeni', wp_json_encode( $Allergeni ) );
-
-   $Temperature = $_POST['Temperature'][$i];
-   if ( isset( $Temperature ) ) update_post_meta( $variation_id, 'Temperature', wp_json_encode( $Temperature ) );
-
-   $Sticker = $_POST['Sticker'][$i];
-   if ( isset( $Sticker ) ) update_post_meta( $variation_id, 'Sticker', wp_json_encode( $Sticker ) );
-   	
+   // if ( isset( $_POST['price_to_add'][$variation_id] ) ) {
+   // 	   	$price_to_add = FO_recursive_sanitize_text_field(wp_unslash($_POST['price_to_add'][$variation_id]));//phpcs:ignore
+// 		update_post_meta( $variation_id, 'price_to_add',  wp_json_encode($price_to_add) );
+   // }
+   if ( isset( $_POST['Ingredienti'][$variation_id] ) ) {
+   	   	$Ingredienti = FO_recursive_sanitize_text_field(wp_unslash($_POST['Ingredienti'][$variation_id]));//phpcs:ignore
+		update_post_meta( $variation_id, 'Ingredienti', wp_json_encode( $Ingredienti ) );
+   }
+   if ( isset( $_POST['Allergeni'][$variation_id] ) ) {
+   	   	$Allergeni = FO_recursive_sanitize_text_field(wp_unslash($_POST['Allergeni'][$variation_id]));//phpcs:ignore
+		update_post_meta( $variation_id, 'Allergeni',  wp_json_encode($Allergeni) );
+   }
+   if ( isset( $_POST['Temperature'][$variation_id] ) ) {
+   	   	$Temperature = FO_recursive_sanitize_text_field(wp_unslash($_POST['Temperature'][$variation_id]));//phpcs:ignore
+		update_post_meta( $variation_id, 'Temperature',  wp_json_encode($Temperature) );
+   }
+   if ( isset( $_POST['Sticker'][$variation_id] ) ) {
+   	   	$Sticker = FO_recursive_sanitize_text_field(wp_unslash($_POST['Sticker'][$variation_id]));//phpcs:ignore
+		update_post_meta( $variation_id, 'Sticker',  wp_json_encode($Sticker) );
+   }
+}
+function FO_save_custom_field_variations( $variation_id, $i ) {
+	if ( !isset($_POST['_fononce']) && !wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['_fononce'])), 'FO_custom_field_to_variations_nonce' ) ) {
+		return $variation_id;
+	}
+   if ( isset( $_POST['Ingredienti'][$variation_id] ) ) {
+   	   	$Ingredienti = FO_recursive_sanitize_text_field(wp_unslash($_POST['Ingredienti'][$variation_id]));//phpcs:ignore
+		update_post_meta( $variation_id, 'Ingredienti', wp_json_encode( $Ingredienti ) );
+   }
+   if ( isset( $_POST['Allergeni'][$variation_id] ) ) {
+   	   	$Allergeni = FO_recursive_sanitize_text_field(wp_unslash($_POST['Allergeni'][$variation_id]));//phpcs:ignore
+		update_post_meta( $variation_id, 'Allergeni',  wp_json_encode($Allergeni) );
+   }
+   if ( isset( $_POST['Temperature'][$variation_id] ) ) {
+   	   	$Temperature = FO_recursive_sanitize_text_field(wp_unslash($_POST['Temperature'][$variation_id]));//phpcs:ignore
+		update_post_meta( $variation_id, 'Temperature',  wp_json_encode($Temperature) );
+   }
+   if ( isset( $_POST['Sticker'][$variation_id] ) ) {
+   	   	$Sticker = FO_recursive_sanitize_text_field(wp_unslash($_POST['Sticker'][$variation_id]));//phpcs:ignore
+		update_post_meta( $variation_id, 'Sticker',  wp_json_encode($Sticker) );
+   }
 }
  
 
@@ -1548,7 +1575,7 @@ function FO_taxonomy_column_content( $content, $column_name, $term_id ) {
     }
         switch ( $column_name ) {
         case 'image' :
-        echo '<img width="50px" height="50px" src="'.esc_attr($image).'" />';
+        echo '<img style="max-width:80px;max-height:60px" src="'.esc_attr($image).'" />';
         break;
     }
 }
@@ -1557,11 +1584,11 @@ function FO_add_new_taxonomy_columns( $columns ) {
     return $columns;
 }
 function FO_save_taxonomy_custom_meta_field( $term_id ) {
-	if ( !wp_verify_nonce( $_POST['_fononce_tax_image'], 'FO_tax_image_nonce' ) ) {
+	if (!isset($_POST['_fononce_tax_image']) && !wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['_fononce_tax_image'], 'FO_tax_image_nonce' ))) ) {
 		return $term_id;
 	}
     if ( isset( $_POST['taxonomy_image'] ) ) {
-        update_term_meta($term_id, 'taxonomy_image', $_POST['taxonomy_image']);
+        update_term_meta($term_id, 'taxonomy_image', sanitize_text_field(wp_unslash($_POST['taxonomy_image'])));
     }
 }
 function FO_taxonomy_add_meta_image( $taxonomy ){
@@ -1640,8 +1667,10 @@ add_action( 'init', 'FO_add_image_custom_field_to_tax' );
  * @subpackage Flash_order/includes
  * @author     GraphicNTT <info@graphicntt.com>
  */
-function FO_debug( $var ){ ?>
-	<pre> <?php var_dump($var); ?> </pre> <?php
+function FO_debug( $var ){ 
+	echo "<pre>";
+		var_dump($var);//phpcs:ignore
+	echo "</pre>";
 }
 function FO_access_autorization( $role = 'worker',  $mode = true ){
 	$user = wp_get_current_user();
@@ -2208,9 +2237,9 @@ function FOP_get_table_by_id( $id, $type = 'OBJECT' ){
   global $wpdb;
   $table = $wpdb->prefix . "flash_order_table";
   if ( $type == 'var' ) {
-    $result = $wpdb->get_var( $wpdb->prepare( "SELECT table_number FROM $table WHERE id = %s", $id ) );
+    $result = $wpdb->get_var( $wpdb->prepare( "SELECT table_number FROM %i WHERE id = %s", $table, $id ) );
   } else {
-    $result = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM $table WHERE id = %s", $id ), $type );
+    $result = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM %i WHERE id = %s", $table, $id ), $type );
   }
   return $result;
 }
@@ -2218,7 +2247,7 @@ function FOP_get_table_by_id( $id, $type = 'OBJECT' ){
 function FOP_get_active_tables( $type = 'OBJECT' ){
   global $wpdb;
   $table = $wpdb->prefix . "flash_order_table";
-  	$result = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM $table WHERE status > 0" ), $type );
+  	$result = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM %i WHERE status > 0", $table ), $type );
   return $result;
 }
 
@@ -2330,27 +2359,27 @@ function FOP_get_all_active_tables( $type = 'OBJECT' ){
   global $wpdb;
   $table = $wpdb->prefix . "flash_order_table";
   // $date = wp_date('Y-m-d H:i:s');
-	$result = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM $table WHERE status < 10" ), $type );
+	$result = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM %i WHERE status < 10", $table ), $type );
 	return $result;
 }
 
 function FOP_get_table_by_table_number_status_negative( $table_number, $type = 'OBJECT' ){
   global $wpdb;
   $table = $wpdb->prefix . "flash_order_table";
-	$result = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM $table WHERE table_number = %s AND status > 0", $table_number ), $type );
+	$result = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM %i WHERE table_number = %s AND status > 0", $table, $table_number ), $type );
 	return $result;
 }
 function FOP_get_table_by_table_number_status( $table_number, $status = 0, $type = 'OBJECT' ){
   global $wpdb;
   $table = $wpdb->prefix . "flash_order_table";
-	$result = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM $table WHERE table_number = %s AND status > %d", $table_number, $status ), $type );
+	$result = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM %i WHERE table_number = %s AND status > %d", $table, $table_number, $status ), $type );
 	return $result;
 }
 
 function FOP_get_table_by_table_number_status_last( $table_number, $status = 0, $type = 'OBJECT' ){
   global $wpdb;
   $table = $wpdb->prefix . "flash_order_table";
-	$result = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM $table WHERE table_number = %s AND status > %d ORDER BY last_update DESC", $table_number, $status ), $type );
+	$result = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM %i WHERE table_number = %s AND status > %d ORDER BY last_update DESC", $table, $table_number, $status ), $type );
 	return $result;
 }
 
@@ -2359,7 +2388,7 @@ function FOP_get_table_by_table_number_end_time( $table_number, $date = '', $typ
   $table = $wpdb->prefix . "flash_order_table";
   	$now = new DateTime();
 	$date = ( $date == '' ) ? $now->format('Y-m-d H:i:s') : '';
-	$result = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM $table WHERE table_number = %s AND end_time < %s", $table_number, $date ), $type );
+	$result = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM %i WHERE table_number = %s AND end_time < %s", $table, $table_number, $date ), $type );
 	return $result;
 }
 
@@ -3165,17 +3194,17 @@ function flash_orders_ordination() {
 	//global $woocommerce, $post;
 	// $flash_order_front_name = ( FO_get_meta('flash_order_front_name' ) != '' ) ? FO_get_meta('flash_order_front_name') : esc_html__('TAVOLO','flash_order');
 	// $_POST = FO_recursive_sanitize_text_field($_POST);
-	if ( !wp_verify_nonce( $_POST['_fononce_front_order'], 'FO_front_order' ) ) {
+	if ( !isset($_POST['_fononce_front_order']) && !wp_verify_nonce( sanitize_text_field(wp_unslash($_POST['_fononce_front_order'])), 'FO_front_order' ) ) {
 		return;
 	}
 	$user = wp_get_current_user();
 	$order = new WC_Order();
 	
-	$table_name_cpt = ( isset($_POST['table_name_cpt']) ) ? sanitize_text_field($_POST['table_name_cpt']) : esc_html__('Tavolo','flash_order');
+	$table_name_cpt = ( isset($_POST['table_name_cpt']) ) ? sanitize_text_field(wp_unslash($_POST['table_name_cpt'])) : esc_html__('Tavolo','flash_order');
 	$address = array(
 	    'address_1' => $table_name_cpt,
-	    'address_2'  => sanitize_text_field($_POST['table_name']),
-	    'company'  => sanitize_text_field($_POST['table_surname'])
+	    'address_2'  => (isset($_POST['table_name']))?sanitize_text_field(wp_unslash($_POST['table_name'])):'',
+	    'company'  => (isset($_POST['table_surname']))?sanitize_text_field(wp_unslash($_POST['table_surname'])):''
 	);
 	$order->set_address( $address, 'shipping' );
 	$addressBilling = array(
@@ -3194,7 +3223,7 @@ function flash_orders_ordination() {
 	// $products = array();
 	$i = 0;
 	// FO_debug( $_POST );
-foreach ($_POST['foindex'] as $K => $E) {
+foreach ($_POST['foindex'] as $K => $E) {//phpcs:ignore
 
 	$order->update_meta_data( '{'.$K.'}info-', wp_json_encode( $E ) );
 
@@ -3231,10 +3260,21 @@ foreach ($_POST['foindex'] as $K => $E) {
 	  // $order->update_meta_data( 'Product-'.$k, $v );
 	  // $order->add_product( wc_get_product( $k ), $v );
 	// }
-	$order->update_meta_data( 'Table', sanitize_text_field(wp_unslash($_POST['table_name'])) ); //Add the custom field
-	$order->update_meta_data( 'order_note', sanitize_text_field($_POST['order_note']) ); //Add the custom field
-	$order->update_meta_data( 'table_surname', sanitize_text_field($_POST['table_surname']) );
 
+	if (isset($_POST['table_name_cpt'])) {
+		$order->update_meta_data( 'Table_cpt', sanitize_text_field(wp_unslash($_POST['table_name_cpt'])) );
+	}
+	if (isset($_POST['table_name'])) {
+		$order->update_meta_data( 'Table', sanitize_text_field(wp_unslash($_POST['table_name'])) );
+	}
+	if (isset($_POST['order_note'])) {
+		$order->update_meta_data( 'order_note', sanitize_text_field(wp_unslash($_POST['order_note'])) );
+		$order->add_order_note( sanitize_text_field(wp_unslash($_POST['order_note'])) );
+	}
+	if (isset($_POST['table_surname'])) {
+		$order->update_meta_data( 'table_surname', sanitize_text_field(wp_unslash($_POST['table_surname'])) );
+	}
+	
 	$order->update_meta_data( 'delivery_type', 'table' );
 
 	FO_update_meta( 'last_woocommerce_order', wp_json_encode( $order ) );
@@ -3242,9 +3282,6 @@ foreach ($_POST['foindex'] as $K => $E) {
 
 	$order->set_payment_method('cod');//set_prop( 'payment_method', 'cod' );
 
-	$order->add_order_note( sanitize_text_field($_POST['order_note']) );
-
-	$order->update_meta_data( 'Table_cpt', sanitize_text_field($_POST['table_name_cpt']) );//Add the custom field
 
 	$order->set_created_via( 'FO page' );
 
@@ -3276,16 +3313,16 @@ foreach ($_POST['foindex'] as $K => $E) {
 
 function FO_submit_order_ajax() {
 	// $_POST = FO_recursive_sanitize_text_field($_POST);
-	if ( !wp_verify_nonce( $_POST['_fononce_front_order_ajax'], 'FO_front_order_ajax' ) ) {
+	if (!isset($_POST['_fononce_front_order_ajax']) && !wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['_fononce_front_order_ajax'])), 'FO_front_order_ajax' ) ) {
 		return;
 	}
 	$user = wp_get_current_user();
 	$order = new WC_Order();
-	$table_name_cpt = ( isset($_POST['table_name_cpt']) ) ? sanitize_text_field($_POST['table_name_cpt']) : esc_html__('Tavolo','flash_order');
+	$table_name_cpt = ( isset($_POST['table_name_cpt']) ) ? sanitize_text_field(wp_unslash($_POST['table_name_cpt'])) : esc_html__('Tavolo','flash_order');
 	$address = array(
 	    'address_1' => $table_name_cpt,
-	    'address_2'  => sanitize_text_field($_POST['table_name']),
-	    'company'  => sanitize_text_field($_POST['table_surname'])
+	    'address_2'  => (isset($_POST['table_name']))?sanitize_text_field(wp_unslash($_POST['table_name'])):'',
+	    'company'  => (isset($_POST['table_surname']))?sanitize_text_field(wp_unslash($_POST['table_surname'])):''
 	);
 	$order->set_address( $address, 'shipping' );
 	$addressBilling = array(
@@ -3303,6 +3340,7 @@ function FO_submit_order_ajax() {
 	$order->set_address( $addressBilling, 'billing' );
 $info_string = array();
 
+if (isset($_POST['foserialmap'])) {
 	foreach ( $_POST['foserialmap'] as $K => $E) {
 		foreach ( $E as $pos => $item) {
 			if ( isset($item['id']) ) { 
@@ -3338,23 +3376,31 @@ $info_string = array();
 				}
 			}
 			if (isset($item['searched'])) {
-				$info_string['searched'] = sanitize_text_field( array_values( $item['searched'] )[0] );
+				$info_string['searched'] = sanitize_text_field(wp_unslash( array_values( $item['searched'] )[0] ));
 			}
 			$order->update_meta_data( '{'.substr($pos,1).'}info-', wp_json_encode($info_string) );
 		}
 	}
-	$order->update_meta_data( 'Table', sanitize_text_field($_POST['table_name']) );//Add the custom field
-	$order->update_meta_data( 'Table_cpt', sanitize_text_field($_POST['table_name_cpt']) );//Add the custom field
-
-	$order->update_meta_data( 'order_note', sanitize_text_field($_POST['order_note']) ); //Add the custom field
-	$order->update_meta_data( 'table_surname', sanitize_text_field($_POST['table_surname']) );
+}
+	if (isset($_POST['table_name_cpt'])) {
+		$order->update_meta_data( 'Table_cpt', sanitize_text_field(wp_unslash($_POST['table_name_cpt'])) );
+	}
+	if (isset($_POST['table_name'])) {
+		$order->update_meta_data( 'Table', sanitize_text_field(wp_unslash($_POST['table_name'])) );
+	}
+	if (isset($_POST['order_note'])) {
+		$order->update_meta_data( 'order_note', sanitize_text_field(wp_unslash($_POST['order_note'])) );
+		$order->add_order_note( sanitize_text_field(wp_unslash($_POST['order_note'])) );
+	}
+	if (isset($_POST['table_surname'])) {
+		$order->update_meta_data( 'table_surname', sanitize_text_field(wp_unslash($_POST['table_surname'])) );
+	}
 	$order->update_meta_data( 'delivery_type', 'table' );
 	// FO_update_meta( 'last_woocommerce_order', wp_json_encode( $order ) );
 	// FO_update_meta( 'last_woocommerce_order_products', wp_json_encode( $products ) );
 	$order->set_payment_method('cod');//set_prop( 'payment_method', 'cod' );
 	$order->set_created_via( 'ajax' );
 
-	$order->add_order_note( sanitize_text_field($_POST['order_note']) );
 
 $order->calculate_totals();
 
@@ -3376,16 +3422,16 @@ add_action('wp_ajax_nopriv_FO_submit_order_ajax', 'FO_submit_order_ajax');
 
 
 function FO_flash_list_order_ajax(){
-	if ( !wp_verify_nonce( $_POST['_fononce_flash_list_order'], 'FO_flash_list_order' ) ) {
+	if (!isset($_POST['_fononce_flash_list_order']) && !wp_verify_nonce( sanitize_text_field(wp_unslash($_POST['_fononce_flash_list_order'])), 'FO_flash_list_order' ) ) {
 		return $variation_id;
 	}
 	$user = wp_get_current_user();
 	$order = new WC_Order();
-	$table_name_cpt = ( isset($_POST['table_name_cpt']) ) ? $_POST['table_name_cpt'] : esc_html__('TAVOLO','flash_order');
+	$table_name_cpt = ( isset($_POST['table_name_cpt']) ) ? sanitize_text_field(wp_unslash($_POST['table_name_cpt'])) : esc_html__('TAVOLO','flash_order');
 	$address = array(
 	    'address_1' => $table_name_cpt,
-	    'address_2'  => sanitize_text_field($_POST['table_name']),
-	    'company'  => sanitize_text_field($_POST['table_surname'])
+	    'address_2'  => (isset($_POST['table_name']))?sanitize_text_field(wp_unslash($_POST['table_name'])):'',
+	    'company'  => (isset($_POST['table_surname']))?sanitize_text_field(wp_unslash($_POST['table_surname'])):''
 	);
 	$order->set_address( $address, 'shipping' );
 	$addressBilling = array(
@@ -3397,19 +3443,19 @@ function FO_flash_list_order_ajax(){
 	$order->set_address( $addressBilling, 'billing' );
 	$info_string = array();
 
-$order->update_meta_data( 'foserialmap', wp_json_encode($_POST['foserialmap']) );
+$order->update_meta_data( 'foserialmap', sanitize_text_field(wp_unslash(wp_json_encode($_POST['foserialmap']))) );
 	$total_fee = 0.0;
 	foreach ( $_POST['foserialmap'] as $K => $E) {
 		foreach ( $E as $pos => $item) {
 			if ( isset($item['id']) ) { 
-				$order->update_meta_data( '{'.substr($pos,1).'}index-'.sanitize_text_field(key($item['id'])), sanitize_text_field( array_values( $item['id'] )[0] ) );
+				$order->update_meta_data( '{'.substr($pos,1).'}index-'.sanitize_text_field(wp_unslash(key($item['id']))), sanitize_text_field( array_values( $item['id'] )[0] ) );
 				$product = wc_get_product(sanitize_text_field(key($item['id'])));
-				$order->add_product( $product, sanitize_text_field( array_values( $item['id'] )[0] ) );
-				$info_string[sanitize_text_field(key($item['id']))] = sanitize_text_field(array_values($item['id'])[0]);
+				$order->add_product( $product, sanitize_text_field(wp_unslash( array_values( $item['id'] )[0] )) );
+				$info_string[sanitize_text_field(wp_unslash(key($item['id'])))] = sanitize_text_field(wp_unslash(array_values($item['id'])[0]));
 			}
 			if (isset($item['note'])) {
-				$order->update_meta_data( '{'.substr($pos,1).'}prod-'.sanitize_text_field(key($item['note'])).'_note-', sanitize_text_field( array_values( $item['note'] )[0] ) );
-				$info_string['note'][sanitize_text_field(key($item['note']))] = sanitize_text_field(array_values($item['note'])[0]);
+				$order->update_meta_data( '{'.substr($pos,1).'}prod-'.sanitize_text_field(key($item['note'])).'_note-', sanitize_text_field(wp_unslash( array_values( $item['note'] )[0] )) );
+				$info_string['note'][sanitize_text_field(wp_unslash(key($item['note'])))] = sanitize_text_field(wp_unslash(array_values($item['note'])[0]));
 			}
 			if (isset($item['Ingredienti'])) {
 				foreach ( $item['Ingredienti'] as $index => $element) {
@@ -3457,18 +3503,18 @@ $order->update_meta_data( 'foserialmap', wp_json_encode($_POST['foserialmap']) )
 			$order->update_meta_data( '{'.substr($pos,1).'}info-', wp_json_encode($info_string) );
 		}
 	}
-	$order->update_meta_data( 'Table', sanitize_text_field($_POST['table_name']) );//Add the custom field
-	$order->update_meta_data( 'Table_cpt', sanitize_text_field($_POST['table_name_cpt']) );//Add the custom field
+	$order->update_meta_data( 'Table', sanitize_text_field(wp_unslash($_POST['table_name'])) );
+	$order->update_meta_data( 'Table_cpt', sanitize_text_field(wp_unslash($_POST['table_name_cpt'])) );
 
-	$order->update_meta_data( 'order_note', sanitize_text_field($_POST['order_note']) ); //Add the custom field
-	$order->update_meta_data( 'table_surname', sanitize_text_field($_POST['table_surname']) );
+	$order->update_meta_data( 'order_note', sanitize_text_field(wp_unslash($_POST['order_note'])) );
+	$order->update_meta_data( 'table_surname', sanitize_text_field(wp_unslash($_POST['table_surname'])) );
 	$order->update_meta_data( 'delivery_type', 'table' );
 	// FO_update_meta( 'last_woocommerce_order', wp_json_encode( $order ) );
 	// FO_update_meta( 'last_woocommerce_order_products', wp_json_encode( $products ) );
 	$order->set_payment_method('cod');
 	$order->set_created_via( 'lista_ajax' );
 
-	$order->add_order_note( sanitize_text_field($_POST['order_note']) );
+	$order->add_order_note( sanitize_text_field(wp_unslash($_POST['order_note'])) );
 
 if ( $total_fee > 0.0 ) {
 	$fee = new WC_Order_Item_Fee();
@@ -3485,11 +3531,11 @@ if ( $total_fee > 0.0 ) {
 	$order_id = $order->get_id();
 
 	if ($_POST['table_name_cpt'] != '' ) {
-		$table_id = FO_get_page_id_by_title(sanitize_text_field($_POST['table_name_cpt']),'tavoli');
+		$table_id = FO_get_page_id_by_title(sanitize_text_field(wp_unslash($_POST['table_name_cpt'])),'tavoli');
 		FO_update_meta( 'status_table_'.$table_id, 1, 'table_status' );
 		if (function_exists('FOP_update_table_from_table_id')) {
 			FOP_update_table_from_table_id( $table_id ,array(
-				'table_number'=>sanitize_text_field($_POST['table_name_cpt']),
+				'table_number'=>sanitize_text_field(wp_unslash($_POST['table_name_cpt'])),
 				'table_id'=>$table_id,
 				'status' => 1,
 				'orders' => $order_id,
