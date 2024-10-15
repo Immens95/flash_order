@@ -422,20 +422,6 @@ add_action('user_register', 'FOuserMetaSave');
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 function FO_view_table_in_grid(){
 $checked =  ( FO_get_meta('fo_default_grid_view') == 'yes' ) ? 'checked' : '';
 $style = ( FO_get_meta('fo_default_grid_view') == 'yes' ) ? 'display:block' : 'display:none';
@@ -448,17 +434,6 @@ $style = ( FO_get_meta('fo_default_grid_view') == 'yes' ) ? 'display:block' : 'd
 	<input type="range" min="10" max="100" value="50" class="FOslider GridRange" oninput="FO_grid_adjust(this.value)" style="<?php echo esc_attr($style); ?>">
 <?php
 }
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -484,8 +459,6 @@ function get_string_between($string, $start, $end){
     $len = strpos($string, $end, $ini) - $ini;
     return substr($string, $ini, $len);
 }
-
-
 
 function FO_head_needed(){ ?>
 	<!-- <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
@@ -545,9 +518,6 @@ function FO_init_page_maker(){
 // add_action( 'wp_body_open', 'FO_init_page_maker' );
 
 
-
-
-
 add_action( 'woocommerce_account_content', 'FO_add_special_pages_navigations' );
 
 function FO_add_special_pages_navigations(){
@@ -589,15 +559,6 @@ function FO_add_special_pages_navigations(){
 
 
 
-
-
-
-
-
-
-
-
-
 // add_action('plugins_loaded', 'FO_admin_autorole');
 function FO_admin_autorole(){
 	$user_query = get_users( array( 'role' => 'Administrator' ) );
@@ -606,15 +567,6 @@ function FO_admin_autorole(){
 		update_user_meta( $value->data->ID, 'flash_order_user_role_manager', 'on');
 	}
 }
-
-
-
-
-
-
-
-
-
 
 
 
@@ -653,8 +605,6 @@ $fo_pages = FO_get_meta_by_assoc_id('page_id','OBJECT');
 		</div>
 	<?php return; } 
 }
-
-
 
 
 add_shortcode( 'FO_front_order_section', 'FO_front_order_section' );
@@ -735,25 +685,6 @@ function FO_pages_header_controls(){
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 if ( ! function_exists('FO_Catering_cpt') ) {
 	// Register Custom Post Type
 	function FO_Catering_cpt() {
@@ -815,14 +746,6 @@ if ( ! function_exists('FO_Catering_cpt') ) {
 
 
 
-
-
-
-
-
-
-
-
 // Funzione per aggiungere la metabox personalizzata
 function fo_add_data_metabox() {
     add_meta_box(
@@ -855,29 +778,6 @@ function fo_save_data_metabox($post_id) {
 	update_post_meta($post_id, 'fo_delivery_date', $fo_delivery_date);
 }
 add_action('save_post', 'fo_save_data_metabox');
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -1240,8 +1140,6 @@ function FOP_custom_taxonomy_status() {
 // }
 
 
-
-
 // Register Custom Taxonomy
 function FOP_custom_taxonomy_zone() {
 	$labels = array(
@@ -1283,20 +1181,6 @@ function FOP_custom_taxonomy_zone() {
 // if (FO_get_meta('product_sticker_tax') == 'yes') {
 	add_action( 'init', 'FOP_custom_taxonomy_zone', 0 );
 // }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -1432,8 +1316,6 @@ function FO_save_custom_field_variations( $variation_id, $i ) {
  
 
 
-
-
 // -----------------------------------------
 // 3. Store custom field value into variation data
 // add_filter( 'woocommerce_available_variation', 'FO_add_custom_field_variation_data' );
@@ -1445,16 +1327,6 @@ function FO_add_custom_field_variation_data( $variations ) {
     $variations['Sticker'] = '<div class="woocommerce_custom_field">Sticker: <span>' . get_post_meta( $variations[ 'variation_id' ], 'Sticker', true ) . '</span></div>';
    return $variations;
 }
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -1520,17 +1392,6 @@ function FO_save_wc_attribute_price_to_add( $term_id ) {
 // $term = get_queried_object();
 // $attr_id = wc_attribute_taxonomy_id_by_name( $term->taxonomy );
 // get_term_meta( $term_id, 'price_to_add' );
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -1636,19 +1497,6 @@ function FO_add_image_custom_field_to_tax(){
 	}
 }
 add_action( 'init', 'FO_add_image_custom_field_to_tax' );
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -1833,20 +1681,6 @@ function FO_create_any_QR_code( $atts ) {
 	$qr_url = esc_url_raw( plugin_dir_url( dirname( __FILE__ ) ) . 'includes/phpqrcode/QRgenerate/any - ' . $name . '.png' );
 	return '<img src="'.$qr_url.'" height="'.$size.'" width="'.$size.'">';
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -2183,12 +2017,6 @@ function FO_get_table_by_table_number_status_last( $table_number, $status = 0, $
 
 
 
-
-
-
-
-
-
 /**
  * Fired during plugin activation.
  *
@@ -2433,15 +2261,6 @@ function FOP_delete_table_by_id( $id ){
   $result = $wpdb->delete( $table, array( 'id'=>$id ) );
   return $result;
 }
-
-
-
-
-
-
-
-
-
 
 
 
@@ -3298,19 +3117,6 @@ foreach ($_POST['foindex'] as $K => $E) {//phpcs:ignore
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 function FO_submit_order_ajax() {
 	// $_POST = FO_recursive_sanitize_text_field($_POST);
 	if (!isset($_POST['_fononce_front_order_ajax']) && !wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['_fononce_front_order_ajax'])), 'FO_front_order_ajax' ) ) {
@@ -3419,20 +3225,6 @@ do_action( 'FO_submit_order_ajax', $order_id );
 }
 add_action('wp_ajax_FO_submit_order_ajax', 'FO_submit_order_ajax');
 add_action('wp_ajax_nopriv_FO_submit_order_ajax', 'FO_submit_order_ajax');
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -3583,21 +3375,6 @@ do_action( 'FO_flash_list_order_ajax', $order_id );
 }
 add_action('wp_ajax_FO_flash_list_order_ajax', 'FO_flash_list_order_ajax');
 add_action('wp_ajax_nopriv_FO_flash_list_order_ajax', 'FO_flash_list_order_ajax');
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -3794,28 +3571,8 @@ function FO_flash_list_order(){
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 function FO_flash_tab_order_ajax( $poste = '', $clear = false ){
-	if ( !wp_verify_nonce( $_POST['_fononce_flash_tab_order'], 'FO_flash_tab_order' ) ) {
+	if ( !isset($_POST['_fononce_flash_tab_order']) && !wp_verify_nonce( sanitize_text_field(wp_unslash($_POST['_fononce_flash_tab_order'])), 'FO_flash_tab_order' ) ) {
 		return;
 	}
 	if (FOcheck($poste) && is_array($poste) ) {
@@ -3829,16 +3586,17 @@ function FO_flash_tab_order_ajax( $poste = '', $clear = false ){
 	// die();
 	$order = new WC_Order();
 
-	$user_id = sanitize_text_field($_POST['user_id']);
+	$user_id = (isset($_POST['user_id'])) ? sanitize_text_field(wp_unslash($_POST['user_id'])):'';
+	$created_via = (isset($_POST['created_via'])) ? sanitize_text_field(wp_unslash($_POST['created_via'])):'';
 	// $user = wp_get_current_user();
 
-	$order->update_meta_data( 'created_via', sanitize_text_field($_POST['created_via']) );
-	$order->update_meta_data( 'user_id', sanitize_text_field($_POST['user_id']) );
+	$order->update_meta_data( 'created_via', $created_via );
+	$order->update_meta_data( 'user_id', $user_id );
 
 	$c_index = 1;
 
 	if (isset($_POST['S_customers']) && $_POST['S_customers'] != null ) {
-		foreach ($_POST['S_customers'] as $S_key => $S_value) {
+		foreach ($_POST['S_customers'] as $S_key => $S_value) {//phpcs:ignore
 			foreach ($S_value as $key => $value) {
 				foreach ($value as $k => $v) {
 					$order->update_meta_data( '{customer_ind_'.$c_index.'}'.$k, array_values($v)[0] );
@@ -3858,12 +3616,15 @@ function FO_flash_tab_order_ajax( $poste = '', $clear = false ){
 			// }
 		// }
 	// }
+	$table_name_cpt = (isset($_POST['table_name_cpt'])) ? sanitize_text_field(wp_unslash($_POST['table_name_cpt'])):'';
+	$order->update_meta_data( 'Table_cpt', $table_name_cpt );
+
 	$address = array(
 		'first_name'=> $user->user_firstname,
 		'last_name' => $user->user_lastname,
 		'email'     => $user->user_email,
 		'phone'     => $user->user_phone,
-	    'address_1' => sanitize_text_field($_POST['table_name_cpt']),
+	    'address_1' => $table_name_cpt,
 	    'address_2' => '', //sanitize_text_field($_POST['table_name']),
 	    'company'   => '', //sanitize_text_field($_POST['table_surname'])
 	);
@@ -3878,9 +3639,10 @@ function FO_flash_tab_order_ajax( $poste = '', $clear = false ){
 
 	$info_string = array(); $vari_arr = array(); 
 	$price_array = array(); $prod_args = array();
-$order->update_meta_data( 'foserialmap', wp_json_encode($_POST['foserialmap']) );
+$order->update_meta_data( 'foserialmap', sanitize_text_field(wp_unslash(wp_json_encode($_POST['foserialmap']))) );//phpcs:ignore
 	$total_fee = 0.0;
-	foreach ( $_POST['foserialmap'] as $K => $E) {
+if (isset($_POST['foserialmap'])) {
+	foreach ( $_POST['foserialmap'] as $K => $E) {//phpcs:ignore
 		foreach ($E as $ind => $ele) {
 			if (isset($ele['Variante'])) {
 				foreach ( $ele['Variante'] as $index => $element) {
@@ -4006,17 +3768,23 @@ $order->update_meta_data( 'foserialmap', wp_json_encode($_POST['foserialmap']) )
 			$order->update_meta_data( '{'.substr($pos,1).'}info-', wp_json_encode($info_string) );
 		}
 	}
-	$order->update_meta_data( 'Table', sanitize_text_field($_POST['table_name']) );//Add the custom field
-	$order->update_meta_data( 'Table_cpt', sanitize_text_field($_POST['table_name_cpt']) );//Add the custom field
+}
 
-	$order->update_meta_data( 'order_note', sanitize_text_field($_POST['order_note']) ); //Add the custom field
-	$order->update_meta_data( 'table_surname', sanitize_text_field($_POST['table_surname']) );
+	if (isset($_POST['table_name'])) {
+		$order->update_meta_data( 'Table', sanitize_text_field(wp_unslash($_POST['table_name'])) );
+	}
+	if (isset($_POST['order_note'])) {
+		$order->update_meta_data( 'order_note', sanitize_text_field(wp_unslash($_POST['order_note'])) );
+		$order->add_order_note( sanitize_text_field(wp_unslash($_POST['order_note'])) );
+	}
+	if (isset($_POST['table_surname'])) {
+		$order->update_meta_data( 'table_surname', sanitize_text_field(wp_unslash($_POST['table_surname'])) );
+	}
+
 	$order->update_meta_data( 'delivery_type', 'table' );
 
 	$order->set_payment_method('cod');
 	$order->set_created_via( 'tab_ajax' );
-
-	$order->add_order_note( sanitize_text_field($_POST['order_note']) );
 
 if ( $total_fee > 0.0 ) {
 	$fee = new WC_Order_Item_Fee();
@@ -4041,7 +3809,7 @@ if ( $total_fee > 0.0 ) {
 	$order_id = $order->get_id();
 
 	if (isset($_POST['status'])) {
-		$order->update_status($_POST['status']);
+		$order->update_status(sanitize_text_field(wp_unslash($_POST['status'])));
 	}
 
 	$order = wc_get_order($order_id);
@@ -4053,11 +3821,13 @@ if ( $total_fee > 0.0 ) {
 	$order->calculate_totals();	
 	$order->save();
 
-	FO_update_meta( 'status_table_'.sanitize_text_field($_POST['table_id']), 1, 'table_status' );
-	if (function_exists('FOP_update_table_from_table_id')) {
-		FOP_update_table_from_table_id(sanitize_text_field($_POST['table_id']),array(
-			'table_number'=>sanitize_text_field($_POST['table_name_cpt']),
-			'table_id'=>sanitize_text_field($_POST['table_id']),
+$table_id = (isset($_POST['table_id'])) ? sanitize_text_field(wp_unslash($_POST['table_id'])):'';
+
+	FO_update_meta( 'status_table_'.$table_id, 1, 'table_status' );
+	if ( function_exists('FOP_update_table_from_table_id') ) {
+		FOP_update_table_from_table_id( $table_id, array(
+			'table_number'=> $table_name_cpt,
+			'table_id'=> $table_id,
 			'status' => 1,
 			'orders' => $order_id,
 			'totals' => (string)$order->get_total(),
@@ -4065,9 +3835,9 @@ if ( $total_fee > 0.0 ) {
 	}
 
 	if ($clear) {
-		FO_update_meta( 'status_table_'.sanitize_text_field($_POST['table_id']), 0, 'table_status' );
+		FO_update_meta( 'status_table_'.$table_id, 0, 'table_status' );
 		if (function_exists('FOP_update_table_from_table_id')) {
-			FOP_update_table_from_table_id(sanitize_text_field($_POST['table_id']),array(
+			FOP_update_table_from_table_id( $table_id, array(
 				'end_time' 	=> wp_date('Y-m-d H:i:s'),
 				'status' 	=> 10,
 			) );
@@ -4079,7 +3849,7 @@ do_action( 'FO_flash_tab_order_ajax', $order_id );
 		wp_send_json(array(
 			// 'time_exec' => $time,
 			// 'post' => $_POST,
-			'table_id' => sanitize_text_field($_POST['table_id']),
+			'table_id' => $table_id,
 			'order_id'=> wp_json_encode($order_id),
 			'order_total'=> (string)$order->get_total(),
 			'price_array' => $price_array,
@@ -4092,16 +3862,17 @@ add_action('wp_ajax_FO_flash_tab_order_ajax', 'FO_flash_tab_order_ajax');
 add_action('wp_ajax_nopriv_FO_flash_tab_order_ajax', 'FO_flash_tab_order_ajax');
 
 function FO_flash_tab_clear_table( $poste = '' ){
-	if ( !wp_verify_nonce( $_POST['_fononce_flash_tab_order'], 'FO_flash_tab_order' ) ) {
+	if ( !isset($_POST['_fononce_flash_tab_order']) && !wp_verify_nonce( sanitize_text_field(wp_unslash($_POST['_fononce_flash_tab_order'])), 'FO_flash_tab_order' ) ) {
 		return;
 	}
 	if (FOcheck($poste) && is_array($poste) ) {
 		$_POST = $poste;
 	}
+	$table_id = (isset($_POST['table_id'])) ? sanitize_text_field(wp_unslash($_POST['table_id'])):'';
 	// do_action( 'FO_flash_tab_clear_table', $order_id );
-	FO_update_meta( 'status_table_'.sanitize_text_field($_POST['table_id']), 0, 'table_status' );
+	FO_update_meta( 'status_table_'.$table_id, 0, 'table_status' );
 	if (function_exists('FOP_update_table_from_table_id')) {
-		FOP_update_table_from_table_id(sanitize_text_field($_POST['table_id']),array(
+		FOP_update_table_from_table_id( $table_id, array(
 			'end_time' 	=> wp_date('Y-m-d H:i:s'),
 			'status' 	=> 10,
 		) );
@@ -4109,7 +3880,7 @@ function FO_flash_tab_clear_table( $poste = '' ){
 	if (!FOcheck($poste) && !is_array($poste) ) {
 	    wp_send_json(array(
 			'post' => $_POST,
-			'table_id' => sanitize_text_field($_POST['table_id']),
+			'table_id' => $table_id,
 		));
 		die();
 	}
@@ -4118,7 +3889,7 @@ add_action('wp_ajax_FO_flash_tab_clear_table', 'FO_flash_tab_clear_table');
 add_action('wp_ajax_nopriv_FO_flash_tab_clear_table', 'FO_flash_tab_clear_table');
 
 function FO_flash_tab_clear_all_tables(){
-	if ( !wp_verify_nonce( $_POST['_fononce_flash_tab_order'], 'FO_flash_tab_order' ) ) {
+	if ( !isset($_POST['_fononce_flash_tab_order']) && !wp_verify_nonce( sanitize_text_field(wp_unslash($_POST['_fononce_flash_tab_order'])), 'FO_flash_tab_order' ) ) {
 		return;
 	}
 
@@ -4148,9 +3919,10 @@ add_action('wp_ajax_nopriv_FO_flash_tab_clear_all_tables', 'FO_flash_tab_clear_a
 
 
 function FO_flash_tab_pay_ajax(){
-	if ( !wp_verify_nonce( $_POST['_fononce_flash_tab_order'], 'FO_flash_tab_order' ) ) {
+	if ( !isset($_POST['_fononce_flash_tab_order']) && !wp_verify_nonce( sanitize_text_field(wp_unslash( $_POST['_fononce_flash_tab_order'])), 'FO_flash_tab_order' ) ) {
 		return;
 	}
+	$table_id = (isset($_POST['table_id'])) ? sanitize_text_field(wp_unslash($_POST['table_id'])):'';
 	// do_action( 'FO_flash_tab_clear_table', $order_id );
 	$_POST['status'] = 'completed';
 	// $_POST['pay_status_order'] = 'completed';
@@ -4175,13 +3947,12 @@ function FO_flash_tab_pay_ajax(){
 
 	wp_send_json(array(
 		'post' => $_POST,
-		'table_id' => sanitize_text_field($_POST['table_id']),
+		'table_id' => $table_id,
 	));
 	die();
 }
 add_action('wp_ajax_FO_flash_tab_pay_ajax', 'FO_flash_tab_pay_ajax');
 add_action('wp_ajax_nopriv_FO_flash_tab_pay_ajax', 'FO_flash_tab_pay_ajax');
-
 
 
 
@@ -4881,7 +4652,7 @@ function FO_pay_this_order_tab(){
 
 
 function FO_insert_post_ajax(){
-	if ( !wp_verify_nonce( $_POST['_fononce_insert_post_ajax_nonce'], 'FO_insert_post_ajax_nonce' ) ) {
+	if ( !isset($_POST['_fononce_insert_post_ajax_nonce']) && !wp_verify_nonce( sanitize_text_field(wp_unslash( $_POST['_fononce_insert_post_ajax_nonce'])), 'FO_insert_post_ajax_nonce' ) ) {
 		return;
 	}
 	if (isset($_POST['post_id']) && $_POST['post_id'] != '' ) {
@@ -4889,18 +4660,18 @@ function FO_insert_post_ajax(){
 	    return;
 	}
 	$post_id = wp_insert_post(array (
-	    'post_type' => sanitize_text_field($_POST['cpt']),
-	    'post_title' => sanitize_text_field($_POST['title']),
-	    'post_content' => sanitize_text_field($_POST['content']),
+	    'post_type' => (isset($_POST['cpt']))?sanitize_text_field(wp_unslash($_POST['cpt'])):'',
+	    'post_title' => (isset($_POST['title']))?sanitize_text_field(wp_unslash($_POST['title'])):'',
+	    'post_content' => (isset($_POST['content']))?sanitize_text_field(wp_unslash($_POST['content'])):'',
 	    'post_status' => 'publish',
 	));
 	if ($post_id) {
 	    add_post_meta($post_id, 'from_user_id', get_current_user_id());
 	    if (isset($_POST['fo_delivery_date'])) {
-	    	add_post_meta($post_id, 'fo_delivery_date', sanitize_text_field($_POST['fo_delivery_date']));
+	    	add_post_meta($post_id, 'fo_delivery_date', sanitize_text_field(wp_unslash($_POST['fo_delivery_date'])));
 	    }
 	    if (isset($_POST['fo_catering_status'])) {
-	    	add_post_meta($post_id, 'fo_catering_status', sanitize_text_field($_POST['fo_catering_status']));
+	    	add_post_meta($post_id, 'fo_catering_status', sanitize_text_field(wp_unslash($_POST['fo_catering_status'])));
 	    }
 	}
 	wp_send_json(array(
@@ -4913,24 +4684,24 @@ add_action('wp_ajax_FO_insert_post_ajax', 'FO_insert_post_ajax');
 add_action('wp_ajax_nopriv_FO_insert_post_ajax', 'FO_insert_post_ajax');
 
 function FO_update_post_ajax( $_poste = '' ){
-	if ( !wp_verify_nonce( $_POST['_fononce_insert_post_ajax_nonce'], 'FO_insert_post_ajax_nonce' ) ) {
+	if ( !isset($_POST['_fononce_insert_post_ajax_nonce']) && !wp_verify_nonce( sanitize_text_field(wp_unslash( $_POST['_fononce_insert_post_ajax_nonce'])), 'FO_insert_post_ajax_nonce' ) ) {
 		return;
 	}
 	if ($_poste != '') {
 		$_POST = $_poste;
 	}
 	$post_id = wp_update_post(array (
-		'ID' => sanitize_text_field($_POST['post_id']),
-	    'post_title' => sanitize_text_field($_POST['title']),
-	    'post_content' => sanitize_text_field($_POST['content']),
+		'ID' => (isset($_POST['post_id']))?sanitize_text_field(wp_unslash($_POST['post_id'])):'',
+	    'post_title' => (isset($_POST['title']))?sanitize_text_field(wp_unslash($_POST['title'])):'',
+	    'post_content' => (isset($_POST['content']))?sanitize_text_field(wp_unslash($_POST['content'])):'',
 	    'post_status' => 'publish',
 	));
 	if ($post_id) {
 	    if (isset($_POST['fo_delivery_date'])) {
-	    	update_post_meta($post_id, 'fo_delivery_date', sanitize_text_field($_POST['fo_delivery_date']));
+	    	update_post_meta($post_id, 'fo_delivery_date', sanitize_text_field(wp_unslash($_POST['fo_delivery_date'])));
 	    }
 	    if (isset($_POST['fo_catering_status'])) {
-	    	update_post_meta($post_id, 'fo_catering_status', sanitize_text_field($_POST['fo_catering_status']));
+	    	update_post_meta($post_id, 'fo_catering_status', sanitize_text_field(wp_unslash($_POST['fo_catering_status'])));
 	    }
 	}
 	wp_send_json(array(
@@ -4943,10 +4714,14 @@ add_action('wp_ajax_FO_update_post_ajax', 'FO_update_post_ajax');
 add_action('wp_ajax_nopriv_FO_update_post_ajax', 'FO_update_post_ajax');
 
 function FO_delete_post_ajax(){
-	if ( !wp_verify_nonce( $_POST['_fononce_insert_post_ajax_nonce'], 'FO_insert_post_ajax_nonce' ) ) {
+	if ( !isset($_POST['_fononce_insert_post_ajax_nonce']) && !wp_verify_nonce( sanitize_text_field(wp_unslash( $_POST['_fononce_insert_post_ajax_nonce'])), 'FO_insert_post_ajax_nonce' ) ) {
 		return;
 	}//_fononce_stat_update_nonce: jQuery('input[name="_fononce_stat_update_nonce"]').val(),
-	$post = wp_delete_post( (int)sanitize_text_field($_POST['delete_id']) );
+
+	if (isset($_POST['delete_id'])) {
+		$post = wp_delete_post( (int)sanitize_text_field(wp_unslash($_POST['delete_id'])) );
+	} else { $post = ''; }
+
 	wp_send_json(array(
 		//'post' => $_POST,
 		'post' => $post,
@@ -4957,10 +4732,14 @@ add_action('wp_ajax_FO_delete_post_ajax', 'FO_delete_post_ajax');
 add_action('wp_ajax_nopriv_FO_delete_post_ajax', 'FO_delete_post_ajax');
 
 function FO_trash_post_ajax(){
-	if ( !wp_verify_nonce( $_POST['_fononce_insert_post_ajax_nonce'], 'FO_insert_post_ajax_nonce' ) ) {
+	if ( !isset($_POST['_fononce_insert_post_ajax_nonce']) && !wp_verify_nonce( sanitize_text_field(wp_unslash( $_POST['_fononce_insert_post_ajax_nonce'])), 'FO_insert_post_ajax_nonce' ) ) {
 		return;
 	}	//_fononce_stat_update_nonce: jQuery('input[name="_fononce_stat_update_nonce"]').val(),
-	$post = wp_trash_post( (int)sanitize_text_field($_POST['delete_id']) );
+
+	if (isset($_POST['delete_id'])) {
+		$post = wp_trash_post( (int)sanitize_text_field(wp_unslash($_POST['delete_id'])) );
+	} else { $post = ''; }
+
 	wp_send_json(array(
 		//'post' => $_POST,
 		'post' => $post,
@@ -5029,8 +4808,9 @@ function FO_add_extra_field_to_post(){
 	$short_title = array('');
 	$slang_title = array('');
 	if ( isset( $_GET['post'] ) ) {
-		$short_title = (get_post_meta( $_GET['post'], 'short_title'))?get_post_meta($_GET['post'], 'short_title'): array('');
-		$slang_title = (get_post_meta( $_GET['post'], 'slang_title'))?get_post_meta($_GET['post'], 'slang_title'):array('');
+		$post_id = sanitize_text_field(wp_unslash( $_GET['post']));
+		$short_title = (get_post_meta( $post_id , 'short_title'))?get_post_meta($post_id , 'short_title'): array('');
+		$slang_title = (get_post_meta( $post_id , 'slang_title'))?get_post_meta($post_id , 'slang_title'):array('');
 	}
 	$nonce = wp_create_nonce( 'FO_post_extra_field_nonce' );
     echo '<input type="hidden" id="_fononce_post_extra_field" name="_fononce_post_extra_field" value="'.esc_attr($nonce).'" />';
@@ -5056,12 +4836,12 @@ function FO_populate_both_columns( $column_name, $post_id ) {
 	// if you have to populate more that one columns, use switch()
 	switch( $column_name ) {
 		case 'short_title': {
-			$short_title = (get_post_meta( get_the_ID(), 'short_title'))?get_post_meta(get_the_ID(), 'short_title', true):'';
+			$short_title = (get_post_meta(get_the_ID(),'short_title'))?get_post_meta(get_the_ID(),'short_title',true):'';
 			echo esc_attr($short_title);
 			break;
 		}
 		case 'slang_title': {
-			$slang_title = (get_post_meta( get_the_ID(), 'slang_title'))?get_post_meta(get_the_ID(), 'slang_title', true):'';
+			$slang_title = (get_post_meta(get_the_ID(),'slang_title'))?get_post_meta(get_the_ID(),'slang_title',true):'';
 			echo esc_attr($slang_title);
 			break;
 		}
@@ -5174,10 +4954,7 @@ function FO_save_post_extra_field( $post_id, $post, $update ) {
 		// if ( 'post' !== $post->post_type ) {
 		// 	return;
 		// }
-	if (!isset($_POST['_fononce_post_extra_field'])) {
-		return;
-	}
-	if ( !wp_verify_nonce( $_POST['_fononce_post_extra_field'], 'FO_post_extra_field_nonce' ) ) {
+	if ( !isset($_POST['_fononce_post_extra_field']) && !wp_verify_nonce( sanitize_text_field(wp_unslash( $_POST['_fononce_post_extra_field'])), 'FO_post_extra_field_nonce' ) ) {
 		return;
 	}//_fononce_post_extra_field: jQuery('input[name="_fononce_post_extra_field"]').val(),
 
@@ -6247,7 +6024,7 @@ function FO_view_Pickup_Delivery( $order_id ){
 
 function FO_validate_pickup_delivery_section(){
 // Show an error message if the field is not set.
-    if ( !wp_verify_nonce( $_POST['_fononce_pickup_delivery_section'], 'FO_pickup_delivery_section_nonce' ) ) {
+    if ( !isset($_POST['_fononce_pickup_delivery_section']) && !wp_verify_nonce( sanitize_text_field(wp_unslash( $_POST['_fononce_pickup_delivery_section'])), 'FO_pickup_delivery_section_nonce' ) ) {
 		return;
 	}	//_fononce_stat_update_nonce: jQuery('input[name="_fononce_stat_update_nonce"]').val(),
 	if (!$_POST['fo_delivery_date']) wc_add_notice(esc_html__('Seleziona una data!', 'flash_order') , 'error');
@@ -6255,7 +6032,7 @@ function FO_validate_pickup_delivery_section(){
 }
 
 function FO_save_pickup_delivery_section($order_id){
-    if ( !wp_verify_nonce( $_POST['_fononce_pickup_delivery_section'], 'FO_pickup_delivery_section_nonce' ) ) {
+    if ( !isset($_POST['_fononce_pickup_delivery_section']) && !wp_verify_nonce( sanitize_text_field(wp_unslash( $_POST['_fononce_pickup_delivery_section'])), 'FO_pickup_delivery_section_nonce' ) ) {
 		return;
 	}	//_fononce_stat_update_nonce: jQuery('input[name="_fononce_stat_update_nonce"]').val(),
 	if (!empty($_POST['delivery_type'])) {
