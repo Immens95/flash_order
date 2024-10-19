@@ -4734,7 +4734,7 @@ add_action('wp_ajax_nopriv_FO_delete_post_ajax', 'FO_delete_post_ajax');
 function FO_trash_post_ajax(){
 	if ( !isset($_POST['_fononce_insert_post_ajax_nonce']) && !wp_verify_nonce( sanitize_text_field(wp_unslash( $_POST['_fononce_insert_post_ajax_nonce'])), 'FO_insert_post_ajax_nonce' ) ) {
 		return;
-	}	//_fononce_stat_update_nonce: jQuery('input[name="_fononce_stat_update_nonce"]').val(),
+	}//_fononce_stat_update_nonce: jQuery('input[name="_fononce_stat_update_nonce"]').val(),
 
 	if (isset($_POST['delete_id'])) {
 		$post = wp_trash_post( (int)sanitize_text_field(wp_unslash($_POST['delete_id'])) );
@@ -4801,10 +4801,20 @@ function FO_get_translated_status( $status ) {
 
 
 
+if (isset( $_GET['post_type']) && $_GET['post_type'] === 'product' ) {//phpcs:ignore
+	add_action('edit_form_before_permalink', 'FO_add_extra_field_to_post' );
+	// add_action('quick_edit_custom_box', 'FO_add_extra_field_to_post' );
+}else{
+	if (isset( $_GET['post']) && get_post(sanitize_text_field(wp_unslash($_GET['post'])))->post_type === 'product') {//phpcs:ignore
+		add_action('edit_form_before_permalink', 'FO_add_extra_field_to_post' );
+	}
+}
 
+function FO_add_extra_field_to_post() {
+	// if ( !isset($_POST['_fononce_product']) && !wp_verify_nonce( sanitize_text_field(wp_unslash( $_POST['_fononce_product'])), 'FO_product_nonce' ) ) {
+	// 	return;
+	// }
 
-
-function FO_add_extra_field_to_post(){
 	$short_title = array('');
 	$slang_title = array('');
 	if ( isset( $_GET['post'] ) ) {
@@ -4932,17 +4942,6 @@ function FO_quick_edit_fields( $column_name, $post_type ) {
 // 	    " );
 // 	}
 // }
-
-
-
-if (isset( $_GET['post_type']) && $_GET['post_type'] === 'product' ) {
-	add_action('edit_form_before_permalink', 'FO_add_extra_field_to_post' );
-	// add_action('quick_edit_custom_box', 'FO_add_extra_field_to_post' );
-}else{
-	if (isset( $_GET['post']) && get_post($_GET['post'])->post_type === 'product') {
-		add_action('edit_form_before_permalink', 'FO_add_extra_field_to_post' );
-	}
-}
 
 
 function FO_save_post_extra_field( $post_id, $post, $update ) {
@@ -6159,7 +6158,7 @@ function enqueue_ajax_view_orders_scripts() {
 add_action('wp_enqueue_scripts', 'enqueue_ajax_view_orders_scripts');
 
 function enqueue_ajax_manage_restaurant_scripts() {
-	// wp_enqueue_script('flash-order-ajax-manage-tables', plugin_dir_url(__FILE__) . 'js/ajax-manage-tables.js', array('jquery', 'wp-api'), '1.0', false);
+	// wp_enqueue_script('flash-order-ajax-manage-tables',plugin_dir_url(__FILE__).'js/ajax-manage-tables.js', array('jquery', 'wp-api'), '1.0', false);
     wp_localize_script('flash-order-ajax-manage-tables', 'flash_orders_ajax_manage_restaurant_vars', array(
         'ajaxurl' => admin_url('admin-ajax.php'),
         'nonce' => wp_create_nonce('flash_orders_ajax_manage_restaurant_vars'),
