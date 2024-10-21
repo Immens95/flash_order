@@ -2903,8 +2903,6 @@ function FO_get_products_for_loop( $args = array() ){
 		'orderby'   => 'title',
 		'order'     => 'ASC',
 	) );
-	
-// FO_debug($products_categories->terms);
 	// if ( $products_categories ){
 	if ( count($products_categories->terms) > 0 ){
 		foreach ( $products_categories->terms as $products_category ) {
@@ -4514,7 +4512,7 @@ function FO_pay_this_order_tab(){
 
 				<div class="fot_pay_search_customer" style="display:none;">
 					<strong style="width:100%"> <?php esc_html_e('Cerca un cliente:','flash_order');?> </strong>
-					<input type="search" onkeyup="FO_search_for_target(this,'.FO_customer_target_search');jQuery('.FO_customer_list').show()" onclick="FO_search_for_target(this,'.FO_customer_target_search')" class="focatsearchall FO_list_height" style="width: 200px!important;" placeholder="<?php esc_html_e('Cerca cliente...','flash_order' );?>">
+					<input type="search" onkeyup="FO_search_for_target(this,'.FO_customer_target_search');jQuery('.FO_customer_list').show()" onclick="FO_search_for_target(this,'.FO_customer_target_search');jQuery('.FO_customer_list').show()" class="focatsearchall FO_list_height" style="width: 200px!important;" placeholder="<?php esc_html_e('Cerca cliente...','flash_order' );?>">
 					<div class="FO_clear_input" onclick="jQuery(this).prev().val('');jQuery(this).next().hide();">X</div>
 
 					<div class="FO_customer_list" style="display:none;">
@@ -4605,7 +4603,7 @@ function FO_pay_this_order_tab(){
 			<div class="" style="margin-right:auto;" onclick="">
 				<strong> <?php esc_html_e('TOTALE: ','flash_order');?> </strong>
 				<strong class="fo_pay_total">  </strong>
-				<strong> <?php echo esc_attr(get_woocommerce_currency_symbol());?> </strong>
+				<!-- <strong> <?php echo esc_attr(get_woocommerce_currency_symbol());?> </strong> -->
 			</div>
 
 			<?php
@@ -5622,6 +5620,9 @@ function FO_status_titled( $status ){
 }
 function FO_extract_meta_array( $meta ){
 	$array = array();$i = 1;
+	if (!is_array($meta)) {
+		// $order->get_meta('delivery_type');
+	}
 	foreach ($meta as $key => $value) {
 		if ( str_contains( (string)$key, '{' ) ) {
 			$index = substr( (string)$key, 1, strpos((string)$key,'}')-1 );

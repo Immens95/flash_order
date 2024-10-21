@@ -4324,14 +4324,31 @@ width: 100%;
 
 .fo_tab_abs_info{
 	position: absolute;
-	top: 0px;
-	right: 0px;
+	bottom: 0px;
+	left: 0px;
 	color: var(--fo-invert-color);
 	width: 40px!important;
 	height: 40px!important;
 	font-size: 40px!important;
 }
 
+.fo_tab_notify{
+	position: absolute;
+	top: 3px;
+	right: 4px;
+	color: var(--fo-text-color);
+	background-color: var(--fo-bg3-color);
+	border: 2px solid var(--fo-modified);
+	border-radius: 100%;
+	width: 37px!important;
+	height: 37px!important;
+	font-size: 25px!important;
+	text-align: center;
+    display: flex;
+    flex-wrap: wrap;
+    align-content: center;
+    justify-content: center;
+}
 
 .FObuttListRapidView{
 	width: 35px!important;

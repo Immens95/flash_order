@@ -412,7 +412,7 @@ function FO_search_for_target(input,target){
 			}else {
 				jQuery(row).hide();
 			}
-			if (searchVal == '') {jQuery(row).hide();jQuery('.FO_order_list').hide()}
+			if (searchVal == '') {jQuery(row).show();jQuery('.FO_order_list').show()}
 		}
 	});
 }

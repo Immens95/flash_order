@@ -43,9 +43,12 @@ if ( isset($_GET['table']) && $_GET['table'] != '' ) {
 		<div id="FO_select_variant_alert"><?php esc_html_e( 'Seleziona prima la variante', 'flash_order' );?></div>
 		<div id="FO_warehouse_alert"><?php esc_html_e( 'Siamo spiacenti ma il prodotto non é al momento disponibile', 'flash_order' );?></div>
 		<div id="FO_access_alert"><?php esc_html_e( 'Per poter effettuare ordini su questa pagina, é neccessario Effettuare l\'accesso!', 'flash_order' );?></div>
-
+		<style type="text/css">
+			#eltdf-back-to-top{
+				margin-bottom: 120px!important;
+			}
+		</style>
 	</div>
-
 
 	<span class="FObuttListRapidView dashicons dashicons-menu-alt3" onclick="Show_FOListRapidView()"></span>
 
@@ -69,7 +72,7 @@ if ( isset($_GET['table']) && $_GET['table'] != '' ) {
 	</div>
 
 <?php 
-echo wp_kses_post(FO_list_view_selector()); 
+echo FO_list_view_selector(); 
 // FO_debug(get_post_types());
 // get_post_types();
 ?>
