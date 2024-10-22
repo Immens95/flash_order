@@ -4022,9 +4022,9 @@ function FO_flash_tab_order( $tavoli = array() ){
 					<?php echo esc_attr($value->name);?>
 				</div>
 			<?php } ?>
-			<div class="fo_button Advanced_Card_Close_float" onclick="FO_tab_Card_hide()">
+			<!-- <div class="fo_button Advanced_Card_Close_float" onclick="FO_tab_Card_hide()">
 				<?php esc_html_e('CHIUDI','flash_order');?>
-			</div>
+			</div> -->
 		</div>
 
 		<div class="FO_flash_tab_body">
@@ -4347,13 +4347,13 @@ function FO_flash_tab_order( $tavoli = array() ){
 				</div>
 					<div class="fo_tab_calc_keyboard_row">
 						<div class="fo_tab_calc_keyboard_key" onclick="fo_keyboard_special('special','Special')">
-							<strong>Special</strong>
+							<strong style="height:50px!important;display:flex;flex-direction:column;justify-content:center;">Special</strong>
 						</div>
 						<div class="fo_tab_calc_keyboard_key" onclick="fo_keyboard_special('special','Bar')">
-							<strong>Bar</strong>
+							<strong style="height:50px!important;display:flex;flex-direction:column;justify-content:center;">Bar</strong>
 						</div>
 						<div class="fo_tab_calc_keyboard_key" onclick="fo_keyboard_special('special','Bevande')">
-							<strong>Bevande</strong>
+							<strong style="height:50px!important;display:flex;flex-direction:column;justify-content:center;">Bevande</strong>
 						</div>
 					</div>
 
@@ -4460,11 +4460,10 @@ function FO_flash_tab_order( $tavoli = array() ){
 
 			<div class="fo_button_fix" style="margin-left:auto;" fo_order_type="new_order" onclick="FO_tab_go_order(this)"><?php esc_html_e('AVVIA ORDINE','flash_order');?></div>
 
-			<div class="fo_button_fix fo_variant_show_button" style="margin-left:auto;" onclick="">
+			<div class="fo_button_fix fo_variant_show_button" style="bottom:220px!important;" onclick="">
 				<span class="dashicons dashicons-table-row-before"></span>
 			</div>
-
-			<div class="fo_button_fix fo_pay_show_keyboard_button" style="margin-left:auto;" onclick="fo_tab_show_keyboard_button()">
+			<div class="fo_button_fix fo_pay_show_keyboard_button" style="" onclick="fo_tab_show_keyboard_button()">
 				<span class="dashicons dashicons-editor-table"></span>
 			</div>
 

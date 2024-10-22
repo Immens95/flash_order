@@ -1237,20 +1237,31 @@ jQuery('.fo_target_qty_prod').attr('fo_modificable',jQuery(input).attr('fo_modif
 function FO_calc_totals(){
 	var tot_r = 0.00;
 	jQuery('.fo_column_riepilogo .fo_tab_prod').each(function(i,e){
-		tot_r = parseFloat( tot_r ) + parseFloat( jQuery(e).find('[fo_tab_target="price"]').val() );
+		var temp_r_price = 0.00;
+		if (jQuery(e).find('[fo_tab_target="price"]').val()!='') {
+			var temp_r_price =  parseFloat( jQuery(e).find('[fo_tab_target="price"]').val() );
+		}
+		tot_r = parseFloat( tot_r ) + parseFloat( temp_r_price );
 	});
 	jQuery('.fo_tool_riepilogo .fo_tab_tool_total strong').text( parseFloat(tot_r).toFixed(2) + jQuery('.fo_woo_symb').text() );
 
 	var tot_s = 0.00;
 	jQuery('.fo_column_story .fo_tab_prod.fo_tab_prod_story[fotableid="'+jQuery('input[name="table_ID"]').val()+'"]').each(function(i,e){
-		// var temp_s_price = (jQuery(e).find('[fo_tab_target="price"]').val()!='')?jQuery(e).find('[fo_tab_target="price"]').val(): parseFloat('0.00');
-		tot_s = parseFloat( tot_s ) + parseFloat( jQuery(e).find('[fo_tab_target="price"]').val() );
+		var temp_s_price = 0.00;
+		if (jQuery(e).find('[fo_tab_target="price"]').val()!='') {
+			var temp_s_price =  parseFloat( jQuery(e).find('[fo_tab_target="price"]').val() );
+		}
+		tot_s = parseFloat( tot_s ) + parseFloat( temp_s_price );
 	});
 	jQuery('.fo_tool_story .fo_tab_tool_total strong').text( parseFloat(tot_s).toFixed(2) + jQuery('.fo_woo_symb').text() );
 
 	var tot_p = 0.00;
 	jQuery('.fo_pay_column .fo_tab_prod').each(function(i,e){
-		tot_p = parseFloat( tot_p ) + parseFloat( jQuery(e).find('[fo_tab_target="price"]').val() );
+		var temp_p_price = 0.00;
+		if (jQuery(e).find('[fo_tab_target="price"]').val()!='') {
+			var temp_p_price =  parseFloat( jQuery(e).find('[fo_tab_target="price"]').val() );
+		}
+		tot_p = parseFloat( tot_p ) + parseFloat( temp_p_price );
 	});
 	jQuery('.fo_pay_total').text( parseFloat(tot_p).toFixed(2) + jQuery('.fo_woo_symb').text() );
 }
