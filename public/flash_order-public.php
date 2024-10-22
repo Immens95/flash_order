@@ -3990,8 +3990,9 @@ function FO_flash_tab_order( $tavoli = array() ){
 		'orderby'   => 'title',
 		'order'     => 'ASC',
 	) );
-
+		$m_cat_check = 'macro_categories';
 	if ( $products_macro_categories->terms == null ) {
+		$m_cat_check = 'product_cat';
 		$products_macro_categories = new WP_Term_Query( array(
 			'taxonomy'	=> 'product_cat',
 			'include' 	=> 'all',
@@ -4004,7 +4005,6 @@ function FO_flash_tab_order( $tavoli = array() ){
 		$first_macro = $products_macro_categories->terms[0];
 	} else{ $first_macro = false; }
 	
-
 	$nonce = wp_create_nonce( 'FO_flash_tab_order' );
     echo '<input type="hidden" id="_fononce_flash_tab_order" name="_fononce_flash_tab_order" value="'.esc_attr($nonce).'" />';
 
@@ -4017,8 +4017,8 @@ function FO_flash_tab_order( $tavoli = array() ){
 
 		<div class="FO_flash_tab_header">
 			<?php foreach ($products_macro_categories->terms as $key => $value) { ?>
-				<div class="fo_button" onclick="FO_filter_tab_product(<?php echo "'".esc_attr($value->slug)."'"; ?>)">
-					<?php echo esc_attr($value->name); ?>
+				<div class="fo_button" onclick="FO_filter_tab_product(<?php echo "'".esc_attr($value->slug)."'"; ?>)" ondrop="FOdrop(event)" ondragover="FOallowDrop(event)" fo_cat_name="<?php echo esc_attr($value->name);?>" fo_cat_ceck="<?php echo esc_attr($m_cat_check);?>">
+					<?php echo esc_attr($value->name);?>
 				</div>
 			<?php } ?>
 			<div class="fo_button Advanced_Card_Close_float" onclick="FO_tab_Card_hide()">
@@ -4053,10 +4053,10 @@ function FO_flash_tab_order( $tavoli = array() ){
 							foreach ((array)$story as $story_v) {
 								$order = new WC_Order($story_v); 
 								?>
-								<div class="fo_button fo_story fo_order_table_story" fotableid="<?php echo esc_attr($tavolo->ID);?>" onclick="fo_filter_tab_story(this,<?php echo "'".esc_attr($order->get_id())."'";?>)" fo_order_id="<?php echo esc_attr($order->get_id());?>" fo_order_total="<?php echo esc_attr($order->get_total());?>" fo_order_subtotal="<?php echo esc_attr($order->get_subtotal());?>">
+								<div class="fo_button fo_story fo_order_table_story" fotableid="<?php echo esc_attr($tavolo->ID);?>" ondblclick="console.log('yessss')" onclick="fo_filter_tab_story(this,<?php echo "'".esc_attr($order->get_id())."'";?>)" fo_order_id="<?php echo esc_attr($order->get_id());?>" fo_order_total="<?php echo esc_attr($order->get_total());?>" fo_order_subtotal="<?php echo esc_attr($order->get_subtotal());?>">
 									<?php echo esc_attr($order->get_id());?>
 								</div>
-								<?php
+								<?php //fo_change_order_status
 							} 
 							foreach ((array)$story as $story_v) {
 								$f_i = 200000;
@@ -4215,7 +4215,7 @@ function FO_flash_tab_order( $tavoli = array() ){
 							$short_title = (FOcheck(get_post_meta($product->get_id(),'short_title')) && get_post_meta($product->get_id(),'short_title')[0]!='')?get_post_meta($product->get_id(),'short_title')[0]:$product->get_name();
 							$slang_title = (FOcheck(get_post_meta($product->get_id(),'slang_title')) && get_post_meta($product->get_id(),'slang_title')[0]!='' )?get_post_meta($product->get_id(),'slang_title')[0]:$short_title;
 							?>
-							<div class="fo_tab_prod relative" foprodid="<?php echo esc_attr($product->get_id());?>" foprodtot="<?php echo esc_attr($product->get_price());?>" fomacrocat="<?php echo esc_attr($macro_cat[0]->slug);?>" style="<?php echo esc_attr($display);?>" onclick="FO_filter_tab_variant(this,<?php echo "'".esc_attr($product->get_id())."'"; ?>)" fo_index="0" fo_index_story="0" fo_modificable="true" fo_type="new">
+							<div class="fo_tab_prod relative" foprodid="<?php echo esc_attr($product->get_id());?>" foprodtot="<?php echo esc_attr($product->get_price());?>" fomacrocat="<?php echo esc_attr($macro_cat[0]->slug);?>" style="<?php echo esc_attr($display);?>" onclick="FO_filter_tab_variant(this,<?php echo "'".esc_attr($product->get_id())."'"; ?>)" fo_index="0" fo_index_story="0" fo_modificable="true" fo_type="new" draggable="true" ondragstart="FOdrag(event)">
 								<span class="fo_tab_prod_remove dashicons dashicons-trash" onclick="" style="display:none;"></span>
 								<div class="FO_prod_name_manage fo_text_fix">
 									<?php echo esc_attr($slang_title); ?>
