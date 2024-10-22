@@ -3327,6 +3327,7 @@ width: 100%;
 	text-align: center;
 	justify-content: center;
 	user-select: none;
+	min-height: 50px;
 }
 .FO_flash_tab_qty{
 	width: calc(100% - 20px);
@@ -3708,7 +3709,7 @@ width: 100%;
 	.fo_pay_table_button, .fo_clear_table_button{
 		display: none!important;
 	}
-	.fo_pay_show_keyboard_button{
+	.fo_pay_show_keyboard_button, .fo_variant_show_button{
 		display: block;
 	}
 	.fo_pay_show_keyboard_button .dashicons{
@@ -3735,7 +3736,7 @@ width: 100%;
 		overflow: auto;
 	}
 	.fo_tab_col_3{
-		width: calc(45% - 20px);
+		width: calc(70% - 20px);
 		height: calc(80% - 21px);
 		background-color: var(--fo-bg4-color);
 		border-top: 1px solid;
@@ -3750,7 +3751,7 @@ width: 100%;
 		height: 100%;
 	}
 	.fo_tab_col_3 *{
-		font-size: 16px!important;
+		font-size: 22px!important;
 	}
 	.fo_table_name strong, .fo_button_fix{
 		font-size: 25px!important;
@@ -3778,6 +3779,16 @@ width: 100%;
     	margin: 15px !important;
     	padding: 10px !important;
     }
+    .fo_button{
+    	margin: 5px !important;
+    	padding: 2px !important;
+    }
+    .fo_table_name {
+	    height: auto!important;
+	}
+	.fo_tab_calc_keyboard_key, .fo_tab_calc_keyboard_special {
+	    width: calc(33% - 5px)!important;
+	}
 }
 
 
@@ -4407,11 +4418,9 @@ width: 100%;
 	height: 0px!important;
 }
 
-.fo_table_cell {
+.fo_table_cell, .fo_tab_table_name, .fo_table_name {
 	text-shadow: 2px 0 #000, -2px 0 #000, 0 2px #000, 0 -2px #000, 1px 1px #000, -1px -1px #000, 1px -1px #000, -1px 1px #000;
 }
-
-
 
 
 
