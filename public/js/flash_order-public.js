@@ -359,26 +359,39 @@ function FOdrag(ev) {
 	ev.dataTransfer.setData("foprodname", jQuery(ev.target).find('.FO_prod_name_manage').text().trim());
 }
 
-function FOdrop(ev, cb) {
+function FOdrop(ev) {
 	ev.preventDefault();
 	var foprodid = ev.dataTransfer.getData("foprodid");
 	var foprodname = ev.dataTransfer.getData("foprodname");
 	var fo_cat_name = ev.target.attributes.fo_cat_name.nodeValue;
+	var fo_cat_id = ev.target.attributes.fo_cat_id.nodeValue;
 	var fo_cat_ceck = ev.target.attributes.fo_cat_ceck.nodeValue;
 
 	console.log(foprodid);
 	console.log(foprodname);
+
 	console.log(fo_cat_name);
+	console.log(fo_cat_id);
 	console.log(fo_cat_ceck);
 
-	const args = [];
+	var args = [];
 
 	args['foprodid'] = foprodid;
 	args['foprodname'] = foprodname;
 	args['fo_cat_name'] = fo_cat_name;
+	args['fo_cat_id'] = fo_cat_id;
 	args['fo_cat_ceck'] = fo_cat_ceck;
+	args['fo_cat_copy'] = jQuery('.fo_cat_copy').attr('fo_cat_copy');
+	
+	jQuery('.fo_tab_prod[foprodid="'+foprodid+'"]').attr('fomacrocat',fo_cat_name);
 
-	FOP_change_category( false, args );
+	if (args['fo_cat_copy']) {
+
+	} else{
+		jQuery('.fo_tab_prod[foprodid="'+foprodid+'"]').hide();
+	}
+
+	FOP_change_category( args );
 	// ev.target.appendChild(document.getElementById(data));
 
 }

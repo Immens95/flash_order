@@ -3986,7 +3986,7 @@ function FO_flash_tab_order( $tavoli = array() ){
 	$products_macro_categories = new WP_Term_Query( array(
 		'taxonomy'	=> 'macro_categories',
 		'include' 	=> 'all',
-		'hide_empty' => true,
+		'hide_empty' => false,
 		'orderby'   => 'title',
 		'order'     => 'ASC',
 	) );
@@ -4005,6 +4005,7 @@ function FO_flash_tab_order( $tavoli = array() ){
 		$first_macro = $products_macro_categories->terms[0];
 	} else{ $first_macro = false; }
 	
+	
 	$nonce = wp_create_nonce( 'FO_flash_tab_order' );
     echo '<input type="hidden" id="_fononce_flash_tab_order" name="_fononce_flash_tab_order" value="'.esc_attr($nonce).'" />';
 
@@ -4017,7 +4018,7 @@ function FO_flash_tab_order( $tavoli = array() ){
 
 		<div class="FO_flash_tab_header">
 			<?php foreach ($products_macro_categories->terms as $key => $value) { ?>
-				<div class="fo_button" onclick="FO_filter_tab_product(<?php echo "'".esc_attr($value->slug)."'"; ?>)" ondrop="FOdrop(event)" ondragover="FOallowDrop(event)" fo_cat_name="<?php echo esc_attr($value->name);?>" fo_cat_ceck="<?php echo esc_attr($m_cat_check);?>">
+				<div class="fo_button" onclick="FO_filter_tab_product(<?php echo "'".esc_attr($value->slug)."'"; ?>)" ondrop="FOdrop(event)" ondragover="FOallowDrop(event)" fo_cat_name="<?php echo esc_attr($value->slug);?>" fo_cat_id="<?php echo esc_attr($value->term_id);?>" fo_cat_ceck="<?php echo esc_attr($m_cat_check);?>">
 					<?php echo esc_attr($value->name);?>
 				</div>
 			<?php } ?>
@@ -4646,6 +4647,63 @@ function FO_pay_this_order_tab(){
 // 	// return $permission;
 // }
 
+// wp_insert_term(
+//   'New Category', // the term 
+//   'product_cat', // the taxonomy
+//   array(
+//     'description'=> 'Category description',
+//     'slug' => 'new-category'
+//   )
+// );
+
+
+function FO_insert_macro_cat_ajax(){
+	if ( !isset($_POST['_fononce_insert_post_ajax_nonce']) && !wp_verify_nonce( sanitize_text_field(wp_unslash( $_POST['_fononce_insert_post_ajax_nonce'])), 'FO_insert_post_ajax_nonce' ) ) {
+		return;
+	}
+	// if (isset($_POST['term_id']) && $_POST['term_id'] != '' ) {
+	//     FO_update_post_ajax( $_POST );
+	//     return;
+	// }
+	if (!isset($_POST['name']) || $_POST['name'] == '' ) {
+	    return;
+	}
+	$term_id = wp_insert_term(
+		sanitize_text_field(wp_unslash($_POST['name'])), // the term 
+		'macro_categories', // the taxonomy
+		// array(
+		// 	'description'=> (isset($_POST['description']))?sanitize_text_field(wp_unslash($_POST['description'])):'',
+		// 	'slug' => 'new-category'
+		// )
+	);
+	wp_send_json(array(
+		//'post' => $_POST,
+		'term_id' => $term_id,
+	));
+	die();
+}
+add_action('wp_ajax_FO_insert_macro_cat_ajax', 'FO_insert_macro_cat_ajax');
+add_action('wp_ajax_nopriv_FO_insert_macro_cat_ajax', 'FO_insert_macro_cat_ajax');
+
+function FO_delete_macro_cat_ajax(){
+	if ( !isset($_POST['_fononce_insert_post_ajax_nonce']) && !wp_verify_nonce( sanitize_text_field(wp_unslash( $_POST['_fononce_insert_post_ajax_nonce'])), 'FO_insert_post_ajax_nonce' ) ) {
+		return;
+	}//_fononce_stat_update_nonce: jQuery('input[name="_fononce_stat_update_nonce"]').val(),
+
+	if (isset($_POST['delete_id'])) {
+		$post = wp_delete_term( (int)sanitize_text_field(wp_unslash($_POST['delete_id'])),'macro_categories' );
+	} else { $post = ''; }
+
+	wp_send_json(array(
+		//'post' => $_POST,
+		'post' => $post,
+	));
+	die();
+}
+add_action('wp_ajax_FO_delete_macro_cat_ajax', 'FO_delete_macro_cat_ajax');
+add_action('wp_ajax_nopriv_FO_delete_macro_cat_ajax', 'FO_delete_macro_cat_ajax');
+
+
 
 
 
@@ -4680,6 +4738,33 @@ function FO_insert_post_ajax(){
 }
 add_action('wp_ajax_FO_insert_post_ajax', 'FO_insert_post_ajax');
 add_action('wp_ajax_nopriv_FO_insert_post_ajax', 'FO_insert_post_ajax');
+
+
+function FO_update_post_macro_cat_ajax( $_poste = '' ){
+	if ( !isset($_POST['_fononce_insert_post_ajax_nonce']) && !wp_verify_nonce( sanitize_text_field(wp_unslash( $_POST['_fononce_insert_post_ajax_nonce'])), 'FO_insert_post_ajax_nonce' ) ) {
+		return;
+	}
+	if ($_poste != '') {
+		$_POST = $_poste;
+	}
+	if (isset($_POST['macro_category_check']) && sanitize_text_field(wp_unslash($_POST['macro_category_check'])) != 'macro_categories' ) {
+		return;
+	}
+	$post_id = (isset($_POST['post_id'])) ? sanitize_text_field(wp_unslash($_POST['post_id'])) : '';
+	$macro_category = (isset($_POST['macro_category'])) ? sanitize_text_field(wp_unslash($_POST['macro_category'])) : '';
+
+	$term_id = wp_set_post_terms( $post_id, $macro_category, 'macro_categories', false );
+
+	wp_send_json(array(
+		//'post' => $_POST,
+		'term_id' => $term_id,
+	));
+	die();
+}
+add_action('wp_ajax_FO_update_post_macro_cat_ajax', 'FO_update_post_macro_cat_ajax');
+add_action('wp_ajax_nopriv_FO_update_post_macro_cat_ajax', 'FO_update_post_macro_cat_ajax');
+
+
 
 function FO_update_post_ajax( $_poste = '' ){
 	if ( !isset($_POST['_fononce_insert_post_ajax_nonce']) && !wp_verify_nonce( sanitize_text_field(wp_unslash( $_POST['_fononce_insert_post_ajax_nonce'])), 'FO_insert_post_ajax_nonce' ) ) {

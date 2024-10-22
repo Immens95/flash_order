@@ -51,6 +51,13 @@ function FO_manage_table(){
     <div id="fo_tab_new_customer_error_mail_phone_text"> <?php esc_html_e( 'Inserisci almeno la mail o il numero di telefono del Cliente!', 'flash_order' );?> </div>
 
     <div id="fo_tab_change_category_to_product_text"> <?php esc_html_e( 'Sei sicuro di voler cambiare la categoria di questo prodotto?', 'flash_order' );?> </div>
+
+    <div id="fo_tab_create_macro_cat_text"> <?php esc_html_e( 'Vuoi creare una nuova macro categoria chiamata: ', 'flash_order' );?> </div>
+    <div id="fo_tab_create_macro_cat_error_text"> <?php esc_html_e( 'Inserisci prima il nome della categoria.', 'flash_order' );?> </div>
+    <div id="fo_tab_delete_macro_cat_text"> <?php esc_html_e( 'Vuoi ELIMINARE la categoria chiamata: ', 'flash_order' );?> </div>
+    <div id="fo_tab_delete_macro_cat_error_text"> <?php esc_html_e( 'seleziona prima la categoria da eliminare.', 'flash_order' );?> </div>
+
+
 </div>
 <style type="text/css">
     .foTimeOutAnim {
