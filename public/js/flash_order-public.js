@@ -343,6 +343,55 @@ var time = time;
 }
 
 
+
+
+
+
+function FOallowDrop(ev) {
+  ev.preventDefault();
+}
+
+function FOdrag(ev) {
+	var foprodid = ev.target.attributes.foprodid.nodeValue;
+	// console.log(jQuery(ev.target).find('.FO_prod_name_manage').text());
+	// console.log(foprodid);
+	ev.dataTransfer.setData("foprodid", foprodid);
+	ev.dataTransfer.setData("foprodname", jQuery(ev.target).find('.FO_prod_name_manage').text().trim());
+}
+
+function FOdrop(ev, cb) {
+	ev.preventDefault();
+	var foprodid = ev.dataTransfer.getData("foprodid");
+	var foprodname = ev.dataTransfer.getData("foprodname");
+	var fo_cat_name = ev.target.attributes.fo_cat_name.nodeValue;
+	var fo_cat_ceck = ev.target.attributes.fo_cat_ceck.nodeValue;
+
+	console.log(foprodid);
+	console.log(foprodname);
+	console.log(fo_cat_name);
+	console.log(fo_cat_ceck);
+
+	const args = [];
+
+	args['foprodid'] = foprodid;
+	args['foprodname'] = foprodname;
+	args['fo_cat_name'] = fo_cat_name;
+	args['fo_cat_ceck'] = fo_cat_ceck;
+
+	FOP_change_category( false, args );
+	// ev.target.appendChild(document.getElementById(data));
+
+}
+
+
+
+
+
+
+
+
+
+
 function FO_refine_search(input){
 	var searchVal = jQuery(input).val();
 	var target = jQuery(input).attr('fotargetcat');
@@ -1181,6 +1230,7 @@ function FO_calc_totals(){
 
 	var tot_s = 0.00;
 	jQuery('.fo_column_story .fo_tab_prod.fo_tab_prod_story[fotableid="'+jQuery('input[name="table_ID"]').val()+'"]').each(function(i,e){
+		// var temp_s_price = (jQuery(e).find('[fo_tab_target="price"]').val()!='')?jQuery(e).find('[fo_tab_target="price"]').val(): parseFloat('0.00');
 		tot_s = parseFloat( tot_s ) + parseFloat( jQuery(e).find('[fo_tab_target="price"]').val() );
 	});
 	jQuery('.fo_tool_story .fo_tab_tool_total strong').text( parseFloat(tot_s).toFixed(2) + jQuery('.fo_woo_symb').text() );
@@ -1955,6 +2005,7 @@ function fo_change_order_status( order_id = '', status = '' ){
 		    },
 		    success: function(response) {
 		        console.log(' ...ajax-response... ');
+		        console.log(response);
 			}
 		});
 	}
@@ -2141,6 +2192,9 @@ function FO_settings_show(){
 	jQuery('#FO_active_settings').animate({
 		right: '0px',
 	}, 300);
+	setTimeout(function() {
+		jQuery('#FO_active_settings').addClass('setting_is_show');
+	}, 1000);
 }
 
 function FO_statistics_show(){
@@ -2166,7 +2220,7 @@ function FO_settings_hide(){
 	jQuery('#FO_active_settings').animate({
 		right: str,
 	}, 300);
-
+	jQuery('#FO_active_settings').removeClass('setting_is_show');
 	fo_toggle_header_footer();
 }
 

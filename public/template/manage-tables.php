@@ -49,6 +49,8 @@ function FO_manage_table(){
 
     <div id="fo_tab_new_customer_error_name_text"> <?php esc_html_e( 'Inserisci prima il Nome del Cliente!', 'flash_order' );?> </div>
     <div id="fo_tab_new_customer_error_mail_phone_text"> <?php esc_html_e( 'Inserisci almeno la mail o il numero di telefono del Cliente!', 'flash_order' );?> </div>
+
+    <div id="fo_tab_change_category_to_product_text"> <?php esc_html_e( 'Sei sicuro di voler cambiare la categoria di questo prodotto?', 'flash_order' );?> </div>
 </div>
 <style type="text/css">
     .foTimeOutAnim {
@@ -100,7 +102,7 @@ function FO_manage_table(){
             $tab_info = FO_get_table_by_table_number_status_last($tavolo->post_title);
             ?>
             <div class="fo_table_cell relative" fotable="<?php echo esc_attr($tavolo->post_title);?>" fo_tableid="<?php echo esc_attr($tavolo->ID);?>" fotable_status="<?php echo esc_attr($status);?>" style="<?php echo esc_attr($Style);?>" onclick="FO_tab_Card_show( this )">
-                <span class="fo_tab_notify" onclick="" style="display:none;">0</span>
+                <span class="fo_tab_notify" fo_not_counter="" onclick="" style="display:none;">0</span>
                 <span class="fo_tab_abs_info dashicons dashicons-info" onclick="" style="display: none;"></span>
                 <div class="FOloadingTable" style="display:none;">
                     <span style="animation: fospin 1s infinite;font-size:120px;width:120px;height:120px;" class="dashicons dashicons-update"></span>
@@ -129,6 +131,7 @@ function FO_manage_table(){
         // console.log(window);
         jQuery(window).on('load', function() {
             jQuery(".FOloadingCardPublicMain").fadeOut(200);
+            fo_toggle_header_footer(true);
         });
     </script>
 
