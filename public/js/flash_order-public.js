@@ -1171,18 +1171,20 @@ function FO_filter_tab_variant( input, slug_target ){
 	// jQuery('.fo_tab_prod, .FO_flash_tab_header, .FO_flash_tab_footer').removeClass('fo_tab_prod_story');
 	jQuery('.fo_tab_prod').removeClass('fo_tab_prod_selected');
 	jQuery('.fo_tab_prod').removeClass('fo_tab_prod_modify');
+
 	if (jQuery(input).attr('fo_type') == 'new') {
 		jQuery(input).addClass('fo_tab_prod_selected');
 	}else if (jQuery(input).attr('fo_type') == 'modify') {
 		jQuery(input).addClass('fo_tab_prod_modify');
 	}else if (jQuery(input).attr('fo_type') == 'story') {
+		jQuery(input).addClass('fo_tab_prod_story');
 		if ( jQuery(input).hasClass('fo_tab_prod_story') ) {
 		// 	jQuery(input).removeClass('fo_tab_prod_story');
 		} else{
-			jQuery(input).addClass('fo_tab_prod_story');
+			// jQuery(input).addClass('fo_tab_prod_story');
 		}
 	}else {
-		jQuery(input).addClass('fo_tab_prod_selected');
+		// jQuery(input).addClass('fo_tab_prod_selected');
 	}
 	if ( jQuery(input).attr('fo_special') == 'Sconto' ) {
 		jQuery('.FO_flash_tab_qty').hide();
@@ -1305,16 +1307,18 @@ function fo_tab_prod_remove( input ){
 
 function fo_tab_parse_price( input ){
 	var prod = jQuery('.fo_tab_prod[foprodid="'+jQuery('.fo_actual_prod').text()+'"][fo_index="'+jQuery('.fo_actual_index').text()+'"][fo_index_story="'+jQuery('.fo_actual_index_story').text()+'"]');
+	var DisplayValue = jQuery(input).text();
+	if (DisplayValue==''||DisplayValue==null) { DisplayValue='0' }
 	if ( jQuery(input).attr('fo_modificable') == 'true' ) {
-		prod.find('input[fo_tab_target="price"]').val(jQuery(input).text());
+		prod.find('input[fo_tab_target="price"]').val(DisplayValue);
 		if ( jQuery(input).text() == '' ) {
 			prod.find('input[fo_tab_target="price"]').val(jQuery('.fo_tab_reset_price').attr('fovalue'));
 		}
 		if ( prod.attr('fo_special') == 'Sconto' ) {
-			prod.find('input[fo_tab_target="id"]').val(jQuery(input).text());
+			prod.find('input[fo_tab_target="id"]').val(DisplayValue);
 		}
 		if ( prod.attr('fo_special') == 'Special' ) {
-			prod.find('input[fo_tab_target="id"]').val(jQuery(input).text());
+			prod.find('input[fo_tab_target="id"]').val(DisplayValue);
 		}
 	}
 }
@@ -1462,7 +1466,7 @@ function FO_add_special_product( text ){
 	var index = jQuery('.fo_tab_prod_index').text();
 	var index_story = jQuery('.fo_tab_prod_index_story').text();
 	var tab_price = jQuery('.fo_tab_price').text();
-	if (tab_price=='') {tab_price='0';}
+	if (tab_price==''||tab_price==null) {tab_price='0';}
 
 	prodSpecial.find('input').each(function(i,e){
 		jQuery(e).attr('name', '['+index+']'+jQuery(e).attr('name')+'['+text+index+']' );
@@ -2228,13 +2232,18 @@ function FO_statistics_show(){
 	jQuery('footer').css('display','none');
 
 	fo_stat_filter_table();
-	jQuery('.fo_stat_container').show();
+	jQuery('.fo_stat_container').slideDown();
+
+	setTimeout(function() {
+		jQuery('.fo_stat_container').addClass('setting_is_show');
+	}, 1000);
 }
 
 function FO_statistics_hide(){
 	fo_toggle_header_footer();
 
-	jQuery('.fo_stat_container').fadeOut();
+	jQuery('.fo_stat_container').removeClass('setting_is_show');
+	jQuery('.fo_stat_container').slideUp();
 }
 
 function FO_settings_hide(){
@@ -2252,7 +2261,7 @@ function FO_settings_hide(){
 
 
 function fo_tab_show_keyboard_button(){
-	if ( window.screen.width < 1100 ) {
+	if ( window.screen.width <= 1100 ) {
 		if ( jQuery('.fo_tab_col_3').attr('fo_show') == 'hide' ) {
 			jQuery('.fo_tab_col_3').show();
 			jQuery('.fo_tab_col_3').attr('fo_show','show');
@@ -2264,7 +2273,32 @@ function fo_tab_show_keyboard_button(){
 	}
 }
 
+function fo_tab_show_variation_button(){
+	if ( window.screen.width <= 1100 ) {
+		if ( jQuery('.fo_tab_col_2').attr('fo_show') == 'hide' ) {
+			jQuery('.fo_tab_col_2').show();
+			jQuery('.fo_tab_col_2').attr('fo_show','show');
 
+			jQuery('.fo_tab_col_1').attr('style','width:calc(65% - 21px);');
+		} else{
+			jQuery('.fo_tab_col_2').hide();
+			jQuery('.fo_tab_col_2').attr('fo_show','hide');
+
+			jQuery('.fo_tab_col_1').attr('style','width:calc(100% - 21px);');
+		}
+		
+	}
+	if ( window.screen.width <= 600 ) {
+		if ( jQuery('.fo_tab_col_2').attr('fo_show') == 'hide' ) {
+			jQuery('.fo_tab_col_2').show();
+			jQuery('.fo_tab_col_2').attr('fo_show','show');
+		} else{
+			jQuery('.fo_tab_col_2').hide();
+			jQuery('.fo_tab_col_2').attr('fo_show','hide');
+		}
+		
+	}
+}
 
 
 

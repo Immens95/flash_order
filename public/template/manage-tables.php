@@ -25,12 +25,17 @@ function FO_manage_table(){
     <?php 
         if (function_exists('FOP_tab_status_bar')){FOP_tab_status_bar();}
 
+        if (function_exists('FOP_tab_Statistics_section')){ 
+            FOP_tab_Statistics_section(); 
+        } 
+
         if (function_exists('FOP_tab_Settings_section')){
             FOP_tab_Settings_section($tavoli);
         ?>
         <div class="fo_button fo_show_settings" onclick="FO_settings_show();">
             <span class="dashicons dashicons-admin-settings" style="width:40px;height:40px;font-size:40px;"></span>
         </div>
+
     <?php }?>
 
     <div class="FO_table_grid">

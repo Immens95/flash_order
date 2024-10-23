@@ -4043,9 +4043,9 @@ function FO_flash_tab_order( $tavoli = array() ){
 					<?php echo esc_attr($value->name);?>
 				</div>
 			<?php } ?>
-			<!-- <div class="fo_button Advanced_Card_Close_float" onclick="FO_tab_Card_hide()">
+			<div class="fo_button Advanced_Card_Close_float" onclick="FO_tab_Card_hide()" style="margin-left:auto!important;">
 				<?php esc_html_e('CHIUDI','flash_order');?>
-			</div> -->
+			</div>
 		</div>
 
 		<div class="FO_flash_tab_body">
@@ -4481,7 +4481,7 @@ function FO_flash_tab_order( $tavoli = array() ){
 
 			<div class="fo_button_fix" style="margin-left:auto;" fo_order_type="new_order" onclick="FO_tab_go_order(this)"><?php esc_html_e('AVVIA ORDINE','flash_order');?></div>
 
-			<div class="fo_button_fix fo_variant_show_button" style="bottom:220px!important;" onclick="">
+			<div class="fo_button_fix fo_variant_show_button" style="bottom:220px!important;" onclick="fo_tab_show_variation_button()">
 				<span class="dashicons dashicons-table-col-after"></span>
 			</div>
 			<div class="fo_button_fix fo_pay_show_keyboard_button" style="" onclick="fo_tab_show_keyboard_button()">
