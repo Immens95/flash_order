@@ -1529,8 +1529,8 @@ function FO_access_autorization( $role = 'worker',  $mode = true ){
 	$manager_checked = ( isset(get_user_meta($user->ID, 'flash_order_user_role_manager')[0]) ) ? get_user_meta($user->ID, 'flash_order_user_role_manager')[0] : false;
 
 	$worker 	= ( $worker_checked !== false && $role == 'worker' ) ? true : false;
-	$supervisor = ( $supervisor_checked !== false && $role == 'supervisor'  ) ? true : false;
-	$manager 	= ( $manager_checked !== false && $role == 'manager'  ) ? true : false;
+	$supervisor = ( $supervisor_checked !== false && $role == 'supervisor' ) ? true : false;
+	$manager 	= ( $manager_checked !== false && $role == 'manager' ) ? true : false;
 
 	if ( $mode ) {
 		if ($worker) { $autorization = true; }
@@ -1541,7 +1541,24 @@ function FO_access_autorization( $role = 'worker',  $mode = true ){
 	}
 	return $autorization;
 }
+function FO_access_autorization_level(){
+	$user = wp_get_current_user();
+	$autorization = 0;
 
+	$worker_checked = ( isset(get_user_meta($user->ID, 'flash_order_user_role_worker')[0]) ) ? get_user_meta($user->ID, 'flash_order_user_role_worker')[0] : false;
+	$supervisor_checked = ( isset(get_user_meta($user->ID, 'flash_order_user_role_supervisor')[0]) ) ? get_user_meta($user->ID, 'flash_order_user_role_supervisor')[0] : false;
+	$manager_checked = ( isset(get_user_meta($user->ID, 'flash_order_user_role_manager')[0]) ) ? get_user_meta($user->ID, 'flash_order_user_role_manager')[0] : false;
+
+	$worker 	= ( $worker_checked !== false ) ? true : false;
+	$supervisor = ( $supervisor_checked !== false ) ? true : false;
+	$manager 	= ( $manager_checked !== false) ? true : false;
+
+	if ($worker) { $autorization += 1; }
+	if ($supervisor) { $autorization += 1; }
+	if ($manager) { $autorization += 1; }
+
+	return $autorization;
+}
 
 
 function FO_access_denied(){
@@ -3653,6 +3670,10 @@ if (isset($_POST['foserialmap'])) {
 		foreach ($E as $ind => $ele) {
 			if (isset($ele['price'])) {
 				foreach ( $ele['price'] as $index => $element) {
+
+					if ($element==null||$element=='') {
+						$element = 0;
+					}
 					$price_array[$index] = $element;
 					// $product = new WC_Product(sanitize_text_field($index) );
 					// $product = wc_get_product( sanitize_text_field($index) );
@@ -4045,7 +4066,7 @@ function FO_flash_tab_order( $tavoli = array() ){
 					<div class="fo_ghost_draft" style="display:none;"></div>
 					<!-- <strong class="fo_title_" style=""><?php esc_html_e('STORICO:','flash_order'); ?></strong> -->
 					<?php $abs_total = 0; foreach ( $tavoli as $tavolo_key => $tavolo ) { ?>
-						<strong class="fo_button fo_story fo_order_table_story fo_tab_prod_story fo_title_all" fotableid="<?php echo esc_attr($tavolo->ID);?>" onclick="fo_filter_tab_story(this,'all')">
+						<strong class="fo_button fo_story fo_order_table_story fo_tab_prod_story fo_title_all" fotableid="<?php echo esc_attr($tavolo->ID);?>" ondblclick="console.log('yesssss')" onclick="fo_filter_tab_story(this,'all')">
 							<?php esc_html_e('STORY','flash_order');?>
 						</strong>
 						<?php
@@ -4054,7 +4075,7 @@ function FO_flash_tab_order( $tavoli = array() ){
 							foreach ((array)$story as $story_v) {
 								$order = new WC_Order($story_v); 
 								?>
-								<div class="fo_button fo_story fo_order_table_story" fotableid="<?php echo esc_attr($tavolo->ID);?>" ondblclick="console.log('yessss')" onclick="fo_filter_tab_story(this,<?php echo "'".esc_attr($order->get_id())."'";?>)" fo_order_id="<?php echo esc_attr($order->get_id());?>" fo_order_total="<?php echo esc_attr($order->get_total());?>" fo_order_subtotal="<?php echo esc_attr($order->get_subtotal());?>">
+								<div class="fo_button fo_story fo_order_table_story" fotableid="<?php echo esc_attr($tavolo->ID);?>"  ondblclick="fo_change_order_status(<?php echo "'".esc_attr($order->get_id())."'";?>, 'processing' );console.log('yesssss')" onclick="fo_filter_tab_story(this,<?php echo "'".esc_attr($order->get_id())."'";?>)" fo_order_id="<?php echo esc_attr($order->get_id());?>" fo_order_total="<?php echo esc_attr($order->get_total());?>" fo_order_subtotal="<?php echo esc_attr($order->get_subtotal());?>">
 									<?php echo esc_attr($order->get_id());?>
 								</div>
 								<?php //fo_change_order_status
@@ -4461,7 +4482,7 @@ function FO_flash_tab_order( $tavoli = array() ){
 			<div class="fo_button_fix" style="margin-left:auto;" fo_order_type="new_order" onclick="FO_tab_go_order(this)"><?php esc_html_e('AVVIA ORDINE','flash_order');?></div>
 
 			<div class="fo_button_fix fo_variant_show_button" style="bottom:220px!important;" onclick="">
-				<span class="dashicons dashicons-table-row-before"></span>
+				<span class="dashicons dashicons-table-col-after"></span>
 			</div>
 			<div class="fo_button_fix fo_pay_show_keyboard_button" style="" onclick="fo_tab_show_keyboard_button()">
 				<span class="dashicons dashicons-editor-table"></span>
@@ -4773,6 +4794,32 @@ add_action('wp_ajax_FO_update_post_macro_cat_ajax', 'FO_update_post_macro_cat_aj
 add_action('wp_ajax_nopriv_FO_update_post_macro_cat_ajax', 'FO_update_post_macro_cat_ajax');
 
 
+function FO_remove_post_macro_cat_ajax( $_poste = '' ){
+	if ( !isset($_POST['_fononce_insert_post_ajax_nonce']) && !wp_verify_nonce( sanitize_text_field(wp_unslash( $_POST['_fononce_insert_post_ajax_nonce'])), 'FO_insert_post_ajax_nonce' ) ) {
+		return;
+	}
+	if ($_poste != '') {
+		$_POST = $_poste;
+	}
+	if (isset($_POST['macro_category_check']) && sanitize_text_field(wp_unslash($_POST['macro_category_check'])) != 'macro_categories' ) {
+		return;
+	}
+	$post_id = (isset($_POST['post_id'])) ? sanitize_text_field(wp_unslash($_POST['post_id'])) : '';
+	$macro_category = (isset($_POST['macro_category'])) ? sanitize_text_field(wp_unslash($_POST['macro_category'])) : '';
+
+	$term_id = wp_remove_object_terms( $post_id, $macro_category, 'macro_categories' );
+
+	wp_send_json(array(
+		//'post' => $_POST,
+		'term_id' => $term_id,
+	));
+	die();
+}
+add_action('wp_ajax_FO_remove_post_macro_cat_ajax', 'FO_remove_post_macro_cat_ajax');
+add_action('wp_ajax_nopriv_FO_remove_post_macro_cat_ajax', 'FO_remove_post_macro_cat_ajax');
+
+
+
 
 function FO_update_post_ajax( $_poste = '' ){
 	if ( !isset($_POST['_fononce_insert_post_ajax_nonce']) && !wp_verify_nonce( sanitize_text_field(wp_unslash( $_POST['_fononce_insert_post_ajax_nonce'])), 'FO_insert_post_ajax_nonce' ) ) {
@@ -5033,6 +5080,82 @@ function FO_quick_edit_fields( $column_name, $post_type ) {
 // 	    " );
 // 	}
 // }
+
+function FO_get_settings_head_manage_tables(){
+$ajax_refresh_table_seconds = ( intval( FO_get_meta('ajax_refresh_table_seconds') ) < 500 ) ? 500 : intval( FO_get_meta('ajax_refresh_table_seconds'));
+?>
+	<div id="settings" style="display:none!important;">
+	    <div id="ajax_refresh_table_seconds"> <?php echo esc_attr($ajax_refresh_table_seconds);?> </div>
+	    <div id="fo_tab_go_order_text"> <?php esc_html_e( 'Sicuro di voler procedere con l\'Ordinazione?', 'flash_order' );?> </div>
+	    <div id="fo_tab_clear_table_text"><?php esc_html_e('Sicuro di voler LIBERARE il tavolo?','flash_order');?></div>
+	    <div id="fo_tab_clear_all_table_text"><?php esc_html_e('Sicuro di voler LIBERARE tutti i tavoli?','flash_order');?></div>
+	    <div id="fo_tab_table_status_free_text"> <?php esc_html_e( 'Libero', 'flash_order' );?> </div>
+	    <div id="fo_tab_table_status_wait_text"> <?php esc_html_e( 'Attesa', 'flash_order' );?> </div>
+	    <div id="fo_tab_table_status_close_text"> <?php esc_html_e( 'Occupato', 'flash_order' );?> </div>
+
+	    <div id="fo_tab_create_table_text"> <?php esc_html_e( 'Vuoi creare un nuovo tavolo chiamato: ', 'flash_order' );?> </div>
+	    <div id="fo_tab_create_table_error_text"> <?php esc_html_e( 'Inserisci prima il nome del tavolo.', 'flash_order' );?> </div>
+	    <div id="fo_tab_delete_table_text"> <?php esc_html_e( 'Vuoi ELIMINARE il tavolo chiamato: ', 'flash_order' );?> </div>
+	    <div id="fo_tab_delete_table_error_text"> <?php esc_html_e( 'seleziona prima il tavolo da eliminare.', 'flash_order' );?> </div>
+
+	    <div id="fo_tab_create_catering_text"> <?php esc_html_e( 'Vuoi creare un nuovo evento chiamato: ', 'flash_order' );?> </div>
+	    <div id="fo_tab_refresh_catering_text"> <?php esc_html_e( 'Vuoi aggiornare l\'evento chiamato: ', 'flash_order' );?> </div>
+	    <div id="fo_tab_create_catering_error_text"> <?php esc_html_e( 'Completa prima i campi obbligatori contrassegnati da: * .', 'flash_order' );?> </div>
+	    <div id="fo_tab_create_catering_delete_text"> <?php esc_html_e( 'Vuoi ELIMINARE in modo definitivo questo evento, chiamato: ', 'flash_order' );?> </div>
+
+	    <div id="fo_tab_new_customer_error_name_text"> <?php esc_html_e( 'Inserisci prima il Nome del Cliente!', 'flash_order' );?> </div>
+	    <div id="fo_tab_new_customer_error_mail_phone_text"> <?php esc_html_e( 'Inserisci almeno la mail o il numero di telefono del Cliente!', 'flash_order' );?> </div>
+
+	    <div id="fo_tab_change_category_to_product_text"> <?php esc_html_e( 'Sei sicuro di voler cambiare la categoria di questo prodotto?', 'flash_order' );?> </div>
+
+	    <div id="fo_tab_create_macro_cat_text"> <?php esc_html_e( 'Vuoi creare una nuova macro categoria chiamata: ', 'flash_order' );?> </div>
+	    <div id="fo_tab_create_macro_cat_error_text"> <?php esc_html_e( 'Inserisci prima il nome della categoria.', 'flash_order' );?> </div>
+	    <div id="fo_tab_delete_macro_cat_text"> <?php esc_html_e( 'Vuoi ELIMINARE la categoria chiamata: ', 'flash_order' );?> </div>
+	    <div id="fo_tab_delete_macro_cat_error_text"> <?php esc_html_e( 'seleziona prima la categoria da eliminare.', 'flash_order' );?> </div>
+
+
+	</div>
+
+	<style type="text/css">
+	    .foTimeOutAnim {
+	        animation: foerrcol 2s alternate infinite!important;
+	    }
+	</style>
+
+<?php
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 function FO_save_post_extra_field( $post_id, $post, $update ) {

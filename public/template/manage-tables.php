@@ -9,69 +9,28 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 function FO_manage_table(){
 
-    $ajax_refresh_table_seconds = ( intval( FO_get_meta('ajax_refresh_table_seconds') ) < 500 ) ? 500 : intval( FO_get_meta('ajax_refresh_table_seconds'));
     $tavoli = get_posts( array(
         'numberposts'      => -1,
-        // 'category'         => 0,
         'orderby'          => 'title',
         'order'            => 'ASC',
-        // 'include'          => array(),
-        // 'exclude'          => array(),
-        // 'meta_key'         => '',
-        // 'meta_value'       => '',
         'post_type'        => 'tavoli',
-        // 'suppress_filters' => true,
     ) );
     
     $nonce = wp_create_nonce( 'FO_insert_post_ajax_nonce' );
     echo '<input type="hidden" id="_fononce_insert_post_ajax_nonce" name="_fononce_insert_post_ajax_nonce" value="'.esc_attr($nonce).'" />';
     
-    // echo '<input type="hidden" id="_fononce_flash_tab_order" name="_fononce_flash_tab_order" value="'.wp_create_nonce('FO_flash_tab_order' ).'" />';
+    FO_get_settings_head_manage_tables();
 ?>
-<div id="settings" style="display:none!important;">
-    <div id="ajax_refresh_table_seconds"> <?php echo esc_attr($ajax_refresh_table_seconds);?> </div>
-    <div id="fo_tab_go_order_text"> <?php esc_html_e( 'Sicuro di voler procedere con l\'Ordinazione?', 'flash_order' );?> </div>
-    <div id="fo_tab_clear_table_text"><?php esc_html_e('Sicuro di voler LIBERARE il tavolo?','flash_order');?></div>
-    <div id="fo_tab_clear_all_table_text"><?php esc_html_e('Sicuro di voler LIBERARE tutti i tavoli?','flash_order');?></div>
-    <div id="fo_tab_table_status_free_text"> <?php esc_html_e( 'Libero', 'flash_order' );?> </div>
-    <div id="fo_tab_table_status_wait_text"> <?php esc_html_e( 'Attesa', 'flash_order' );?> </div>
-    <div id="fo_tab_table_status_close_text"> <?php esc_html_e( 'Occupato', 'flash_order' );?> </div>
-
-    <div id="fo_tab_create_table_text"> <?php esc_html_e( 'Vuoi creare un nuovo tavolo chiamato: ', 'flash_order' );?> </div>
-    <div id="fo_tab_create_table_error_text"> <?php esc_html_e( 'Inserisci prima il nome del tavolo.', 'flash_order' );?> </div>
-    <div id="fo_tab_delete_table_text"> <?php esc_html_e( 'Vuoi ELIMINARE il tavolo chiamato: ', 'flash_order' );?> </div>
-    <div id="fo_tab_delete_table_error_text"> <?php esc_html_e( 'seleziona prima il tavolo da eliminare.', 'flash_order' );?> </div>
-
-    <div id="fo_tab_create_catering_text"> <?php esc_html_e( 'Vuoi creare un nuovo evento chiamato: ', 'flash_order' );?> </div>
-    <div id="fo_tab_refresh_catering_text"> <?php esc_html_e( 'Vuoi aggiornare l\'evento chiamato: ', 'flash_order' );?> </div>
-    <div id="fo_tab_create_catering_error_text"> <?php esc_html_e( 'Completa prima i campi obbligatori contrassegnati da: * .', 'flash_order' );?> </div>
-    <div id="fo_tab_create_catering_delete_text"> <?php esc_html_e( 'Vuoi ELIMINARE in modo definitivo questo evento, chiamato: ', 'flash_order' );?> </div>
-
-    <div id="fo_tab_new_customer_error_name_text"> <?php esc_html_e( 'Inserisci prima il Nome del Cliente!', 'flash_order' );?> </div>
-    <div id="fo_tab_new_customer_error_mail_phone_text"> <?php esc_html_e( 'Inserisci almeno la mail o il numero di telefono del Cliente!', 'flash_order' );?> </div>
-
-    <div id="fo_tab_change_category_to_product_text"> <?php esc_html_e( 'Sei sicuro di voler cambiare la categoria di questo prodotto?', 'flash_order' );?> </div>
-
-    <div id="fo_tab_create_macro_cat_text"> <?php esc_html_e( 'Vuoi creare una nuova macro categoria chiamata: ', 'flash_order' );?> </div>
-    <div id="fo_tab_create_macro_cat_error_text"> <?php esc_html_e( 'Inserisci prima il nome della categoria.', 'flash_order' );?> </div>
-    <div id="fo_tab_delete_macro_cat_text"> <?php esc_html_e( 'Vuoi ELIMINARE la categoria chiamata: ', 'flash_order' );?> </div>
-    <div id="fo_tab_delete_macro_cat_error_text"> <?php esc_html_e( 'seleziona prima la categoria da eliminare.', 'flash_order' );?> </div>
-
-
-</div>
-<style type="text/css">
-    .foTimeOutAnim {
-        animation: foerrcol 2s alternate infinite!important;
-    }
-</style>
 <div id="FO_Front_Content">
-    
-    <?php if (function_exists('FOP_tab_Settings_section')){
-        FOP_tab_Settings_section($tavoli);
-    ?>
-    <div class="fo_button fo_show_settings" onclick="FO_settings_show();">
-        <span class="dashicons dashicons-admin-settings" style="width:40px;height:40px;font-size:40px;"></span>
-    </div>
+    <?php 
+        if (function_exists('FOP_tab_status_bar')){FOP_tab_status_bar();}
+
+        if (function_exists('FOP_tab_Settings_section')){
+            FOP_tab_Settings_section($tavoli);
+        ?>
+        <div class="fo_button fo_show_settings" onclick="FO_settings_show();">
+            <span class="dashicons dashicons-admin-settings" style="width:40px;height:40px;font-size:40px;"></span>
+        </div>
     <?php }?>
 
     <div class="FO_table_grid">
@@ -134,6 +93,8 @@ function FO_manage_table(){
         <?php FO_flash_tab_order( $tavoli );?>
     </div>
 
+    <?php if (function_exists('FOP_tab_Catering_section')){ FOP_tab_Catering_section(); } ?>
+
     <script type="text/javascript">
         // console.log(window);
         jQuery(window).on('load', function() {
@@ -146,7 +107,9 @@ function FO_manage_table(){
 
 <?php
 
-}FO_manage_table();
+}
+
+FO_manage_table();
 
 
 
