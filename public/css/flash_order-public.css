@@ -252,6 +252,7 @@ td[identify="products"]{
     	-webkit-transition: var(--fo-main-tran);
 	-o-transition: var(--fo-main-tran);
 	transition: var(--fo-main-tran);
+	cursor: pointer;
 }
 .fo-select option{
     background-color: var(--fo-bg5-color);
@@ -4474,9 +4475,15 @@ width: 100%;
 	opacity: 0.7;
 }
 
+.fo_in_numb{
+    padding: 5px!important;
+}
 
-
-
+.fo_in_file{
+	padding: 5px;
+	min-width: 300px!important;
+	cursor: pointer;
+}
 
 
 

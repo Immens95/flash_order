@@ -4038,6 +4038,9 @@ function FO_flash_tab_order( $tavoli = array() ){
 		</div>
 
 		<div class="FO_flash_tab_header">
+			<div class="fo_button" onclick="FO_filter_tab_product(<?php echo "'-BLANK-'"; ?>)" ondrop="FOdrop(event)" ondragover="FOallowDrop(event)" fo_cat_name="-BLANK-" fo_cat_id="-BLANK-" fo_cat_ceck="<?php echo esc_attr($m_cat_check);?>">
+				<span class="dashicons dashicons-editor-customchar"></span>
+			</div>
 			<?php foreach ($products_macro_categories->terms as $key => $value) { ?>
 				<div class="fo_button" onclick="FO_filter_tab_product(<?php echo "'".esc_attr($value->slug)."'"; ?>)" ondrop="FOdrop(event)" ondragover="FOallowDrop(event)" fo_cat_name="<?php echo esc_attr($value->slug);?>" fo_cat_id="<?php echo esc_attr($value->term_id);?>" fo_cat_ceck="<?php echo esc_attr($m_cat_check);?>">
 					<?php echo esc_attr($value->name);?>
@@ -4073,7 +4076,7 @@ function FO_flash_tab_order( $tavoli = array() ){
 							$data_table = FOP_get_table_by_table_id_last($tavolo->ID);
 							$story = ( $data_table != null ) ? json_decode($data_table->orders) : array();
 							foreach ((array)$story as $story_v) {
-								$order = new WC_Order($story_v); 
+								$order = new WC_Order($story_v);
 								?>
 								<div class="fo_button fo_story fo_order_table_story" fotableid="<?php echo esc_attr($tavolo->ID);?>"  ondblclick="fo_change_order_status(<?php echo "'".esc_attr($order->get_id())."'";?>, 'processing' );console.log('yesssss')" onclick="fo_filter_tab_story(this,<?php echo "'".esc_attr($order->get_id())."'";?>)" fo_order_id="<?php echo esc_attr($order->get_id());?>" fo_order_total="<?php echo esc_attr($order->get_total());?>" fo_order_subtotal="<?php echo esc_attr($order->get_subtotal());?>">
 									<?php echo esc_attr($order->get_id());?>
@@ -4082,33 +4085,95 @@ function FO_flash_tab_order( $tavoli = array() ){
 							} 
 							foreach ((array)$story as $story_v) {
 								$f_i = 200000;
-								// $order = new WC_Order($story_v); 
-								$order = wc_get_order($story_v); 
+								$order = new WC_Order($story_v); 
+								// $order = wc_get_order($story_v); 
 								$items = $order->get_items();
 
-								$meta_data = get_post_meta( $order->get_id() );
-								$meta_array = FO_extract_meta_array($meta_data);
-					// FO_debug($meta_array);
-								foreach ( $meta_array as $meta_index => $meta_elem ){
-									$varianti = (array_key_exists('variant', $meta_elem))?$meta_elem['variant']:array();
-								}
+								$meta_data = FO_get_all_order_meta( $order->get_id() );
+								// FO_debug($meta_data);
+								$meta_array = FO_extract_meta_object( $meta_data );
+// FO_debug($meta_array);
+								// $varianti = array();
+								// foreach ( $meta_array as $meta_index => $meta_elem ){
+								// 	$varianti = (array_key_exists('variant', $meta_elem))?$meta_elem['variant']:array();
+								// }
+								foreach ($meta_array as $meta_index => $meta_value) {
+									if (!isset($meta_value['id'])||$meta_value['id'] == '') {continue;}
+
+									$prod_id = $meta_value['id'];
+									$qty = (isset($meta_value['qty'])) ? $meta_value['qty'] : '';
+									$total = (isset($meta_value['total'])) ? $meta_value['total'] : '';
+									$note = (isset($meta_value['note'])) ? $meta_value['note'] : '';
+									$searched = (isset($meta_value['searched'])) ? $meta_value['searched'] : '';
+									$ingredient = (isset($meta_value['ingredient'])) ? $meta_value['ingredient'] : '';
+									$allergeni = (isset($meta_value['allergeni'])) ? $meta_value['allergeni'] : '';
+									$temperature = (isset($meta_value['temperature'])) ? $meta_value['temperature'] : '';
+									$variant = (isset($meta_value['variant'])) ? $meta_value['variant'] : '';
+
+									// $product = $item->get_product();
+									$product = wc_get_product($prod_id);
+									
+									if ($product == false||$product == null) {continue;}
+
+									$short_title = (FOcheck(get_post_meta($prod_id,'short_title')) && get_post_meta($prod_id,'short_title')[0]!='')?get_post_meta($prod_id,'short_title')[0]:$product->get_name();
+									$slang_title = ( FOcheck(get_post_meta($prod_id,'slang_title') ) && get_post_meta($prod_id,'slang_title')[0]!='' )?get_post_meta($prod_id,'slang_title')[0]:$short_title;
+									$order_index++;
+										
+										?>
+										<div class="fo_tab_prod fo_story relative" foprodid="<?php echo esc_attr($prod_id);?>" foprodtot="<?php echo esc_attr($total);?>" onclick="FO_filter_tab_variant(this,<?php echo "'".esc_attr($prod_id)."'"; ?>)" fo_index="<?php echo esc_attr($order_index);?>" fo_index_story="<?php echo esc_attr($story_v);?>" fo_modificable="false" fo_type="story" fotableid="<?php echo esc_attr($tavolo->ID);?>">
+											<div class="FO_prod_name_manage fo_text_fix">
+												<?php echo esc_attr($slang_title);?>
+											</div>
+											<div class="FO_prod_img" style="border-radius:5px;">
+												<?php echo wp_kses_post($product->get_image());?>
+											</div>
+											<input fo_tab_target="id" type="hidden" name="[<?php echo esc_attr($meta_index);?>][id][<?php echo esc_attr($prod_id);?>]" value="<?php echo esc_attr($qty);?>">
+
+											<!-- <input fo_tab_target="Ingredienti" type="hidden" name="[<?php echo esc_attr($meta_index);?>][Ingredienti][<?php echo esc_attr($prod_id);?>]" value="<?php echo $ingredient;?>"> -->
+
+											<!-- <input fo_tab_target="Allergeni" type="hidden" name="[<?php echo esc_attr($meta_index);?>][Allergeni][<?php echo esc_attr($prod_id);?>]" value="<?php echo $allergeni;?>"> -->
+
+											<input fo_tab_target="Temperature" type="hidden" name="[<?php echo esc_attr($meta_index);?>][Temperature][<?php echo esc_attr($prod_id);?>]" value="<?php echo $temperature;?>">
+
+											<input fo_tab_target="price" type="hidden" name="[<?php echo esc_attr($meta_index);?>][price][<?php echo esc_attr($prod_id);?>]" value="<?php echo $total;?>">
+
+											<input fo_tab_target="note" type="hidden" name="[<?php echo esc_attr($meta_index);?>][note][<?php echo esc_attr($prod_id);?>]" value="<?php echo $note;?>">
+											<?php 
+								FO_debug($meta_data);
+								FO_debug($meta_array);
+
+											foreach ($variant as $vari_key => $vari_val) {
+												?>
+												<input fo_tab_target="variante" fovariant="<?php echo esc_attr($vari_key);?>" name="[<?php echo esc_attr($meta_index);?>][Variante][<?php echo esc_attr($prod_id);?>][<?php echo esc_attr($vari_key);?>]" type="hidden" value="<?php echo esc_attr($vari_val);?>">
+											<?php }  ?>
+										</div>
+								<?php }
+
+
+
+
+
+
+/*
 								foreach ($items as $item_id => $item) {
+
 									$product = $item->get_product();
-									// $product_variation = $product->get_matching_variation( array('attribute_tipo'=>'Naturale') );
+									
 									if ($product == false||$product == null) {continue;}
 										$short_title = (FOcheck(get_post_meta($product->get_id(),'short_title')) && get_post_meta($product->get_id(),'short_title')[0]!='')?get_post_meta($product->get_id(),'short_title')[0]:$product->get_name();
 										$slang_title = ( FOcheck(get_post_meta($product->get_id(),'slang_title') ) && get_post_meta($product->get_id(),'slang_title')[0]!='' )?get_post_meta($product->get_id(),'slang_title')[0]:$short_title;
 									$order_index++;
 										if ($product->get_type() == 'variation') {
 											$product_id = $product->get_parent_id();
-											$product_attr = $product->get_variation_attributes();
+											// $product_attr = $product->get_variation_attributes();
 										} else{
 											$product_id = $product->get_id();
-											$product_attr = $product->get_attributes();
+											// $product_attr = $product->get_attributes();
 										}
 										// FO_debug($product_attr);
+
 										// $product = wc_get_product( $product_id );
-										$def_p_attr = $product->get_default_attributes();
+										// $def_p_attr = $product->get_default_attributes();
 										// FO_debug( $product->get_default_attributes() );
 										?>
 										<div class="fo_tab_prod fo_story relative" foprodid="<?php echo esc_attr($product_id);?>" foprodtot="<?php echo esc_attr($item->get_subtotal());?>" onclick="FO_filter_tab_variant(this,<?php echo "'".esc_attr($product_id)."'"; ?>)" fo_index="<?php echo esc_attr($order_index);?>" fo_index_story="<?php echo esc_attr($story_v);?>" fo_modificable="false" fo_type="story" fotableid="<?php echo esc_attr($tavolo->ID);?>">
@@ -4124,12 +4189,14 @@ function FO_flash_tab_order( $tavoli = array() ){
 											<input fo_tab_target="price" type="hidden" name="[<?php echo esc_attr($f_i);?>][price][<?php echo esc_attr($product_id);?>]" value="<?php echo esc_attr($item->get_subtotal());?>">
 											<input fo_tab_target="note" type="hidden" name="[<?php echo esc_attr($f_i);?>][note][<?php echo esc_attr($product_id);?>]" value="">
 											<?php 
+								FO_debug($meta_data);
+								FO_debug($meta_array);
 											// foreach ($product_attr as $k => $v) {
 												// if (str_contains($k, 'pa_')) {
 												// 	$k = str_replace('pa_', '', $k);
 												// }
 												// foreach ($varianti as $key_varianti => $value_varianti) {
-												foreach ($varianti as $k => $v) {
+											foreach ($meta_array as $k => $v) {
 													// FO_debug( $value_varianti );
 												// }
 												// if (isset($varianti[$k]) && $varianti[$k] != '' ) {
@@ -4148,9 +4215,11 @@ function FO_flash_tab_order( $tavoli = array() ){
 												$vari_key = $k;
 												?>
 												<input fo_tab_target="variante" fovariant="<?php echo esc_attr($vari_key);?>" name="[<?php echo esc_attr($f_i);?>][Variante][<?php echo esc_attr($product_id);?>][<?php echo esc_attr($vari_key);?>]" type="hidden" value="<?php echo esc_attr($vari_val);?>">
-											<?php } ?>
+											<?php }  ?>
 										</div>
 								<?php $f_i++; }
+
+*/
 								 foreach ( $order->get_fees() as $item_fee ) {
 									$fee_name = $item_fee->get_name();
 									$fee_total = $item_fee->get_total();
@@ -4226,6 +4295,7 @@ function FO_flash_tab_order( $tavoli = array() ){
 							$macro_cat = get_the_terms( $product->get_id(), 'macro_categories');
 							if ( $macro_cat == null ) {
 								$macro_cat = get_the_terms( $product->get_id(), 'product_cat');
+								$macro_cat[0]->slug = '-BLANK-';
 							}
 							$display = 'display:none';
 							if ( $first_macro != false ) {
@@ -4686,6 +4756,143 @@ function FO_pay_this_order_tab(){
 // );
 
 
+function FO_insert_product_ajax(){
+	if ( !isset($_POST['_fononce_insert_post_ajax_nonce']) && !wp_verify_nonce( sanitize_text_field(wp_unslash( $_POST['_fononce_insert_post_ajax_nonce'])), 'FO_insert_post_ajax_nonce' ) ) {
+		return;
+	}
+	if (!isset($_POST['title']) || $_POST['title'] == '' ) {
+	    return;
+	}
+
+	$title = (isset($_POST['title'])) ? sanitize_text_field(wp_unslash( $_POST['title'])) : '';
+	$sh_title = (isset($_POST['sh_title'])) ? sanitize_text_field(wp_unslash( $_POST['sh_title'])) : '';
+	$sl_title = (isset($_POST['sl_title'])) ? sanitize_text_field(wp_unslash( $_POST['sl_title'])) : '';
+	
+	$price = (isset($_POST['price'])) ? sanitize_text_field(wp_unslash( $_POST['price'])) : '0';
+	$cat = (isset($_POST['cat'])) ? sanitize_text_field(wp_unslash( $_POST['cat'])) : '';
+	$variant = (isset($_POST['variant'])) ? sanitize_text_field(wp_unslash( $_POST['variant'])) : '';
+	
+	$description = (isset($_POST['description'])) ? sanitize_text_field(wp_unslash( $_POST['description'])) : '';
+	$exerpt = (isset($_POST['exerpt'])) ? sanitize_text_field(wp_unslash( $_POST['exerpt'])) : '';
+	
+	$image = (isset($_POST['image'])) ? sanitize_text_field(wp_unslash( $_POST['image'])) : '';
+
+	$product = new WC_Product_Simple();
+
+	$product->set_name( $title );
+	$product->set_status( 'publish' ); 
+
+	$product->set_regular_price( $price );
+	// $product->set_sale_price( 250.00 );
+	// $product->set_category_ids( array( $cat ) );
+
+	$product->set_short_description($exerpt);
+
+	$resp = FO_load_images_from_front( $image );
+	if ($resp['status']=='success') {
+		$product->set_image_id( (int)$resp['id'] );
+	}
+
+// $product->set_image_id( 90 );
+// $product->set_stock_status( 'instock' ); // 'instock', 'outofstock' or 'onbackorder'
+// $product->set_manage_stock( true );
+// $product->set_stock_quantity( 5 );
+// $product->set_backorders( 'no' ); // 'yes', 'no' or 'notify'
+// $prodict->set_low_stock_amount( 2 );
+// $product->set_sold_individually( true );
+
+// $product->set_weight( 0.5 );
+// $product->set_length( 50 );
+// $product->set_width( 50 );
+// $product->set_height( 30 );
+// $product->set_shipping_class_id( 'hats-shipping' );
+
+
+	$product->save();
+
+	wp_set_post_terms( $product->get_id(), array( $cat ), 'macro_categories', false );
+
+	update_post_meta( $product->get_id(), 'short_title', $sh_title );
+	update_post_meta( $product->get_id(), 'slang_title', $sl_title );
+
+	// update_post_meta( $post_id, '_stock', '' );
+
+	// $product_id = wp_insert_term(
+	// 	sanitize_text_field(wp_unslash($_POST['name'])), // the term 
+	// 	'macro_categories', // the taxonomy
+	// 	// array(
+	// 	// 	'description'=> (isset($_POST['description']))?sanitize_text_field(wp_unslash($_POST['description'])):'',
+	// 	// 	'slug' => 'new-category'
+	// 	// )
+	// );
+	wp_send_json(array(
+		//'post' => $_POST,
+		'product_id' => $product->get_id(),
+	));
+	die();
+}
+add_action('wp_ajax_FO_insert_product_ajax', 'FO_insert_product_ajax');
+add_action('wp_ajax_nopriv_FO_insert_product_ajax', 'FO_insert_product_ajax');
+
+
+function FO_load_images_from_front( $in_file ){
+	if (isset( $in_file ) && !empty( $in_file['name'] ) ) {
+		$allowedExts = array("png", "jpg", "webp");
+		$temp = explode(".", $in_file["name"]);
+		$extension = end($temp);
+		if ( in_array($extension, $allowedExts)) {
+			if ( ($in_file["error"] > 0) && ($in_file['size'] <= 3145728 )) {
+				$response = array(
+					"status" => 'error',
+					"message" => 'ERROR Return Code: '. $in_file["error"],
+				);
+			}
+			else
+			{
+				$uploadedfile = $in_file;
+				$upload_name = $in_file['name'];
+				$uploads = wp_upload_dir();
+				$filepath = $uploads['path']."/$upload_name";
+				if ( ! function_exists( 'wp_handle_upload' ) ) {
+				    require_once( ABSPATH . 'wp-admin/includes/file.php' );
+				}
+				require_once( ABSPATH . 'wp-admin/includes/image.php' );
+				$upload_overrides = array( 'test_form' => false );
+				$movefile = wp_handle_upload( $uploadedfile, $upload_overrides );
+				if ( $movefile && !isset( $movefile['error'] )  ) {
+
+					$file = $movefile['file'];
+					$url = $movefile['url'];
+					$type = $movefile['type'];
+
+					$attachment = array(
+						'post_mime_type' => $type ,
+						'post_title' => $upload_name,
+						'post_content' => 'File '.$upload_name,
+						'post_status' => 'inherit'
+					);
+					$attach_id = wp_insert_attachment( $attachment, $file, 0);
+					$attach_data = wp_generate_attachment_metadata( $attach_id, $file );
+					wp_update_attachment_metadata( $attach_id, $attach_data );
+				}
+				$response = array(
+					"status" => 'success',
+					"id" => $attach_id,
+					"url" => $url,
+				);
+			}
+		} else {
+			// something went wrong, most likely file is to large for upload. check upload_max_filesize, post_max_size and memory_limit in you php.ini
+			$response = array(
+				"status" => 'error',
+				"message" => 'ERROR',
+			);
+        }
+    }
+    return $response;
+}
+
+
 function FO_insert_macro_cat_ajax(){
 	if ( !isset($_POST['_fononce_insert_post_ajax_nonce']) && !wp_verify_nonce( sanitize_text_field(wp_unslash( $_POST['_fononce_insert_post_ajax_nonce'])), 'FO_insert_post_ajax_nonce' ) ) {
 		return;
@@ -5108,11 +5315,18 @@ $ajax_refresh_table_seconds = ( intval( FO_get_meta('ajax_refresh_table_seconds'
 
 	    <div id="fo_tab_change_category_to_product_text"> <?php esc_html_e( 'Sei sicuro di voler cambiare la categoria di questo prodotto?', 'flash_order' );?> </div>
 
+<!-- Create Macro Category -->
 	    <div id="fo_tab_create_macro_cat_text"> <?php esc_html_e( 'Vuoi creare una nuova macro categoria chiamata: ', 'flash_order' );?> </div>
 	    <div id="fo_tab_create_macro_cat_error_text"> <?php esc_html_e( 'Inserisci prima il nome della categoria.', 'flash_order' );?> </div>
 	    <div id="fo_tab_delete_macro_cat_text"> <?php esc_html_e( 'Vuoi ELIMINARE la categoria chiamata: ', 'flash_order' );?> </div>
 	    <div id="fo_tab_delete_macro_cat_error_text"> <?php esc_html_e( 'seleziona prima la categoria da eliminare.', 'flash_order' );?> </div>
 
+<!-- Create Product -->
+		<div id="fo_tab_create_prod_error_text"> <?php esc_html_e( 'inserisci prima tutti i campi richiesti e contrassegnati da *', 'flash_order' );?> </div>
+		<div id="fo_tab_create_prod_confirm_text"> <?php esc_html_e( 'Confermi di voler creare il Prodotto chiamato: ', 'flash_order' );?> </div>
+
+		<div id="fo_tab_trash_prod_error_text"> <?php esc_html_e( 'Seleziona prima il Prodotto da ELIMINARE', 'flash_order' );?> </div>
+		<div id="fo_tab_trash_prod_confirm_text"> <?php esc_html_e( 'Sei sicuro di voler ELIMINARE il prodotto chiamato:', 'flash_order' );?> </div>
 
 	</div>
 
@@ -5833,6 +6047,51 @@ function FO_status_titled( $status ){
 		$return = esc_html__('completato','flash_order');
 	}else{ $return = ''; }
 	return $return;
+}
+function FO_get_all_order_meta( $order_id ){
+	global $wpdb;
+	$table = $wpdb->prefix . "wc_orders_meta";
+
+	$result = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM %i WHERE order_id = %s", [ $table, $order_id ] ) );
+
+	return $result;
+}
+function FO_extract_meta_object( $meta ){
+	$array = array();$i = 1;
+	if (!is_array($meta)) {
+		return false;
+	}
+	foreach ($meta as $key => $value) {
+		if ( str_contains( (string)$value->meta_key, '{' ) ) {
+			$index = substr( (string)$value->meta_key, 1, strpos((string)$value->meta_key,'}')-1 );
+			if ( str_contains( (string)$value->meta_key, 'index' ) ) {
+				$array[$index][substr( (string)$value->meta_key, strpos((string)$value->meta_key,'-')+1 )] = $value->meta_value;
+				$array[$index]['id'] = substr( (string)$value->meta_key, strpos((string)$value->meta_key,'-')+1 );
+				$array[$index]['qty'] = $value->meta_value;
+			}
+			if ( str_contains( (string)$value->meta_key, 'note' ) ) {
+				$array[$index]['note'] = $value->meta_value;
+			}
+			if ( str_contains( (string)$value->meta_key, 'searched' ) ) {
+				$array[$index]['searched'] = $value->meta_value;
+			}
+			if ( str_contains( (string)$value->meta_key, 'ingredient' ) ) {
+				$array[$index]['ingredient'][$i] = substr( (string)$value->meta_key, strpos((string)$value->meta_key,'ingredient-')+11 );
+				$i++;
+			}
+			if ( str_contains( (string)$value->meta_key, 'temperature' ) ) {
+				$array[$index]['temperature'] = substr($value->meta_value,strpos($value->meta_value,'| ')+2);
+			}
+			if ( str_contains( (string)$value->meta_key, 'variant' ) ) {
+				$array[$index]['variant'][substr((string)$value->meta_key,strpos((string)$value->meta_key,'variant-')+8)] = substr($value->meta_value,strpos($value->meta_value,'| ')+2);
+	//[substr((string)$value->meta_key,strpos((string)$value->meta_key,'prod-')+5,strpos((string)$value->meta_key,'_variant')-8)]
+			}
+			if ( str_contains( (string)$value->meta_key, 'price' ) ) {
+				$array[$index]['total'] = $value->meta_value;
+			}
+		}
+	}
+	return $array;
 }
 function FO_extract_meta_array( $meta ){
 	$array = array();$i = 1;

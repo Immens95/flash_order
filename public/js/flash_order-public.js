@@ -1738,7 +1738,7 @@ function FO_order_tab_ajax(input = '.fo_column_riepilogo', action = 'FO_flash_ta
 	if (action == 'FO_flash_tab_pay_ajax') {
 		created_via = 'pay_tab';
 	}
-	console.log(jQuery('input[name="user_ID"]').val());
+	// console.log(jQuery('input[name="user_ID"]').val());
 	
 	jQuery.ajax({
 		type: 'POST',
