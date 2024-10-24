@@ -3608,28 +3608,34 @@ function FO_flash_tab_order_ajax( $poste = '', $clear = false ){
 	$order->update_meta_data( 'created_via', $created_via );
 	$order->update_meta_data( 'user_id', $user_id );
 
-	$c_index = 1;
+	// if (isset($_POST['S_customers']) && $_POST['S_customers'] != null ) {
+	// 	foreach ($_POST['S_customers'] as $S_key => $S_value) {//phpcs:ignore
+	// 		if (!isset($S_value)){continue;}
+	// 		foreach ($S_value as $key => $value) {
+	// 			if (!isset($value)){continue;}
+	// 			foreach ($value as $k => $v) {
+	// 	// wp_send_json(array(
+	// 	// 	'v' => $v,
+	// 	// ));
+	// 	// die();
+	// 				if ( isset($S_key['customer_ID'][$k]) ) {
+	// 					$order->update_meta_data( '{customer_ID}'.$k, $v );
+	// 					update_post_meta($order->id, '_customer_user', $v);
+	// 					// $order->set_customer_id( $v );
+	// 				} else{
+	// 					// $username = (isset($key['customer_name'][$k]))?$key['customer_name'][$k]:'';
+	// 					// $customer_mail = (isset($key['customer_mail'][$k]))?$key['customer_mail'][$k]:'';
+	// 					// $customer_phone = (isset($key['customer_phone'][$k]))?$key['customer_phone'][$k]:'';
 
-	if (isset($_POST['S_customers']) && $_POST['S_customers'] != null ) {
-		foreach ($_POST['S_customers'] as $S_key => $S_value) {//phpcs:ignore
-			foreach ($S_value as $key => $value) {
-				foreach ($value as $k => $v) {
-					$order->update_meta_data( '{customer_ind_'.$c_index.'}'.$k, array_values($v)[0] );
-					if ($k == 'customer_ID') {
-						$order->set_customer_id(array_values($v)[0]);
-					}
-				}
-				$c_index++;
-			}
-		}
-	}
-	// if (isset($_POST['N_customers'])  && $_POST['N_customers'] != null ) {
-		// foreach ($_POST['N_customers'] as $N_key => $N_value) {
-			// foreach ($N_value as $key => $value) {
-				// $order->update_meta_data( '{customer_ind'.$c_index.'}'.$N_key, $value );
-				// $c_index++;
-			// }
-		// }
+	// 					// wp_create_user( $username, '1234', $customer_mail );
+	// 				}
+	// 				// $order->update_meta_data( '{customer_ind_'.$c_index.'}'.$k, array_values($v)[0] );
+	// 				// if ($k == 'customer_ID') {
+	// 				// 	$order->set_customer_id(array_values($v)[0]);
+	// 				// }
+	// 			}
+	// 		}
+	// 	}
 	// }
 	$table_name_cpt = (isset($_POST['table_name_cpt'])) ? sanitize_text_field(wp_unslash($_POST['table_name_cpt'])):'';
 	$order->update_meta_data( 'Table_cpt', $table_name_cpt );
@@ -3833,9 +3839,9 @@ if ( $total_fee > 0.0 ) {
 
 	$order = wc_get_order($order_id);
 
-	if ($c_index == 1) {
-		$order->set_customer_id($user_id);
-	}
+	// if ($c_index == 1) {
+	// 	$order->set_customer_id($user_id);
+	// }
 
 	$order->calculate_totals();	
 	$order->save();
@@ -4065,7 +4071,8 @@ function FO_flash_tab_order( $tavoli = array() ){
 <!-- COL 1: -->
 			<div class="FO_flash_tab_max_column fo_tab_col_1" style="">
 	<!-- RIEPILOGO: -->
-				<div class="FO_flash_tab_column fo_column_story" style="width:calc(100% - 20px);height:calc(50% - 55px);padding-right:80px;" onclick="fo_tab_hystory_space(this,'.fo_column_riepilogo')">
+				<div class="FO_flash_tab_column fo_column_story" style="width:calc(100% - 20px);height:calc(50% - 55px);padding-right:80px;" onclick="fo_tab_hystory_space(this,'.fo_column_riepilogo', '.fo_column_products')">
+
 					<div class="fo_ghost_draft" style="display:none;"></div>
 					<!-- <strong class="fo_title_" style=""><?php esc_html_e('STORICO:','flash_order'); ?></strong> -->
 					<?php $abs_total = 0; foreach ( $tavoli as $tavolo_key => $tavolo ) { ?>
@@ -4258,7 +4265,7 @@ function FO_flash_tab_order( $tavoli = array() ){
 					</div>
 				</div>
 <!-- <strong style=""><?php esc_html_e('RIEPILOGO:','flash_order'); ?></strong> -->
-				<div class="FO_flash_tab_column fo_column_riepilogo" style="width:calc(100% - 20px);padding-right:80px;" onclick="fo_tab_hystory_space(this,'.fo_column_story')">
+				<div class="FO_flash_tab_column fo_column_riepilogo" style="width:calc(100% - 20px);padding-right:80px;" onclick="fo_tab_hystory_space(this,'.fo_column_story','.fo_column_products')">
 					<div class="fo_tab_tool_section fo_tool_riepilogo">
 						<div class="fo_button_thin" onclick="fo_tab_empty_section(jQuery('.fo_column_riepilogo'))" style="color: red;">
 							<span class="dashicons dashicons-trash"></span>
@@ -4288,7 +4295,7 @@ function FO_flash_tab_order( $tavoli = array() ){
 					</div>
 				</div>
 	<!-- PRODOTTI: -->
-				<div class="FO_flash_tab_column fo_column_products" style="width:calc(100% - 20px);">
+				<div class="FO_flash_tab_column fo_column_products" style="width:calc(100% - 20px);" onclick="fo_tab_hystory_space(this,'.fo_column_story','.fo_column_riepilogo')">
 					<!-- <strong style=""><?php esc_html_e('PRODOTTI','flash_order'); ?></strong> -->
 					<?php foreach ($products as $key => $value) { ?>
 						<?php foreach ($value as $product) { 
@@ -4348,7 +4355,7 @@ function FO_flash_tab_order( $tavoli = array() ){
 <!-- COL 2: -->
 	<!-- VARIANTI: -->
 			<div class="FO_flash_tab_column fo_tab_col_2" style="">
-				<!-- <strong style=""><?php esc_html_e('VARIANTI:','flash_order'); ?></strong> -->
+				<strong class="fo_col_2_name" style=""><?php esc_html_e('VARIANTI:','flash_order'); ?></strong>
 				<div class="FO_flash_tab_qty" style="display:none;"> Quantità
 					<div class="spinner-button-big" onclick="fo_keyboard_qty_value(-1)">-</div>
 						<input class="fo_target_qty_prod" type="number" name="qty" step="1" value="1" fo_actual_prod="" fo_actual_index="0" fo_actual_index_story="0" fo_modificable="" onchange="fo_tab_parse_qty(this);">
@@ -4597,16 +4604,17 @@ function FO_pay_this_order_tab(){
 				<?php esc_html_e('CHIUDI','flash_order');?>
 			</div>
 			<div class="fo_pay_body fo_flex">
+				<span style="width:100%;">Questa sezione é ancora in sviluppo e sarà presto disponibile </span>
 				<div class="fo_pay_customer_type">
 					<span> <?php esc_html_e('Cliente Esistente ? ','flash_order');?> </span>
-					<input type="checkbox" name="customer_type" onclick="FO_customer_pay(this);">
+					<input type="checkbox" name="customer_type" onclick="FO_customer_pay(this);" unchecked>
 				</div>
 				
 				<div class="fot_pay_new_customer">
 					<strong style="width:100%"> <?php esc_html_e('inserisci un nuovo cliente:','flash_order');?> </strong>
-					<input class="fot_pay_input N_customer_name" type="text" name="[N_customer][customer_name][]" placeholder="<?php esc_html_e('nome Cliente','flash_order');?>" style="width: 200px!important;">
-					<input class="fot_pay_input N_customer_mail" type="text" name="[N_customer][customer_mail][]" placeholder="<?php esc_html_e('mail Cliente','flash_order');?>" style="width: 300px!important;">
-					<input class="fot_pay_input N_customer_phone" type="text" name="[N_customer][customer_phone][]" placeholder="<?php esc_html_e('telefono Cliente','flash_order');?>" style="width: 200px!important;">
+					<input class="fot_pay_input N_customer_name" type="text" name="[customer_name][]" placeholder="<?php esc_html_e('nome Cliente','flash_order');?>" style="width: 200px!important;">
+					<input class="fot_pay_input N_customer_mail" type="text" name="[customer_mail][]" placeholder="<?php esc_html_e('mail Cliente','flash_order');?>" style="width: 300px!important;">
+					<input class="fot_pay_input N_customer_phone" type="text" name="[customer_phone][]" placeholder="<?php esc_html_e('telefono Cliente','flash_order');?>" style="width: 200px!important;">
 					<div class="fo_button fo_border" style="width:calc(100% - 50px);" onclick="FO_add_new_customer(jQuery(this).parent());"><?php esc_html_e('AGGIUNGI','flash_order');?></div>
 				</div>
 
@@ -4637,10 +4645,10 @@ function FO_pay_this_order_tab(){
 								<div> <?php echo esc_attr($u_phone);?> </div>
 							</div>
 							<div class="FO_clear_target" style="display:none;" onclick="">X</div>
-							<input type="hidden" name="[S_customer][customer_ID][<?php echo esc_attr($u_id);?>]" value="<?php echo esc_attr($u_id);?>">
-							<input type="hidden" name="[S_customer][customer_name][<?php echo esc_attr($u_id);?>]" value="<?php echo esc_attr($u_name);?>">
-							<input type="hidden" name="[S_customer][customer_mail][<?php echo esc_attr($u_id);?>]" value="<?php echo esc_attr($u_mail);?>">
-							<input type="hidden" name="[S_customer][customer_phone][<?php echo esc_attr($u_id);?>]" value="<?php echo esc_attr($u_phone);?>">
+							<input type="hidden" name="[customer_ID][<?php echo esc_attr($u_id);?>]" value="<?php echo esc_attr($u_id);?>">
+							<input type="hidden" name="[customer_name][<?php echo esc_attr($u_id);?>]" value="<?php echo esc_attr($u_name);?>">
+							<input type="hidden" name="[customer_mail][<?php echo esc_attr($u_id);?>]" value="<?php echo esc_attr($u_mail);?>">
+							<input type="hidden" name="[customer_phone][<?php echo esc_attr($u_id);?>]" value="<?php echo esc_attr($u_phone);?>">
 						</div>
 						<?php
 						} 
