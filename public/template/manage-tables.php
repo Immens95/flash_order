@@ -106,6 +106,27 @@ function FO_manage_table(){
             jQuery(".FOloadingCardPublicMain").fadeOut(200);
             fo_toggle_header_footer(true);
         });
+
+        jQuery(document).bind("touchstart", function(e) {
+        	if (true) {
+        		if ( e.target == '.fo_tab_prod_story') {
+
+        		}
+        		
+        	}
+        	//console.log(e.target);
+        	//console.log(e);
+			//e.preventDefault();
+			//var orig = e.originalEvent;
+			//var x = orig.changedTouches[0].pageX;
+			//var y = orig.changedTouches[0].pageY;
+//
+			//jQuery("#element").css({top: y, left: x});
+		});
+
+		jQuery(document).bind('touchstart', function(event) {
+    		jQuery(event).trigger('mousedown');
+		});
     </script>
 
 </div>

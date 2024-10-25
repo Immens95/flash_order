@@ -3064,7 +3064,6 @@ width: 100%;
     z-index: 9999999999;
 }
 .FO_flash_tab_header{
-    display: flex;
     flex-wrap: wrap;
     width: 100%;
     position: relative;
@@ -3073,10 +3072,14 @@ width: 100%;
 /*    margin: 5px;*/
     background-color: var(--fo-bg6-color);
     border-radius: 10px 10px 0 0;
+    display: inline-flex;
+    overflow: auto;
+    flex-direction: column;
+    align-content: flex-start;
 }
 .FO_flash_tab_header .fo_button{
     max-width: 90px !important;
-    max-height: 40px;
+    height: 100%;
     align-items: center;
     padding: 10px 3px;
     line-height: normal;

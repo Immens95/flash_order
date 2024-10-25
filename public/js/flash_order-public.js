@@ -79,6 +79,12 @@ jQuery(document).ready(function($) {
     });
 
 
+    //jQuery('.fo_column_products .fo_tab_prod').bind('touchstart', function(event) {
+	//	console.log(event);
+	//	jQuery(event).trigger('ondragstart');
+	//	//element.ontouchstart
+	//});
+
 
 });
 
@@ -352,7 +358,11 @@ function FOallowDrop(ev) {
 }
 
 function FOdrag(ev) {
+	//jQuery(input)
 	var foprodid = ev.target.attributes.foprodid.nodeValue;
+	//var foprodid = jQuery(input).attr('foprodid');
+
+	//console.log(ev);
 	// console.log(jQuery(ev.target).find('.FO_prod_name_manage').text());
 	// console.log(foprodid);
 	ev.dataTransfer.setData("foprodid", foprodid);
@@ -384,7 +394,7 @@ function FOdrop(ev) {
 	args['fo_cat_copy'] = jQuery('.fo_cat_copy').attr('fo_cat_copy');
 	
 	jQuery('.fo_tab_prod[foprodid="'+foprodid+'"]').attr('fomacrocat',fo_cat_name);
-
+console.log(fo_cat_name);
 	if (args['fo_cat_copy']) {
 
 	} else{
@@ -396,11 +406,34 @@ function FOdrop(ev) {
 
 }
 
+function touchstartDrag(event,input) {
+  // go through origin array
+//jQuery(input);
+
+//console.log(jQuery(input));
+  var image = jQuery(input).find('.FO_prod_img').clone();
+
+  // position the image to the touch, can be improve to detect the position of touch inside the image
+  let left = event.touches[0].pageX;
+  let top = event.touches[0].pageY;
+
+  image.css("scale", "0.7");
+  image.css("position", "fixed");
+  //image.css("z-index", "99999999999999999999999999999999999");
+  image.css("left", left+"px");
+  image.css("top", top+"px");
+
+  console.log(event);
+
+  jQuery('.FO_flash_tab_order_container').append(image);
+}
 
 
-
-
-
+jQuery('.fo_column_products .fo_tab_prod').bind('touchstart', function(event) {
+console.log(event);
+	//jQuery(event).trigger('mousedown');
+	//element.ontouchstart
+});
 
 
 
@@ -2303,9 +2336,11 @@ function fo_tab_show_variation_button(){
 		if ( jQuery('.fo_tab_col_2').attr('fo_show') == 'hide' ) {
 			jQuery('.fo_tab_col_2').show();
 			jQuery('.fo_tab_col_2').attr('fo_show','show');
+			//jQuery('.fo_tab_col_1').attr('style','width:calc(55% - 21px);');
 		} else{
 			jQuery('.fo_tab_col_2').hide();
 			jQuery('.fo_tab_col_2').attr('fo_show','hide');
+			//jQuery('.fo_tab_col_1').attr('style','width:calc(65% - 21px);');
 		}
 	} else{
 
