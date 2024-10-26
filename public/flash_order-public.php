@@ -4044,11 +4044,11 @@ function FO_flash_tab_order( $tavoli = array() ){
 		</div>
 
 		<div class="FO_flash_tab_header">
-			<div class="fo_button" onclick="FO_filter_tab_product(<?php echo "'-BLANK-'"; ?>);fo_tab_hystory_space('.fo_column_products','.fo_column_story','.fo_column_riepilogo')" ondrop="FOdrop(event)" ondragover="FOallowDrop(event)" fo_cat_name="-BLANK-" fo_cat_id="-BLANK-" fo_cat_ceck="<?php echo esc_attr($m_cat_check);?>">
+			<div class="fo_button fo_cat_butt" onclick="FO_filter_tab_product(<?php echo "'-BLANK-'"; ?>);fo_tab_hystory_space('.fo_column_products','.fo_column_story','.fo_column_riepilogo')" ondrop="FOdrop(event)" ondragover="FOallowDrop(event)" fo_cat_name="-BLANK-" fo_cat_id="-BLANK-" fo_cat_ceck="<?php echo esc_attr($m_cat_check);?>">
 				<span class="dashicons dashicons-editor-customchar" fo_cat_name="-BLANK-" fo_cat_id="-BLANK-" fo_cat_ceck="<?php echo esc_attr($m_cat_check);?>"></span>
 			</div>
 			<?php foreach ($products_macro_categories->terms as $key => $value) { ?>
-				<div class="fo_button" onclick="FO_filter_tab_product(<?php echo "'".esc_attr($value->slug)."'"; ?>);fo_tab_hystory_space('.fo_column_products','.fo_column_story','.fo_column_riepilogo')" ondrop="FOdrop(event)" ondragover="FOallowDrop(event)" fo_cat_name="<?php echo esc_attr($value->slug);?>" fo_cat_id="<?php echo esc_attr($value->term_id);?>" fo_cat_ceck="<?php echo esc_attr($m_cat_check);?>">
+				<div class="fo_button fo_cat_butt" onclick="FO_filter_tab_product(<?php echo "'".esc_attr($value->slug)."'"; ?>);fo_tab_hystory_space('.fo_column_products','.fo_column_story','.fo_column_riepilogo')" ondrop="FOdrop(event)" ondragover="FOallowDrop(event)" fo_cat_name="<?php echo esc_attr($value->slug);?>" fo_cat_id="<?php echo esc_attr($value->term_id);?>" fo_cat_ceck="<?php echo esc_attr($m_cat_check);?>">
 					<?php echo esc_attr($value->name);?>
 				</div>
 			<?php } ?>
@@ -4314,7 +4314,7 @@ function FO_flash_tab_order( $tavoli = array() ){
 							$short_title = (FOcheck(get_post_meta($product->get_id(),'short_title')) && get_post_meta($product->get_id(),'short_title')[0]!='')?get_post_meta($product->get_id(),'short_title')[0]:$product->get_name();
 							$slang_title = (FOcheck(get_post_meta($product->get_id(),'slang_title')) && get_post_meta($product->get_id(),'slang_title')[0]!='' )?get_post_meta($product->get_id(),'slang_title')[0]:$short_title;
 							?>
-							<div class="fo_tab_prod relative" foprodid="<?php echo esc_attr($product->get_id());?>" foprodtot="<?php echo esc_attr($product->get_price());?>" fomacrocat="<?php echo esc_attr($macro_cat[0]->slug);?>" style="<?php echo esc_attr($display);?>" onclick="FO_filter_tab_variant(this,<?php echo "'".esc_attr($product->get_id())."'"; ?>)" fo_index="0" fo_index_story="0" fo_modificable="true" fo_type="new" draggable="true" ontouchstart="touchstartDrag(event,this)" ondragstart="FOdrag(event)">
+							<div class="fo_tab_prod relative" foprodid="<?php echo esc_attr($product->get_id());?>" foprodtot="<?php echo esc_attr($product->get_price());?>" fomacrocat="<?php echo esc_attr($macro_cat[0]->slug);?>" style="<?php echo esc_attr($display);?>" onclick="FO_filter_tab_variant(this,<?php echo "'".esc_attr($product->get_id())."'"; ?>)" fo_index="0" fo_index_story="0" fo_modificable="true" fo_type="new" draggable="true" ontouchmove="touchstartDrag(event,this)" ontouchend="FOtouchdrop(event)" ontouchcancel="FOtouchdrop(event)" ondragstart="FOdrag(event)">
 								<span class="fo_tab_prod_remove dashicons dashicons-trash" onclick="" style="display:none;"></span>
 								<div class="FO_prod_name_manage fo_text_fix">
 									<?php echo esc_attr($slang_title); ?>

@@ -407,33 +407,61 @@ console.log(fo_cat_name);
 }
 
 function touchstartDrag(event,input) {
-  // go through origin array
-//jQuery(input);
+	if (jQuery('input[name="fop_touch_drag_drop"]').prop('checked')) {
+	
+	  var prod = jQuery(input);
+	
+	  let left = parseFloat(event.touches[0].clientX) - 50;
+	  let top = parseFloat(event.touches[0].clientY) - 25;
+	
+	  prod.addClass("fo_touch_drag");
+	  prod.css("left", left+"px");
+	  prod.css("top", top+"px");
+	  prod.attr("fo_posX", left+50);
+	  prod.attr("fo_posY", top+25);
+	}
+}
 
-//console.log(jQuery(input));
-  var image = jQuery(input).find('.FO_prod_img').clone();
+function FOtouchdrop(event) {
+	if (jQuery('input[name="fop_touch_drag_drop"]').prop('checked')) {
+		var elem = jQuery(event.target).closest('.fo_tab_prod');
+			jQuery(elem).removeClass("fo_touch_drag");
+			jQuery(elem).css("left", "");
+			jQuery(elem).css("top", "");
 
-  // position the image to the touch, can be improve to detect the position of touch inside the image
-  let left = event.touches[0].pageX;
-  let top = event.touches[0].pageY;
+		var targ = document.elementFromPoint(jQuery(elem).attr('fo_posX'),jQuery(elem).attr('fo_posY')) // x, y
 
-  image.css("scale", "0.7");
-  image.css("position", "fixed");
-  //image.css("z-index", "99999999999999999999999999999999999");
-  image.css("left", left+"px");
-  image.css("top", top+"px");
+		if (jQuery(targ).hasClass('fo_cat_butt')) {
 
-  console.log(event);
+			var foprodid = jQuery(elem).attr("foprodid");
+			var foprodname = jQuery(elem).find('.FO_prod_name_manage').text().trim();
+			var fo_cat_name = jQuery(targ).attr("fo_cat_name");
+			var fo_cat_id = jQuery(targ).attr("fo_cat_id");
+			var fo_cat_ceck = jQuery(targ).attr("fo_cat_ceck");
+		
+			var args = [];
+		
+			args['foprodid'] = foprodid;
+			args['foprodname'] = foprodname;
+			args['fo_cat_name'] = fo_cat_name;
+			args['fo_cat_id'] = fo_cat_id;
+			args['fo_cat_ceck'] = fo_cat_ceck;
+			args['fo_cat_copy'] = jQuery('.fo_cat_copy').attr('fo_cat_copy');
+			
+			FOP_change_category( args );
 
-  jQuery('.FO_flash_tab_order_container').append(image);
+			jQuery(elem).attr('fomacrocat',fo_cat_name);
+			jQuery(elem).hide();
+
+			console.log(elem);
+		} else{
+			
+		}
+	}
 }
 
 
-jQuery('.fo_column_products .fo_tab_prod').bind('touchstart', function(event) {
-console.log(event);
-	//jQuery(event).trigger('mousedown');
-	//element.ontouchstart
-});
+
 
 
 
