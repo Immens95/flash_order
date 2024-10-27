@@ -1308,6 +1308,7 @@ function FO_calc_totals(){
 		var temp_r_price = 0.00;
 		if (jQuery(e).find('[fo_tab_target="price"]').val()!='') {
 			var temp_r_price =  parseFloat( jQuery(e).find('[fo_tab_target="price"]').val() );
+			temp_r_price = temp_r_price * parseFloat(jQuery(e).find('[fo_tab_target="qty"]').val());
 		}
 		tot_r = parseFloat( tot_r ) + parseFloat( temp_r_price );
 	});
@@ -1318,6 +1319,7 @@ function FO_calc_totals(){
 		var temp_s_price = 0.00;
 		if (jQuery(e).find('[fo_tab_target="price"]').val()!='') {
 			var temp_s_price =  parseFloat( jQuery(e).find('[fo_tab_target="price"]').val() );
+			temp_s_price = temp_s_price * parseFloat(jQuery(e).find('[fo_tab_target="qty"]').val());
 		}
 		tot_s = parseFloat( tot_s ) + parseFloat( temp_s_price );
 	});
@@ -1328,6 +1330,7 @@ function FO_calc_totals(){
 		var temp_p_price = 0.00;
 		if (jQuery(e).find('[fo_tab_target="price"]').val()!='') {
 			var temp_p_price =  parseFloat( jQuery(e).find('[fo_tab_target="price"]').val() );
+			temp_p_price = temp_p_price * parseFloat(jQuery(e).find('[fo_tab_target="qty"]').val());
 		}
 		tot_p = parseFloat( tot_p ) + parseFloat( temp_p_price );
 	});
@@ -1396,8 +1399,10 @@ function fo_tab_parse_qty( input ){
 			// prod.find('input[fo_tab_target="id"]').attr('name', prod.find('input[fo_tab_target="id"]').attr('name')+'['+jQuery(input).text()+']');
 		} else{
 			prod.find('input[fo_tab_target="id"]').val(jQuery(input).val());
+			prod.find('input[fo_tab_target="qty"]').val(jQuery(input).val());
 		}
 	}
+	FO_calc_totals();
 }
 
 function fo_tab_parse_variant( input ){
@@ -1874,6 +1879,9 @@ function FO_order_tab_ajax(input = '.fo_column_riepilogo', action = 'FO_flash_ta
 			}
 			return;
 		}
+		//error: function(response){
+		//	console.log(response);
+		//}
 	});
 	// console.log('order submitted sucessfully 2 !!! ');
 }
