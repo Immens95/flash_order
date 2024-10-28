@@ -1239,11 +1239,6 @@ function FO_filter_tab_variant( input, slug_target ){
 		jQuery(input).addClass('fo_tab_prod_modify');
 	}else if (jQuery(input).attr('fo_type') == 'story') {
 		jQuery(input).addClass('fo_tab_prod_story');
-		if ( jQuery(input).hasClass('fo_tab_prod_story') ) {
-		// 	jQuery(input).removeClass('fo_tab_prod_story');
-		} else{
-			// jQuery(input).addClass('fo_tab_prod_story');
-		}
 	}else {
 		// jQuery(input).addClass('fo_tab_prod_selected');
 	}
@@ -1252,6 +1247,7 @@ function FO_filter_tab_variant( input, slug_target ){
 	} else{
 		// jQuery('.FO_flash_tab_qty').show();
 	}
+
 	var price = jQuery(input).find('[fo_tab_target="price"]').val();
 		if (price==''||price==null||!price) {price = 0.00}
 
@@ -1292,7 +1288,7 @@ jQuery('.fo_tab_price').attr('fo_modificable',jQuery(input).attr('fo_modificable
 	}
 	jQuery('.fo_target_qty_prod').val(jQuery(input).find('[fo_tab_target="qty"]').val());
 	
-jQuery('.fo_target_qty_prod').attr('fo_modificable',jQuery(input).attr('fo_modificable'));
+	jQuery('.fo_target_qty_prod').attr('fo_modificable',jQuery(input).attr('fo_modificable'));
 
 	jQuery('.fo_tab_variantcont').hide();
 	jQuery('.fo_tab_variantcont[foprodidtarget="'+slug_target+'"]').attr('fo_modificable',jQuery(input).attr('fo_modificable') );
@@ -1351,7 +1347,13 @@ function FO_calc_totals(){
 
 function fo_tab_add_product_to_order(){
 	var copy = jQuery('.fo_column_products .fo_tab_prod[foprodid="'+jQuery('.fo_actual_prod').text()+'"]').clone();
-	copy
+
+	copy.attr('draggable','false');
+	copy.attr('ontouchmove','');
+	copy.attr('ondragstart','');
+	copy.attr('ontouchcancel','');
+	copy.attr('ontouchend','');
+
 	if ( copy.attr('fo_type') == 'new' ) {
 		var index = jQuery('.fo_tab_prod_index').text();
 		var index_story = jQuery('.fo_tab_prod_index_story').text();

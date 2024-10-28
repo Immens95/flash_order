@@ -3689,7 +3689,7 @@ if (isset($_POST['foserialmap'])) {
 		$price_array = $price_array;
 
 		foreach ( $E as $pos => $item) {
-			if ( isset($item['price']) ) { 
+			if ( isset($item['price']) ) {
 				$order->update_meta_data( '{'.substr($pos,1).'}price-'.sanitize_text_field(key($item['price'])), sanitize_text_field( array_values( $item['price'] )[0] ) );
 				$info_string[sanitize_text_field(key($item['price']))] = sanitize_text_field(array_values($item['price'])[0]);
 			}
@@ -3703,12 +3703,13 @@ if (isset($_POST['foserialmap'])) {
 				if ( isset( $vari_arr[sanitize_text_field(key($item['id']))] ) ) {
 					$product_variation = $product->get_matching_variation( $vari_arr[sanitize_text_field(key($item['id']))] );
 					$product = wc_get_product($product_variation);
-					// $product->set_price( $price_arr[strval(key($item['id']))] );
-					// $product->save();
-					$order->add_product( $product, sanitize_text_field( array_values( $item['id'] )[0] ), array('total'=>$total) );
-				} else{
-					$order->add_product( $product, sanitize_text_field( array_values( $item['id'] )[0] ), array('total'=>$total ) );
 				}
+				$p_qty =  (int)sanitize_text_field(array_values($item['id'])[0]);
+				// if ( $p_qty > 1 ) {
+				// 	$total = $total * $p_qty;
+				// 	$total = number_format((float)$total, 2, '.', '');
+				// }
+				$order->add_product( $product, $p_qty, array('total'=>$total));
 				$info_string[sanitize_text_field(key($item['id']))] = sanitize_text_field(array_values($item['id'])[0]);
 			}
 			if (isset($item['note'])) {
@@ -3802,7 +3803,10 @@ if ($order->get_items()!=null) {
 	foreach ($order->get_items() as $key => $item) {
 		// $price_arr[$item->get_id()]
 		$tot = $price_array[$item->get_product_id()];
-
+		if ((int)$item->get_quantity()>1) {
+			// $tot = (float)$tot * (int)$item->get_quantity();
+		}
+		// $qty = $item->get_quantity();
 	    wc_update_order_item_meta($item->get_id(),'_line_total',$tot); //_line_total discount_amount coupon_amount
 	    wc_update_order_item_meta($item->get_id(),'_line_subtotal',$tot); //_line_total discount_amount coupon_amount
 		$item->save_meta_data();
@@ -4125,15 +4129,15 @@ function FO_flash_tab_order( $tavoli = array() ){
 											</div>
 											<input fo_tab_target="id" type="hidden" name="[<?php echo esc_attr($meta_index);?>][id][<?php echo esc_attr($prod_id);?>]" value="<?php echo esc_attr($qty);?>">
 
-											<!-- <input fo_tab_target="Ingredienti" type="hidden" name="[<?php echo esc_attr($meta_index);?>][Ingredienti][<?php echo esc_attr($prod_id);?>]" value="<?php echo $ingredient;?>"> -->
+											<!-- <input fo_tab_target="Ingredienti" type="hidden" name="[<?php echo esc_attr($meta_index);?>][Ingredienti][<?php echo esc_attr($prod_id);?>]" value="<?php ?>"> -->
 
-											<!-- <input fo_tab_target="Allergeni" type="hidden" name="[<?php echo esc_attr($meta_index);?>][Allergeni][<?php echo esc_attr($prod_id);?>]" value="<?php echo $allergeni;?>"> -->
+											<!-- <input fo_tab_target="Allergeni" type="hidden" name="[<?php echo esc_attr($meta_index);?>][Allergeni][<?php echo esc_attr($prod_id);?>]" value="<?php ?>"> -->
 
-											<input fo_tab_target="Temperature" type="hidden" name="[<?php echo esc_attr($meta_index);?>][Temperature][<?php echo esc_attr($prod_id);?>]" value="<?php echo $temperature;?>">
+											<input fo_tab_target="Temperature" type="hidden" name="[<?php echo esc_attr($meta_index);?>][Temperature][<?php echo esc_attr($prod_id);?>]" value="<?php echo esc_attr($temperature);?>">
 
-											<input fo_tab_target="price" type="hidden" name="[<?php echo esc_attr($meta_index);?>][price][<?php echo esc_attr($prod_id);?>]" value="<?php echo $total;?>">
+											<input fo_tab_target="price" type="hidden" name="[<?php echo esc_attr($meta_index);?>][price][<?php echo esc_attr($prod_id);?>]" value="<?php echo esc_attr($total);?>">
 
-											<input fo_tab_target="note" type="hidden" name="[<?php echo esc_attr($meta_index);?>][note][<?php echo esc_attr($prod_id);?>]" value="<?php echo $note;?>">
+											<input fo_tab_target="note" type="hidden" name="[<?php echo esc_attr($meta_index);?>][note][<?php echo esc_attr($prod_id);?>]" value="<?php echo esc_attr($note);?>">
 											<?php 
 								FO_debug($meta_data);
 								FO_debug($meta_array);
@@ -4145,77 +4149,6 @@ function FO_flash_tab_order( $tavoli = array() ){
 										</div>
 								<?php }
 
-
-
-
-
-
-/*
-								foreach ($items as $item_id => $item) {
-
-									$product = $item->get_product();
-									
-									if ($product == false||$product == null) {continue;}
-										$short_title = (FOcheck(get_post_meta($product->get_id(),'short_title')) && get_post_meta($product->get_id(),'short_title')[0]!='')?get_post_meta($product->get_id(),'short_title')[0]:$product->get_name();
-										$slang_title = ( FOcheck(get_post_meta($product->get_id(),'slang_title') ) && get_post_meta($product->get_id(),'slang_title')[0]!='' )?get_post_meta($product->get_id(),'slang_title')[0]:$short_title;
-									$order_index++;
-										if ($product->get_type() == 'variation') {
-											$product_id = $product->get_parent_id();
-											// $product_attr = $product->get_variation_attributes();
-										} else{
-											$product_id = $product->get_id();
-											// $product_attr = $product->get_attributes();
-										}
-										// FO_debug($product_attr);
-
-										// $product = wc_get_product( $product_id );
-										// $def_p_attr = $product->get_default_attributes();
-										// FO_debug( $product->get_default_attributes() );
-										?>
-										<div class="fo_tab_prod fo_story relative" foprodid="<?php echo esc_attr($product_id);?>" foprodtot="<?php echo esc_attr($item->get_subtotal());?>" onclick="FO_filter_tab_variant(this,<?php echo "'".esc_attr($product_id)."'"; ?>)" fo_index="<?php echo esc_attr($order_index);?>" fo_index_story="<?php echo esc_attr($story_v);?>" fo_modificable="false" fo_type="story" fotableid="<?php echo esc_attr($tavolo->ID);?>">
-											<div class="FO_prod_name_manage fo_text_fix">
-												<?php echo esc_attr($slang_title);?>
-											</div>
-											<div class="FO_prod_img" style="border-radius:5px;">
-												<?php echo wp_kses_post($product->get_image());?>
-											</div>
-											<input fo_tab_target="id" type="hidden" name="[<?php echo esc_attr($f_i);?>][id][<?php echo esc_attr($product_id);?>]" value="1">
-											<input fo_tab_target="Ingredienti" type="hidden" name="[<?php echo esc_attr($f_i);?>][Ingredienti][<?php echo esc_attr($product_id);?>]" value="">
-											<input fo_tab_target="Temperature" type="hidden" name="[<?php echo esc_attr($f_i);?>][Temperature][<?php echo esc_attr($product_id);?>]" value="">
-											<input fo_tab_target="price" type="hidden" name="[<?php echo esc_attr($f_i);?>][price][<?php echo esc_attr($product_id);?>]" value="<?php echo esc_attr($item->get_subtotal());?>">
-											<input fo_tab_target="note" type="hidden" name="[<?php echo esc_attr($f_i);?>][note][<?php echo esc_attr($product_id);?>]" value="">
-											<?php 
-								FO_debug($meta_data);
-								FO_debug($meta_array);
-											// foreach ($product_attr as $k => $v) {
-												// if (str_contains($k, 'pa_')) {
-												// 	$k = str_replace('pa_', '', $k);
-												// }
-												// foreach ($varianti as $key_varianti => $value_varianti) {
-											foreach ($meta_array as $k => $v) {
-													// FO_debug( $value_varianti );
-												// }
-												// if (isset($varianti[$k]) && $varianti[$k] != '' ) {
-													// $vari_val = key( $varianti[$k] );
-													// $vari_key = $varianti[$k];
-												// } else{
-													// if ($product->get_type()=='variation') {
-													// 	$vari_val = $v;
-													// 	$vari_key = str_replace('attribute_', '', $k);
-													// } else {
-													// 	$vari_val = (isset($def_p_attr[$k]))?$def_p_attr[$k]:'';
-													// 	$vari_key = str_replace('pa_', '', $k);
-													// }
-												// }
-												$vari_val = $v;
-												$vari_key = $k;
-												?>
-												<input fo_tab_target="variante" fovariant="<?php echo esc_attr($vari_key);?>" name="[<?php echo esc_attr($f_i);?>][Variante][<?php echo esc_attr($product_id);?>][<?php echo esc_attr($vari_key);?>]" type="hidden" value="<?php echo esc_attr($vari_val);?>">
-											<?php }  ?>
-										</div>
-								<?php $f_i++; }
-
-*/
 								 foreach ( $order->get_fees() as $item_fee ) {
 									$fee_name = $item_fee->get_name();
 									$fee_total = $item_fee->get_total();
@@ -4247,6 +4180,13 @@ function FO_flash_tab_order( $tavoli = array() ){
 							<?php 
 							}
 						?>
+					<!-- 
+						<div class="fo_button_thin fo_tab_order_info" onclick="" style="color: lightblue;">
+							<span class="dashicons dashicons-welcome-widgets-menus"></span>
+							<?php esc_html_e('INFO','flash_order');?>
+						</div>
+					-->
+
 						<div class="fo_tab_tool_total" style="margin-top:auto;">
 							<b>Totale:</b>
 							<strong> <?php echo esc_attr(FO_price($abs_total));?> </strong>
@@ -4266,20 +4206,6 @@ function FO_flash_tab_order( $tavoli = array() ){
 						</div>
 						<script type="text/javascript">
 							FO_calc_totals();
-							// jQuery(".fo_column_riepilogo").scroll(function(){
-							// 	if (jQuery(".fo_column_riepilogo").scrollTop()>1) {
-							// 		jQuery(".fo_tool_riepilogo").css('marginTop',jQuery(".fo_column_riepilogo").scrollTop());
-							// 	}
-							// });
-							// jQuery(".fo_column_story").scroll(function(){
-							// 	// if (jQuery(".fo_column_story").scrollTop()>1) {
-							// 		jQuery(".fo_tool_story").css('marginTop',jQuery(".fo_column_story").scrollTop());
-							// 	// }
-							// });
-							// addEventListener("message", (event) => {
-							// 	console.log('message');
-								
-							// });
 						</script>
 					</div>
 				</div>
@@ -5385,11 +5311,11 @@ function FO_save_post_extra_field( $post_id, $post, $update ) {
 	}//_fononce_post_extra_field: jQuery('input[name="_fononce_post_extra_field"]').val(),
 
 	if ( isset( $_POST['short_title'] ) ) {
-		$short_title = $_POST['short_title'];
+		$short_title = sanitize_text_field(wp_unslash($_POST['short_title']));
 		update_post_meta( $post_id, 'short_title', $short_title );
 	}
 	if ( isset( $_POST['slang_title'] ) ) {
-		$slang_title = $_POST['slang_title'];
+		$slang_title = sanitize_text_field(wp_unslash($_POST['slang_title']));
 		update_post_meta( $post_id, 'slang_title', $slang_title );
 	}
 }
@@ -6501,8 +6427,8 @@ function FO_validate_pickup_delivery_section(){
     if ( !isset($_POST['_fononce_pickup_delivery_section']) && !wp_verify_nonce( sanitize_text_field(wp_unslash( $_POST['_fononce_pickup_delivery_section'])), 'FO_pickup_delivery_section_nonce' ) ) {
 		return;
 	}	//_fononce_stat_update_nonce: jQuery('input[name="_fononce_stat_update_nonce"]').val(),
-	if (!$_POST['fo_delivery_date']) wc_add_notice(esc_html__('Seleziona una data!', 'flash_order') , 'error');
-	if (!$_POST['fo_delivery_time']) wc_add_notice(esc_html__('Seleziona un\'orario!', 'flash_order') , 'error');
+	if (!empty($_POST['fo_delivery_date'])) wc_add_notice(esc_html__('Seleziona una data!', 'flash_order') , 'error');
+	if (!empty($_POST['fo_delivery_time'])) wc_add_notice(esc_html__('Seleziona un\'orario!', 'flash_order') , 'error');
 }
 
 function FO_save_pickup_delivery_section($order_id){
@@ -6510,13 +6436,13 @@ function FO_save_pickup_delivery_section($order_id){
 		return;
 	}	//_fononce_stat_update_nonce: jQuery('input[name="_fononce_stat_update_nonce"]').val(),
 	if (!empty($_POST['delivery_type'])) {
-		update_post_meta($order_id, 'delivery_type',sanitize_text_field($_POST['delivery_type']));
+		update_post_meta($order_id, 'delivery_type',sanitize_text_field(wp_unslash($_POST['delivery_type'])));
 	}
 	if (!empty($_POST['fo_delivery_date'])) {
-		update_post_meta($order_id, 'fo_delivery_date',sanitize_text_field($_POST['fo_delivery_date']));
+		update_post_meta($order_id, 'fo_delivery_date',sanitize_text_field(wp_unslash($_POST['fo_delivery_date'])));
 	}
 	if (!empty($_POST['fo_delivery_time'])) {
-		update_post_meta($order_id, 'fo_delivery_time',sanitize_text_field($_POST['fo_delivery_time']));
+		update_post_meta($order_id, 'fo_delivery_time',sanitize_text_field(wp_unslash($_POST['fo_delivery_time'])));
 	}
 }
 
