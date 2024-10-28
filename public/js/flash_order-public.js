@@ -1248,11 +1248,12 @@ function FO_filter_tab_variant( input, slug_target ){
 		// jQuery(input).addClass('fo_tab_prod_selected');
 	}
 	if ( jQuery(input).attr('fo_special') == 'Sconto' ) {
-		jQuery('.FO_flash_tab_qty').hide();
+		// jQuery('.FO_flash_tab_qty').hide();
 	} else{
-		jQuery('.FO_flash_tab_qty').show();
+		// jQuery('.FO_flash_tab_qty').show();
 	}
 	var price = jQuery(input).find('[fo_tab_target="price"]').val();
+		if (price==''||price==null||!price) {price = 0.00}
 
 	jQuery(input).find('[fo_tab_target="variante"]').each(function(i,e){
 		if (jQuery(e).val() == '') {
@@ -1287,9 +1288,10 @@ jQuery('.fo_tab_price').attr('fo_modificable',jQuery(input).attr('fo_modificable
 			// prod.find('input[fo_tab_target="id"]').attr('name', prod.find('input[fo_tab_target="id"]').attr('name')+'['+jQuery(input).text()+']');
 		jQuery('.FO_flash_tab_qty').hide();
 	} else{
-		jQuery('.fo_target_qty_prod').val(jQuery(input).find('input[fo_tab_target="id"]').val());
 		jQuery('.FO_flash_tab_qty').show();
 	}
+	jQuery('.fo_target_qty_prod').val(jQuery(input).find('[fo_tab_target="qty"]').val());
+	
 jQuery('.fo_target_qty_prod').attr('fo_modificable',jQuery(input).attr('fo_modificable'));
 
 	jQuery('.fo_tab_variantcont').hide();
@@ -1306,10 +1308,13 @@ function FO_calc_totals(){
 	var tot_r = 0.00;
 	jQuery('.fo_column_riepilogo .fo_tab_prod').each(function(i,e){
 		var temp_r_price = 0.00;
-		if (jQuery(e).find('[fo_tab_target="price"]').val()!='') {
-			var temp_r_price =  parseFloat( jQuery(e).find('[fo_tab_target="price"]').val() );
-			temp_r_price = temp_r_price * parseFloat(jQuery(e).find('[fo_tab_target="qty"]').val());
-		}
+		var qty_r = parseFloat(jQuery(e).find('[fo_tab_target="qty"]').val());
+			if (qty_r==''||qty_r==null) {qty_r = 1}
+		// if (jQuery(e).find('[fo_tab_target="price"]').val()!='') {
+		var temp_r_price =  parseFloat( jQuery(e).find('[fo_tab_target="price"]').val() );
+			if (temp_r_price==''||temp_r_price==null||!temp_r_price) {temp_r_price = 0}
+		temp_r_price = parseFloat( temp_r_price * qty_r);
+		// }
 		tot_r = parseFloat( tot_r ) + parseFloat( temp_r_price );
 	});
 	jQuery('.fo_tool_riepilogo .fo_tab_tool_total strong').text( parseFloat(tot_r).toFixed(2) + jQuery('.fo_woo_symb').text() );
@@ -1317,10 +1322,13 @@ function FO_calc_totals(){
 	var tot_s = 0.00;
 	jQuery('.fo_column_story .fo_tab_prod.fo_tab_prod_story[fotableid="'+jQuery('input[name="table_ID"]').val()+'"]').each(function(i,e){
 		var temp_s_price = 0.00;
-		if (jQuery(e).find('[fo_tab_target="price"]').val()!='') {
-			var temp_s_price =  parseFloat( jQuery(e).find('[fo_tab_target="price"]').val() );
-			temp_s_price = temp_s_price * parseFloat(jQuery(e).find('[fo_tab_target="qty"]').val());
-		}
+		var qty_s = parseFloat(jQuery(e).find('[fo_tab_target="qty"]').val());
+			if (qty_s==''||qty_s==null) {qty_s = 1}
+		// if (jQuery(e).find('[fo_tab_target="price"]').val()!='') {
+		var temp_s_price =  parseFloat( jQuery(e).find('[fo_tab_target="price"]').val() );
+			if (temp_s_price==''||temp_s_price==null) {temp_s_price = 0}
+		temp_s_price = parseFloat( temp_s_price * qty_s );
+		// }
 		tot_s = parseFloat( tot_s ) + parseFloat( temp_s_price );
 	});
 	jQuery('.fo_tool_story .fo_tab_tool_total strong').text( parseFloat(tot_s).toFixed(2) + jQuery('.fo_woo_symb').text() );
@@ -1328,10 +1336,13 @@ function FO_calc_totals(){
 	var tot_p = 0.00;
 	jQuery('.fo_pay_column .fo_tab_prod').each(function(i,e){
 		var temp_p_price = 0.00;
-		if (jQuery(e).find('[fo_tab_target="price"]').val()!='') {
-			var temp_p_price =  parseFloat( jQuery(e).find('[fo_tab_target="price"]').val() );
-			temp_p_price = temp_p_price * parseFloat(jQuery(e).find('[fo_tab_target="qty"]').val());
-		}
+		var qty_p = parseFloat(jQuery(e).find('[fo_tab_target="qty"]').val());
+			if (qty_p==''||qty_p==null) {qty_p = 1}
+		// if (jQuery(e).find('[fo_tab_target="price"]').val()!='') {
+		var temp_p_price =  parseFloat( jQuery(e).find('[fo_tab_target="price"]').val() );
+			if (temp_p_price==''||temp_p_price==null) {temp_p_price = 0}
+			temp_p_price = parseFloat( temp_p_price * qty_p );
+		// }
 		tot_p = parseFloat( tot_p ) + parseFloat( temp_p_price );
 	});
 	jQuery('.fo_pay_total').text( parseFloat(tot_p).toFixed(2) + jQuery('.fo_woo_symb').text() );
@@ -1396,7 +1407,7 @@ function fo_tab_parse_qty( input ){
 	var prod = jQuery('.fo_tab_prod[foprodid="'+jQuery('.fo_actual_prod').text()+'"][fo_index="'+jQuery('.fo_actual_index').text()+'"][fo_index_story="'+jQuery('.fo_actual_index_story').text()+'"]');
 	if ( jQuery(input).attr('fo_modificable') == 'true' ) {
 		if ( prod.attr('fo_special') == 'Special' ||  prod.attr('fo_special') == 'Sconto' ) {
-			// prod.find('input[fo_tab_target="id"]').attr('name', prod.find('input[fo_tab_target="id"]').attr('name')+'['+jQuery(input).text()+']');
+			prod.find('input[fo_tab_target="qty"]').val(jQuery(input).val());
 		} else{
 			prod.find('input[fo_tab_target="id"]').val(jQuery(input).val());
 			prod.find('input[fo_tab_target="qty"]').val(jQuery(input).val());
@@ -1550,6 +1561,8 @@ function FO_add_special_product( text ){
 	prodSpecial.removeClass('fo_tab_prod_selected');
 
 	prodSpecial.find('[fo_tab_target="price"]').val(tab_price);
+	prodSpecial.find('[fo_tab_target="id"]').val(tab_price);
+
 	prodSpecial.find('[fo_tab_target="price"]').attr('regularPrice',tab_price);
 	prodSpecial.find('.FO_prod_name_manage').text(text);
 
@@ -1786,7 +1799,14 @@ function FO_order_tab_ajax(input = '.fo_column_riepilogo', action = 'FO_flash_ta
 	}); 
 	console.log(Src_customers);
 
-	console.log(' order submitted sucessfully !!! ');
+	var created_via = 'tab';
+	if (action == 'FO_flash_tab_pay_ajax') {
+		created_via = 'pay_tab';
+		console.log(' Pay order submitted sucessfully !!! ');
+	}else{
+		console.log(' order submitted sucessfully !!! ');
+	}
+
 	jQuery('.FO_flash_tab_order_container').find('.FOloadingCardPublic').fadeOut();
 	jQuery(".FOloadingCardPublicMain").fadeOut(200);
 
@@ -1806,10 +1826,6 @@ function FO_order_tab_ajax(input = '.fo_column_riepilogo', action = 'FO_flash_ta
 	FO_tab_Card_hide();
 	FO_pay_tab_Card_hide();
 
-	var created_via = 'tab';
-	if (action == 'FO_flash_tab_pay_ajax') {
-		created_via = 'pay_tab';
-	}
 	// console.log(jQuery('input[name="user_ID"]').val());
 	
 	jQuery.ajax({
@@ -1865,25 +1881,25 @@ function FO_order_tab_ajax(input = '.fo_column_riepilogo', action = 'FO_flash_ta
 
 			if (action != 'FO_flash_tab_pay_ajax') {
 				jQuery('.FO_table_grid [fo_tableid="'+response.table_id+'"]').attr('fotable_status','1');
-				jQuery('.FO_table_grid [fo_tableid="'+response.table_id+'"] .FOloadingTable').hide();
-				jQuery('.fo_table_cell[fo_tableid="'+response.table_id+'"]').attr('onclick','FO_tab_Card_show(this)');
 			} else{
 				jQuery('.FO_table_grid [fo_tableid="'+response.table_id+'"]').attr('fotable_status','0');
-				jQuery('.FO_table_grid [fo_tableid="'+response.table_id+'"] .FOloadingTable').hide();
-				jQuery('.fo_table_cell[fo_tableid="'+response.table_id+'"]').attr('onclick','FO_tab_Card_show(this)');
 				jQuery('.fo_order_table_story[fotableid="'+response.table_id+'"][fo_order_id]').remove();
 				jQuery('.fo_tab_prod[fo_type="story"][fotableid="'+response.table_id+'"]').remove();
 				jQuery('.FO_table_grid [fo_tableid="'+response.table_id+'"]').css('backgroundColor','green');
 				jQuery('.FO_table_grid [fo_tableid="'+response.table_id+'"]').find('.fo_status_string')
 					.text(jQuery('#fo_tab_table_status_free_text').text());
+				jQuery('.FO_table_grid [fo_tableid="'+response.table_id+'"]').find('.fo_tab_notify').hide();
 			}
+
+			jQuery('.fo_table_cell[fo_tableid="'+response.table_id+'"]').attr('onclick','FO_tab_Card_show(this)');
+			jQuery('.FO_table_grid [fo_tableid="'+response.table_id+'"] .FOloadingTable').hide();
+
 			return;
 		}
 		//error: function(response){
 		//	console.log(response);
 		//}
 	});
-	// console.log('order submitted sucessfully 2 !!! ');
 }
 
 

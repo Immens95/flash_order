@@ -106,14 +106,14 @@ function FO_manage_table(){
             jQuery(".FOloadingCardPublicMain").fadeOut(200);
             fo_toggle_header_footer(true);
         });
-        jQuery(document).bind("touchstart", function(e) {
-        	if (true) {
-        		if ( e.target == '.fo_tab_prod_story') {
-
-        		}
-        		
-        	}
-		});
+        //jQuery(document).bind("touchstart", function(e) {
+        //	if (true) {
+        //		if ( e.target == '.fo_tab_prod_story') {
+		//
+        //		}
+        //		
+        //	}
+		//});
     </script>
 
 </div>

@@ -3590,8 +3590,10 @@ function FO_flash_tab_order_ajax( $poste = '', $clear = false ){
 	if ( !isset($_POST['_fononce_flash_tab_order']) && !wp_verify_nonce( sanitize_text_field(wp_unslash($_POST['_fononce_flash_tab_order'])), 'FO_flash_tab_order' ) ) {
 		return;
 	}
+	$check_for_pay = false;
 	if (FOcheck($poste) && is_array($poste) ) {
 		$_POST = $poste;
+		$check_for_pay = true;
 	}
 	// wp_send_json(array(
 	// 	// 'S_customers' => $_POST['S_customers'],
@@ -3681,15 +3683,6 @@ if (isset($_POST['foserialmap'])) {
 						$element = 0;
 					}
 					$price_array[$index] = $element;
-					// $product = new WC_Product(sanitize_text_field($index) );
-					// $product = wc_get_product( sanitize_text_field($index) );
-						// $product->set_price( sanitize_text_field($element) );
-						// update_post_meta(sanitize_text_field($index),'_price', sanitize_text_field($element));
-					// $product->save();
-					// $price_arr[$index] = array(
-					// 	'subtotal'	=> $element,
-					// 	'total' 	=> $element,
-					// );
 				}
 			}
 		}
@@ -3703,24 +3696,10 @@ if (isset($_POST['foserialmap'])) {
 			if ( isset($item['id']) ) {
 				$order->update_meta_data( '{'.substr($pos,1).'}index-'.sanitize_text_field(key($item['id'])), sanitize_text_field( array_values( $item['id'] )[0] ) );
 				$product = new WC_Product(sanitize_text_field(key($item['id'])) );
-				// $product = wc_get_product(sanitize_text_field(key($item['id'])) );
-				// $prod_id = sanitize_text_field(key($item['id']));
-				// if ( $price_arr[key($item['id'])] != null ) {
-					// $prod_args = array(
-					// 	// 'subtotal'=> array_values($price_array)[key($item['id'])],
-					// 	'total' => esc($price_array[sanitize_text_field(key($item['id']))]),
-					// );
+
 					$total = $price_array[sanitize_text_field(key($item['id']))];
 					$order->update_meta_data( '{'.substr($pos,1).'}'.sanitize_text_field(key($item['id'])), $total );
-					// $prod_args = $price_arr[sanitize_text_field(key($item['id']))];
-				// } else{
-					// $prod_args[key($item['id'])] = array();
-					// $price_arr[sanitize_text_field(key($item['id']))] = '100';
-					// $prod_args = array(
-					// // 	'subtotal'=> '100',
-					// 	'total' => '100',
-					// );
-				// }
+
 				if ( isset( $vari_arr[sanitize_text_field(key($item['id']))] ) ) {
 					$product_variation = $product->get_matching_variation( $vari_arr[sanitize_text_field(key($item['id']))] );
 					$product = wc_get_product($product_variation);
@@ -3771,11 +3750,12 @@ if (isset($_POST['foserialmap'])) {
 				foreach ( $item['prod_generic'] as $ind => $ele) {
 					$info_string['prod_generic'][$ind] = $ele;
 					$order->update_meta_data( '{'.substr($pos,1).'}prod_generic-'.$ind, $ind.' | '.$ele );
-
 					$prod_generic_fee = new WC_Order_Item_Fee();
 					$prod_generic_fee->set_name($ind);
+				  	// $qty = $E[$pos]['qty'][$ind];
+				  	// $tot = $ele * $qty;
 				  	$prod_generic_fee->set_total( $ele );
-
+				  	
 				  	$order->add_item($prod_generic_fee);
 				}
 			}
@@ -3811,13 +3791,14 @@ if (isset($_POST['foserialmap'])) {
 	$order->set_payment_method('cod');
 	$order->set_created_via( 'tab_ajax' );
 
-if ( $total_fee > 0.0 ) {
+if ($total_fee > 0.0 ) {
 	$fee = new WC_Order_Item_Fee();
 	$fee->set_name('Sconto');		//Give the Fee a name e.g. Discount
   	$fee->set_total( $total_fee );	//Set the Fee $total_fee
   	$order->add_item($fee);			//Add to the Order
 }
 
+if ($order->get_items()!=null) {
 	foreach ($order->get_items() as $key => $item) {
 		// $price_arr[$item->get_id()]
 		$tot = $price_array[$item->get_product_id()];
@@ -3827,7 +3808,7 @@ if ( $total_fee > 0.0 ) {
 		$item->save_meta_data();
 		$item->save();
 	}
-
+}
 	$order->calculate_totals();	//Recalculate the totals. IMPORTANT!
 	$order->save();
 
@@ -3879,6 +3860,14 @@ do_action( 'FO_flash_tab_order_ajax', $order_id );
 			'order_total'=> (string)$order->get_total(),
 			'price_array' => $price_array,
 			// 'vari_arr' => $vari_arr
+		));
+		die();
+	} else {
+		wp_send_json(array(
+			'table_id' => $table_id,
+			'order_id'=> wp_json_encode($order_id),
+			'order_total'=> (string)$order->get_total(),
+			//'price_array' => $price_array,
 		));
 		die();
 	}
@@ -4421,6 +4410,7 @@ function FO_flash_tab_order( $tavoli = array() ){
 							<img width="300" height="300" src="<?php echo esc_url(wc_placeholder_img_src( 300 )); ?>">
 						</div>
 						<input fo_tab_target="id" type="hidden" name="[prod_generic]" value="">
+						<input fo_tab_target="qty" type="hidden" name="[qty]" value="1">
 						<input fo_tab_target="Ingredienti" type="hidden" name="[Ingredienti]" value="">
 						<input fo_tab_target="Temperature" type="hidden" name="[Temperature]" value="">
 						<input fo_tab_target="price" type="hidden" name="[price]" value="0" regularPrice="0" price_added="">
@@ -4438,6 +4428,7 @@ function FO_flash_tab_order( $tavoli = array() ){
 							<img width="300" height="300" src="<?php echo esc_url(wc_placeholder_img_src( 300 )); ?>">
 						</div>
 						<input fo_tab_target="id" type="hidden" name="[sconto]" value="">
+						<input fo_tab_target="qty" type="hidden" name="[qty]" value="1">
 						<input fo_tab_target="price" type="hidden" name="[price]" value="0" regularPrice="0" price_added="">
 						<input fo_tab_target="note" type="hidden" name="[note]" value="">
 					</div>
