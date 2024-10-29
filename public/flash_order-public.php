@@ -1667,7 +1667,13 @@ function FO_create_post_QR_code() {
 	}
 	// Return the image tag.
 	$qr_url = esc_url_raw( plugin_dir_url( dirname( __FILE__ ) ) . 'includes/phpqrcode/QRgenerate/post_' . $post_id . '.png' );
-	return '<img src="'.esc_attr($qr_url).'" height="'.esc_attr($size).'" width="'.esc_attr($size).'">';
+	
+	$return = '<div class="fo_QR_pages">';
+	$return .= '<strong style="width:100%;">'.esc_html_e('Link per Questa Pagina:' , 'flash_order').'</strong>';
+	$return .= '<strong style="margin:20px;">'.get_home_url().'?p='.$post_id.'</strong>';
+	$return .= '<img src="'.esc_attr($qr_url).'" height="'.esc_attr($size).'" width="'.esc_attr($size).'">';
+	$return .= '</div>';
+	return $return;
 }
 
 
@@ -1905,11 +1911,11 @@ function FO_get_meta( $meta_key, $type = 'var' ){
   global $wpdb;
   $table = $wpdb->prefix . "flash_order_meta";
   if ( $type == 'var' ) {
-    $result = $wpdb->get_var( $wpdb->prepare( "SELECT meta_value FROM %i WHERE meta_key = %s", [ $table, $meta_key ] ) );
+    $result = $wpdb->get_var( $wpdb->prepare( "SELECT meta_value FROM %i WHERE meta_key = %s", [ $table, $meta_key ] ) );//phpcs:ignore
   } elseif ( $type == 'all' ) {
-    $result = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM %i WHERE meta_key = %s ORDER BY id", [ $table, $meta_key ] ) );
+    $result = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM %i WHERE meta_key = %s ORDER BY id", [ $table, $meta_key ] ) );//phpcs:ignore
   } else {
-    $result = $wpdb->get_row( $wpdb->prepare( "SELECT meta_value FROM %i WHERE meta_key = %s", [ $table, $meta_key ] ), $type );
+    $result = $wpdb->get_row( $wpdb->prepare( "SELECT meta_value FROM %i WHERE meta_key = %s", [ $table, $meta_key ] ), $type );//phpcs:ignore
   }
   return $result;
 }
@@ -1924,9 +1930,9 @@ function FO_get_meta_by_assoc_id( $assoc_id, $type = 'var' ){
   global $wpdb;
   $table = $wpdb->prefix . "flash_order_meta";
   if ( $type == 'var' ) {
-    $result = $wpdb->get_var( $wpdb->prepare( "SELECT meta_value FROM %i WHERE assoc_id = %s", [ $table, $assoc_id ]) );
+    $result = $wpdb->get_var( $wpdb->prepare( "SELECT meta_value FROM %i WHERE assoc_id = %s", [ $table, $assoc_id ]) );//phpcs:ignore
   } else {
-    $result = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM %i WHERE assoc_id = %s", [ $table, $assoc_id ] ), $type );
+    $result = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM %i WHERE assoc_id = %s", [ $table, $assoc_id ] ), $type );//phpcs:ignore
   }
   return $result;
 }
@@ -1941,9 +1947,9 @@ function FO_get_meta_by_assoc_tb( $assoc_tb, $type = 'var' ){
   global $wpdb;
   $table = $wpdb->prefix . "flash_order_meta";
   if ( $type == 'var' ) {
-    $result = $wpdb->get_var( $wpdb->prepare( "SELECT meta_value FROM %i WHERE assoc_tb = %s", [ $table, $assoc_tb ] ) );
+    $result = $wpdb->get_var( $wpdb->prepare( "SELECT meta_value FROM %i WHERE assoc_tb = %s", [ $table, $assoc_tb ] ) );//phpcs:ignore
   } else {
-    $result = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM %i WHERE assoc_tb = %s", [ $table, $assoc_tb ] ), $type );
+    $result = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM %i WHERE assoc_tb = %s", [ $table, $assoc_tb ] ), $type );//phpcs:ignore
   }
   return $result;
 }
@@ -1958,9 +1964,9 @@ function FO_get_meta_by_id( $id, $type = 'var' ){
   global $wpdb;
   $table = $wpdb->prefix . "flash_order_meta";
   if ( $type == 'var' ) {
-    $result = $wpdb->get_var( $wpdb->prepare( "SELECT meta_value FROM %i WHERE id = %s", [ $table, $id ] ) );
+    $result = $wpdb->get_var( $wpdb->prepare( "SELECT meta_value FROM %i WHERE id = %s", [ $table, $id ] ) );//phpcs:ignore
   } else {
-    $result = $wpdb->get_row( $wpdb->prepare( "SELECT meta_value FROM %i WHERE id = %s", [ $table, $id ] ), $type );
+    $result = $wpdb->get_row( $wpdb->prepare( "SELECT meta_value FROM %i WHERE id = %s", [ $table, $id ] ), $type );//phpcs:ignore
   }
   return $result;
 }
@@ -1974,7 +1980,7 @@ function FO_get_meta_by_id( $id, $type = 'var' ){
 function FO_insert_meta( $meta_key, $meta_value, $assoc_id = null, $assoc_tb = null ){
   global $wpdb;
   $table = $wpdb->prefix . "flash_order_meta";
-  $result = $wpdb->insert( $table, array( 'meta_key'=>$meta_key, 'meta_value'=>$meta_value, 'assoc_id'=>$assoc_id,'assoc_tb'=>$assoc_tb ) );
+  $result = $wpdb->insert( $table, array( 'meta_key'=>$meta_key, 'meta_value'=>$meta_value, 'assoc_id'=>$assoc_id,'assoc_tb'=>$assoc_tb ) );//phpcs:ignore
   return $result;
 }
 /**
@@ -1990,9 +1996,9 @@ function FO_update_meta( $meta_key, $meta_value, $assoc_id = null, $assoc_tb = n
   $meta = FO_get_meta( $meta_key );
 
   if ( $meta != null ) {
-    $result = $wpdb->update( $table, array( 'meta_value'=>$meta_value, 'assoc_id'=>$assoc_id,'assoc_tb'=>$assoc_tb ), array( 'meta_key'=>$meta_key ) );
+    $result = $wpdb->update( $table, array( 'meta_value'=>$meta_value, 'assoc_id'=>$assoc_id,'assoc_tb'=>$assoc_tb ), array( 'meta_key'=>$meta_key ) );//phpcs:ignore
   } else {
-    $result = $wpdb->insert( $table, array( 'meta_key'=>$meta_key, 'meta_value'=>$meta_value, 'assoc_id'=>$assoc_id,'assoc_tb'=>$assoc_tb ) );
+    $result = $wpdb->insert( $table, array( 'meta_key'=>$meta_key, 'meta_value'=>$meta_value, 'assoc_id'=>$assoc_id,'assoc_tb'=>$assoc_tb ) );//phpcs:ignore
   }
   return $result;
 }
@@ -2006,7 +2012,7 @@ function FO_update_meta( $meta_key, $meta_value, $assoc_id = null, $assoc_tb = n
 function FO_delete_meta( $meta_key ){
   global $wpdb;
   $table = $wpdb->prefix . "flash_order_meta";
-  $result = $wpdb->delete( $table, array( 'meta_key'=>$meta_key ) );
+  $result = $wpdb->delete( $table, array( 'meta_key'=>$meta_key ) );//phpcs:ignore
   return $result;
 }
 /**
@@ -2019,14 +2025,14 @@ function FO_delete_meta( $meta_key ){
 function FO_delete_meta_by_id( $id ){
   global $wpdb;
   $table = $wpdb->prefix . "flash_order_meta";
-  $result = $wpdb->delete( $table, array( 'id'=>$id ) );
+  $result = $wpdb->delete( $table, array( 'id'=>$id ) );//phpcs:ignore
   return $result;
 }
 
 function FO_get_table_by_table_number_status_last( $table_number, $status = 0, $type = 'OBJECT' ){
   global $wpdb;
   $table = $wpdb->prefix . "flash_order_table";
-	$result = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM %i WHERE table_number = %s AND status > %d ORDER BY last_update DESC", $table, $table_number, $status ), $type );
+	$result = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM %i WHERE table_number = %s AND status > %d ORDER BY last_update DESC", $table, $table_number, $status ), $type );//phpcs:ignore
 	return $result;
 }
 
@@ -2082,9 +2088,9 @@ function FOP_get_table_by_id( $id, $type = 'OBJECT' ){
   global $wpdb;
   $table = $wpdb->prefix . "flash_order_table";
   if ( $type == 'var' ) {
-    $result = $wpdb->get_var( $wpdb->prepare( "SELECT table_number FROM %i WHERE id = %s", $table, $id ) );
+    $result = $wpdb->get_var( $wpdb->prepare( "SELECT table_number FROM %i WHERE id = %s", $table, $id ) );//phpcs:ignore
   } else {
-    $result = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM %i WHERE id = %s", $table, $id ), $type );
+    $result = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM %i WHERE id = %s", $table, $id ), $type );//phpcs:ignore
   }
   return $result;
 }
@@ -2092,7 +2098,7 @@ function FOP_get_table_by_id( $id, $type = 'OBJECT' ){
 function FOP_get_active_tables( $type = 'OBJECT' ){
   global $wpdb;
   $table = $wpdb->prefix . "flash_order_table";
-  	$result = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM %i WHERE status > 0", $table ), $type );
+  	$result = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM %i WHERE status > 0", $table ), $type );//phpcs:ignore
   return $result;
 }
 
@@ -2138,7 +2144,7 @@ function FOP_insert_table( $args ){
   $final['orders'] = wp_json_encode( (array)$final['orders'] );
 
   $table = $wpdb->prefix . "flash_order_table";
-  $result = $wpdb->insert( $table, array( 'table_number'=>$final['table_number'], 'table_id'=>$final['table_id'], 'start_time'=>$final['start_time'], 'orders'=>$final['orders'], 'status'=>$final['status'], 'prev_status'=>$final['prev_status'], 'end_time'=>$final['end_time'], 'totals'=>$final['totals'], 'info'=>$final['info'], 'receipt'=>$final['receipt'], 'other'=>$final['other'], 'last_update'=>$final['last_update'] ) );
+  $result = $wpdb->insert( $table, array( 'table_number'=>$final['table_number'], 'table_id'=>$final['table_id'], 'start_time'=>$final['start_time'], 'orders'=>$final['orders'], 'status'=>$final['status'], 'prev_status'=>$final['prev_status'], 'end_time'=>$final['end_time'], 'totals'=>$final['totals'], 'info'=>$final['info'], 'receipt'=>$final['receipt'], 'other'=>$final['other'], 'last_update'=>$final['last_update'] ) );//phpcs:ignore
   return $result;
 }
 function FOP_update_table( $id, $args ){
@@ -2183,7 +2189,7 @@ function FOP_update_table( $id, $args ){
 			'receipt'	=> $final['receipt'], 
 			'other'		=> $final['other'], 
 			'last_update'=> wp_date('Y-m-d H:i:s') 
-		), array( 'id'	=> $id ) );
+		), array( 'id'	=> $id ) );//phpcs:ignore
 	// } else{
 	// 	$result = $wpdb->update( $table, array( 
 	// 		'table_number'=>$final['table_number'], 
@@ -2196,7 +2202,7 @@ function FOP_update_table( $id, $args ){
 	// 		'info'=>$final['info'], 
 	// 		'receipt'=>$final['receipt'], 
 	// 		'other'=>$final['other'] 
-	// 	), array( 'id'=>$id ) );
+	// 	), array( 'id'=>$id ) );//phpcs:ignore
 	// }
   return $result;
 }
@@ -2204,27 +2210,27 @@ function FOP_get_all_active_tables( $type = 'OBJECT' ){
   global $wpdb;
   $table = $wpdb->prefix . "flash_order_table";
   // $date = wp_date('Y-m-d H:i:s');
-	$result = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM %i WHERE status < 10", $table ), $type );
+	$result = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM %i WHERE status < 10", $table ), $type );//phpcs:ignore
 	return $result;
 }
 
 function FOP_get_table_by_table_number_status_negative( $table_number, $type = 'OBJECT' ){
   global $wpdb;
   $table = $wpdb->prefix . "flash_order_table";
-	$result = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM %i WHERE table_number = %s AND status > 0", $table, $table_number ), $type );
+	$result = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM %i WHERE table_number = %s AND status > 0", $table, $table_number ), $type );//phpcs:ignore
 	return $result;
 }
 function FOP_get_table_by_table_number_status( $table_number, $status = 0, $type = 'OBJECT' ){
   global $wpdb;
   $table = $wpdb->prefix . "flash_order_table";
-	$result = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM %i WHERE table_number = %s AND status > %d", $table, $table_number, $status ), $type );
+	$result = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM %i WHERE table_number = %s AND status > %d", $table, $table_number, $status ), $type );//phpcs:ignore
 	return $result;
 }
 
 function FOP_get_table_by_table_number_status_last( $table_number, $status = 0, $type = 'OBJECT' ){
   global $wpdb;
   $table = $wpdb->prefix . "flash_order_table";
-	$result = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM %i WHERE table_number = %s AND status > %d ORDER BY last_update DESC", $table, $table_number, $status ), $type );
+	$result = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM %i WHERE table_number = %s AND status > %d ORDER BY last_update DESC", $table, $table_number, $status ), $type );//phpcs:ignore
 	return $result;
 }
 
@@ -2233,13 +2239,13 @@ function FOP_get_table_by_table_number_end_time( $table_number, $date = '', $typ
   $table = $wpdb->prefix . "flash_order_table";
   	$now = new DateTime();
 	$date = ( $date == '' ) ? $now->format('Y-m-d H:i:s') : '';
-	$result = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM %i WHERE table_number = %s AND end_time < %s", $table, $table_number, $date ), $type );
+	$result = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM %i WHERE table_number = %s AND end_time < %s", $table, $table_number, $date ), $type );//phpcs:ignore
 	return $result;
 }
 
 function FOP_update_table_from_id( $id, $args ){
-  global $wpdb;
-  	$table = $wpdb->prefix . "flash_order_table";
+  // global $wpdb;
+  	// $table = $wpdb->prefix . "flash_order_table";
   	$meta = FOP_get_table_by_id( $id, 'OBJECT' );
   if ( $meta != null ) {
     $result = FOP_update_table( $id, $args );
@@ -2249,8 +2255,8 @@ function FOP_update_table_from_id( $id, $args ){
   return $result;
 }
 function FOP_update_table_from_table_id( $table_id, $args ){
-  global $wpdb;
-  	$table = $wpdb->prefix . "flash_order_table";
+  // global $wpdb;
+  	// $table = $wpdb->prefix . "flash_order_table";
   	$meta = FOP_get_table_by_table_id_last( $table_id, 'OBJECT' );
 
   if ( $meta != null && $meta->status != 10 ) {
@@ -2261,8 +2267,8 @@ function FOP_update_table_from_table_id( $table_id, $args ){
   return $result;
 }
 function FOP_update_table_from_table_number_status( $table_number, $args = array() ){
-  global $wpdb;
-  	$table = $wpdb->prefix . "flash_order_table";
+  // global $wpdb;
+  	// $table = $wpdb->prefix . "flash_order_table";
   	$meta = FOP_get_table_by_table_number_status( $table_number );
   	// FOP_debug($meta, 'meta');
   if ( $meta != null ) {
@@ -2275,7 +2281,7 @@ function FOP_update_table_from_table_number_status( $table_number, $args = array
 function FOP_delete_table_by_id( $id ){
   global $wpdb;
   $table = $wpdb->prefix . "flash_order_table";
-  $result = $wpdb->delete( $table, array( 'id'=>$id ) );
+  $result = $wpdb->delete( $table, array( 'id'=>$id ) );//phpcs:ignore
   return $result;
 }
 
@@ -2503,7 +2509,7 @@ function FO_product_to_div_loop( $product, $cat_slug ){
 	$sticker = (isset($meta_data['sticker']) && $meta_data['sticker'] != null ) ? $meta_data['sticker'] : array();
 	$sticker = ( $Sticker ) ? $Sticker : $sticker;
 ?>
-	<div class="foProdCard" foware="<?php echo esc_attr($fo_ware);?>" focategories="<?php echo esc_attr($cat_slug);?>" focatid="<?php echo esc_attr($category);?>" id="<?php echo 'prod-'.esc_attr($id);?>" style="transition:var(--fo-main-tran);position:relative;" foid="<?php echo esc_attr($id);?>" foname="<?php echo esc_attr($product->get_name());?>" fovariations="<?php echo esc_attr($vari_arr);?>" nat-ing="<?php echo esc_attr($count_ing);?>">
+	<div class="foProdCard" foware="<?php echo esc_attr($fo_ware);?>" focategories="<?php echo esc_attr($cat_slug);?>" focatid="<?php echo esc_attr($category);?>" id="<?php echo 'prod-'.esc_attr($id);?>" style="transition:var(--fo-main-tran);position:relative;" foid="<?php echo esc_attr($id);?>" foname="<?php echo esc_attr($product->get_name());?>" fovariations="<?php echo esc_attr($vari_arr);?>" nat-ing="<?php echo esc_attr($count_ing);?>" >
 		<input type="hidden" name="[id][<?php echo esc_attr($id);?>]" value="1">
 		<div class="foProdCardHead">
 			<?php echo wp_kses_post($product->get_image(array( 340, 340 ), array( 'foprod'=>'foprod', 'onclick'=>'FO_Advanced_Prod_Card(this)' ))); ?>
@@ -2534,6 +2540,7 @@ function FO_product_to_div_loop( $product, $cat_slug ){
 						</div>
 					<?php }
 					}
+
 				?>
 				<input type="search" name="searched" class="FOSearchIngred fo_ajax_search_ing" onkeyup="FOSearchIngred(this)" placeholder="<?php echo esc_html__( 'Cerca ingredienti da aggiungere...', 'flash_order' ); ?>">
 				<div class="FOIngredProdSec fo_ajax_ing_sect">
@@ -4088,15 +4095,9 @@ function FO_flash_tab_order( $tavoli = array() ){
 								$order = new WC_Order($story_v); 
 								// $order = wc_get_order($story_v); 
 								$items = $order->get_items();
-
 								$meta_data = FO_get_all_order_meta( $order->get_id() );
-								// FO_debug($meta_data);
 								$meta_array = FO_extract_meta_object( $meta_data );
-// FO_debug($meta_array);
-								// $varianti = array();
-								// foreach ( $meta_array as $meta_index => $meta_elem ){
-								// 	$varianti = (array_key_exists('variant', $meta_elem))?$meta_elem['variant']:array();
-								// }
+
 								foreach ($meta_array as $meta_index => $meta_value) {
 									if (!isset($meta_value['id'])||$meta_value['id'] == '') {continue;}
 
@@ -4118,9 +4119,12 @@ function FO_flash_tab_order( $tavoli = array() ){
 									$short_title = (FOcheck(get_post_meta($prod_id,'short_title')) && get_post_meta($prod_id,'short_title')[0]!='')?get_post_meta($prod_id,'short_title')[0]:$product->get_name();
 									$slang_title = ( FOcheck(get_post_meta($prod_id,'slang_title') ) && get_post_meta($prod_id,'slang_title')[0]!='' )?get_post_meta($prod_id,'slang_title')[0]:$short_title;
 									$order_index++;
-										
+									$style = '';
+										if ( FOcheck($temperature) || FOcheck($note) ) {
+											$style = 'background-color:var(--fo-modified);';
+										}
 										?>
-										<div class="fo_tab_prod fo_story relative" foprodid="<?php echo esc_attr($prod_id);?>" foprodtot="<?php echo esc_attr($total);?>" onclick="FO_filter_tab_variant(this,<?php echo "'".esc_attr($prod_id)."'"; ?>)" fo_index="<?php echo esc_attr($order_index);?>" fo_index_story="<?php echo esc_attr($story_v);?>" fo_modificable="false" fo_type="story" fotableid="<?php echo esc_attr($tavolo->ID);?>">
+										<div class="fo_tab_prod fo_story relative" foprodid="<?php echo esc_attr($prod_id);?>" foprodtot="<?php echo esc_attr($total);?>" onclick="FO_filter_tab_variant(this,<?php echo "'".esc_attr($prod_id)."'"; ?>)" fo_index="<?php echo esc_attr($order_index);?>" fo_index_story="<?php echo esc_attr($story_v);?>" fo_modificable="false" fo_type="story" fotableid="<?php echo esc_attr($tavolo->ID);?>" style="<?php echo esc_attr($style);?>">
 											<div class="FO_prod_name_manage fo_text_fix">
 												<?php echo esc_attr($slang_title);?>
 											</div>
@@ -4128,6 +4132,7 @@ function FO_flash_tab_order( $tavoli = array() ){
 												<?php echo wp_kses_post($product->get_image());?>
 											</div>
 											<input fo_tab_target="id" type="hidden" name="[<?php echo esc_attr($meta_index);?>][id][<?php echo esc_attr($prod_id);?>]" value="<?php echo esc_attr($qty);?>">
+											<input fo_tab_target="qty" type="hidden" name="[<?php echo esc_attr($meta_index);?>][qty][<?php echo esc_attr($prod_id);?>]" value="<?php echo esc_attr($qty);?>">
 
 											<!-- <input fo_tab_target="Ingredienti" type="hidden" name="[<?php echo esc_attr($meta_index);?>][Ingredienti][<?php echo esc_attr($prod_id);?>]" value="<?php ?>"> -->
 
@@ -4139,9 +4144,8 @@ function FO_flash_tab_order( $tavoli = array() ){
 
 											<input fo_tab_target="note" type="hidden" name="[<?php echo esc_attr($meta_index);?>][note][<?php echo esc_attr($prod_id);?>]" value="<?php echo esc_attr($note);?>">
 											<?php 
-								FO_debug($meta_data);
-								FO_debug($meta_array);
-
+								// FO_debug($meta_data);
+								// FO_debug($meta_array);
 											foreach ($variant as $vari_key => $vari_val) {
 												?>
 												<input fo_tab_target="variante" fovariant="<?php echo esc_attr($vari_key);?>" name="[<?php echo esc_attr($meta_index);?>][Variante][<?php echo esc_attr($prod_id);?>][<?php echo esc_attr($vari_key);?>]" type="hidden" value="<?php echo esc_attr($vari_val);?>">
@@ -4162,6 +4166,7 @@ function FO_flash_tab_order( $tavoli = array() ){
 											<img width="300" height="300" src="<?php echo esc_url(wc_placeholder_img_src( 300 )); ?>">
 										</div>
 										<input fo_tab_target="id" type="hidden" name="[<?php echo esc_attr($f_i);?>][id][<?php echo esc_attr($fee_name);?>]" value="1">
+										<input fo_tab_target="qty" type="hidden" name="[<?php echo esc_attr($f_i);?>][qty][<?php echo esc_attr($fee_name);?>]" value="1">
 										<input fo_tab_target="Ingredienti" type="hidden" name="[<?php echo esc_attr($f_i);?>][Ingredienti][<?php echo esc_attr($fee_name);?>]" value="">
 										<input fo_tab_target="price" type="hidden" name="[<?php echo esc_attr($f_i);?>][price][<?php echo esc_attr($fee_name);?>]" value="<?php echo esc_attr($fee_total);?>">
 										<input fo_tab_target="note" type="hidden" name="[<?php echo esc_attr($f_i);?>][note][<?php echo esc_attr($fee_name);?>]" value="">
@@ -4180,13 +4185,15 @@ function FO_flash_tab_order( $tavoli = array() ){
 							<?php 
 							}
 						?>
-					<!-- 
-						<div class="fo_button_thin fo_tab_order_info" onclick="" style="color: lightblue;">
+						
+					<?php if ( in_array( 'flash_order_pro/flash_order_pro.php', apply_filters( 'active_plugins', get_option( 'active_plugins' ) ) ) ) {
+					?>
+						<div class="fo_button_thin fo_tab_order_info" onclick="fop_show_order_info_tab()" style="color:lightblue;">
 							<span class="dashicons dashicons-welcome-widgets-menus"></span>
 							<?php esc_html_e('INFO','flash_order');?>
 						</div>
-					-->
-
+					<?php } ?>
+					
 						<div class="fo_tab_tool_total" style="margin-top:auto;">
 							<b>Totale:</b>
 							<strong> <?php echo esc_attr(FO_price($abs_total));?> </strong>
@@ -4257,15 +4264,6 @@ function FO_flash_tab_order( $tavoli = array() ){
 						<?php } ?>
 					<?php } ?>
 				</div>
-				<script type="text/javascript">
-					// function fo_ajax_riepilogo_height(){
-					// 	var formVal = jQuery(".FO_flash_tab_max_column").height() - jQuery(".fo_column_riepilogo").height();
-					// 	jQuery(".fo_column_products").css("maxHeight", formVal );
-					// }
-					// window.addEventListener('scroll', fo_ajax_riepilogo_height);
-					// window.addEventListener('resize', fo_ajax_riepilogo_height);
-					// fo_ajax_riepilogo_height();
-				</script>
 			</div>
 <!-- COL 2: -->
 	<!-- VARIANTI: -->
@@ -4273,7 +4271,7 @@ function FO_flash_tab_order( $tavoli = array() ){
 				<strong class="fo_col_2_name" style=""><?php esc_html_e('VARIANTI:','flash_order'); ?></strong>
 				<div class="FO_flash_tab_qty" style="display:none;"> Quantità
 					<div class="spinner-button-big" onclick="fo_keyboard_qty_value(-1)">-</div>
-						<input class="fo_target_qty_prod" type="number" name="qty" step="1" value="1" fo_actual_prod="" fo_actual_index="0" fo_actual_index_story="0" fo_modificable="" onchange="fo_tab_parse_qty(this);">
+						<input class="fo_target_qty_prod" type="number" name="qty" step="1" value="1" fo_modificable="" onchange="fo_tab_parse_qty(this);">
 					<div class="spinner-button-big" onclick="fo_keyboard_qty_value(+1)">+</div>
 					<script type="text/javascript">
 						jQuery('.fo_target_qty_prod').on('DOMSubtreeModified', function(){
@@ -4281,7 +4279,9 @@ function FO_flash_tab_order( $tavoli = array() ){
 						});
 					</script>
 				</div>
-				<?php foreach ($products_w_vari as $key => $value) { ?>
+				<?php
+				$temperature_terms = FO_get_temperature_terms();
+				 foreach ($products_w_vari as $key => $value) { ?>
 					<?php foreach ($value as $k => $product) { 
 						$macro_cat = get_the_terms( $product->get_id(), 'macro_categories');
 						$product_child = $product->get_children();
@@ -4299,7 +4299,6 @@ function FO_flash_tab_order( $tavoli = array() ){
 										$attr_term = false;
 										$attr = explode( ' | ', $product->get_attribute( $k ) );
 									}
-									// FO_debug($attr);
 									?>
 									<div class="fovariant fovariant_fix" fovariant="<?php echo esc_attr($k);?>">
 										<strong style="flex-basis:100%;"><?php echo esc_attr($k);?></strong>
@@ -4320,8 +4319,34 @@ function FO_flash_tab_order( $tavoli = array() ){
 								<?php } ?>
 							</div>
 						<?php } ?>
+						<?php 
+						$temperature = get_the_terms( $product->get_id(), 'Temperature');
+						if ( !empty( $temperature ) && $temperature != null ) { ?>
+						<div class="FO_flash_tab_temperature" style="display:none;" foprodidtarget="<?php echo esc_attr($product->get_id());?>" fo_modificable="true" style="display:none;">
+							<div class="fovariant fovariant_fix">
+								<strong style="flex-basis:100%;"><?php esc_html_e('Temperature','flash_order');?></strong>
+								<?php 
+								// FO_debug($temperature_terms);
+								foreach ($temperature as $key => $term) { ?>
+									<div class="fo_button_thin" fo_prod_id="<?php echo esc_attr($product->get_id());?>" onclick="jQuery(this).find('input').prop('checked', true);fo_tab_parse_temp(jQuery(this).find('input'));"><?php echo esc_attr($term->name);?>
+										<input name="[Temperature][<?php echo esc_attr($product->get_id());?>]" type="radio" value="<?php echo esc_attr($term->slug);?>">
+									</div>
+								<?php } ?>
+							</div>
+						</div>
+						<?php } ?>
 					<?php } ?>
 				<?php } ?>
+
+				<div class="FO_flash_tab_note" style="display:none;"> 
+					<strong style="flex-basis:100%;"><?php esc_html_e('Note','flash_order');?></strong>
+					<textarea class="fo_target_note_prod" name="note" onchange="fo_tab_parse_note(this);" placeholder="<?php esc_html_e('Note del prodotto...','flash_order');?>"></textarea>
+					<script type="text/javascript">
+						jQuery('.fo_target_note_prod').on('DOMSubtreeModified', function(){
+						  fo_tab_parse_note(jQuery('.fo_target_note_prod'));
+						});
+					</script>
+				</div>
 			</div>
 <!-- COL 3: -->
 			<div class="FO_flash_tab_column fo_tab_col_3" style="">
@@ -4458,7 +4483,10 @@ function FO_flash_tab_order( $tavoli = array() ){
 				</div>
 			</div>
 		</div>
-
+		<?php 
+		if ( in_array('flash_order_pro/flash_order_pro.php',apply_filters('active_plugins',get_option('active_plugins'))) ) {
+			FOP_order_info_tab();
+		}?>
 		<div class="FO_flash_tab_footer">
 			<div class="fo_table_name" onclick="FO_tab_Card_hide()">
 				<strong> <?php esc_html_e('TAVOLO: ','flash_order'); ?> </strong>
@@ -4496,6 +4524,21 @@ function FO_flash_tab_order( $tavoli = array() ){
 
 	<?php
 }
+
+
+
+
+
+
+function FO_get_temperature_terms(){
+	// $return = get_taxonomy('Temperature');
+	$return = get_terms( array(
+	    'taxonomy'   => 'Temperature',
+	    'hide_empty' => false,
+	) );
+	return $return;
+}
+
 
 
 
@@ -5305,8 +5348,8 @@ function FO_save_post_extra_field( $post_id, $post, $update ) {
 	// Only set for post_type = post!
 		// if ( 'post' !== $post->post_type ) {
 		// 	return;
-		// }
-	if ( !isset($_POST['_fononce_post_extra_field']) && !wp_verify_nonce( sanitize_text_field(wp_unslash( $_POST['_fononce_post_extra_field'])), 'FO_post_extra_field_nonce' ) ) {
+		// }_fononce_post_extra_field
+	if ( !isset($_POST['_fononce_post_extra_field']) && !wp_verify_nonce(sanitize_text_field(wp_unslash( $_POST['_fononce_post_extra_field'])), 'FO_post_extra_field_nonce' ) ) {
 		return;
 	}//_fononce_post_extra_field: jQuery('input[name="_fononce_post_extra_field"]').val(),
 

@@ -16,6 +16,7 @@ if ( !is_plugin_active('flash_order_pro/flash_order_pro.php') ) {
     FO_pass_to_pro();
     return;
 } else{
+    do_action( 'manage_restaurant_pro_page_head' );
     include_once( WP_PLUGIN_DIR .'/flash_order/public/template/manage-tables.php');
 }
 
