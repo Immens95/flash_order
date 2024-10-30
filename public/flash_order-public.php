@@ -2036,8 +2036,19 @@ function FO_get_table_by_table_number_status_last( $table_number, $status = 0, $
 	return $result;
 }
 
+function FO_get_table_by_table_id_status_last( $table_id, $status = 0, $type = 'OBJECT' ){
+  global $wpdb;
+  $table = $wpdb->prefix . "flash_order_table";
+	$result = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM %i WHERE table_id = %s AND status > %d ORDER BY last_update DESC", $table, $table_id, $status ), $type );//phpcs:ignore
+	return $result;
+}
 
-
+function FO_get_all_tables_by_status_last( $status = 0, $type = 'OBJECT' ){
+  global $wpdb;
+  $table = $wpdb->prefix . "flash_order_table";
+	$result = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM %i WHERE status > %d AND status < 10 ORDER BY last_update DESC", $table, $status ), $type );//phpcs:ignore
+	return $result;
+}
 
 
 /**
@@ -3811,7 +3822,7 @@ if ($order->get_items()!=null) {
 		// $price_arr[$item->get_id()]
 		$tot = $price_array[$item->get_product_id()];
 		if ((int)$item->get_quantity()>1) {
-			// $tot = (float)$tot * (int)$item->get_quantity();
+			$tot = (float)$tot * (float)$item->get_quantity();
 		}
 		// $qty = $item->get_quantity();
 	    wc_update_order_item_meta($item->get_id(),'_line_total',$tot); //_line_total discount_amount coupon_amount
@@ -3839,6 +3850,9 @@ if ($order->get_items()!=null) {
 	$order->save();
 
 $table_id = (isset($_POST['table_id'])) ? sanitize_text_field(wp_unslash($_POST['table_id'])):'';
+$table_total = (isset($_POST['table_total'])) ? sanitize_text_field(wp_unslash($_POST['table_total'])):0.0;
+
+$table_total = (float)$table_total + (float)$order->get_total();
 
 	FO_update_meta( 'status_table_'.$table_id, 1, 'table_status' );
 	if ( function_exists('FOP_update_table_from_table_id') ) {
@@ -3847,7 +3861,7 @@ $table_id = (isset($_POST['table_id'])) ? sanitize_text_field(wp_unslash($_POST[
 			'table_id'=> $table_id,
 			'status' => 1,
 			'orders' => $order_id,
-			'totals' => (string)$order->get_total(),
+			'totals' => (string)$table_total,
 		) );
 	}
 
@@ -4512,6 +4526,16 @@ function FO_flash_tab_order( $tavoli = array() ){
 
 			<input id="table_name" type="hidden" name="table_name_cpt" value="">
 			<input type="hidden" name="table_ID" value="">
+			<input type="hidden" name="table_total" value="">
+
+			<input type="hidden" name="table_start_time" value="">
+			<input type="hidden" name="table_last_update" value="">
+			<input type="hidden" name="table_orders" value="">
+			<input type="hidden" name="table_info" value="">
+			<input type="hidden" name="table_receipt" value="">
+			<input type="hidden" name="table_other" value="">
+			<input type="hidden" name="table_totals" value="">
+			<input type="hidden" name="table_table_tableid" value="">
 		</div>
 
 	</div>

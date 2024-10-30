@@ -1629,10 +1629,18 @@ function FO_tab_Card_show( target ){
 
 	jQuery('input[name="table_name_cpt"]').val( jQuery(target).attr('fotable') );
 	jQuery('input[name="table_ID"]').val( jQuery(target).attr('fo_tableid') );
+
+	jQuery('input[name="table_start_time"]').val( jQuery(target).attr('table_start_time') );
+	jQuery('input[name="table_last_update"]').val( jQuery(target).attr('table_last_update') );
+	jQuery('input[name="table_orders"]').val( jQuery(target).attr('table_orders') );
+	jQuery('input[name="table_info"]').val( jQuery(target).attr('table_info') );
+	jQuery('input[name="table_receipt"]').val( jQuery(target).attr('table_receipt') );
+	jQuery('input[name="table_other"]').val( jQuery(target).attr('table_other') );
+	jQuery('input[name="table_totals"]').val( jQuery(target).attr('table_totals') );
+	jQuery('input[name="table_table_tableid"]').val( jQuery(target).attr('table_table_tableid') );
+
 	jQuery('.fo_actual_table').text( jQuery(target).attr('fo_tableid') );
-
 	// if (true) {}fo_order_table_story 
-
 	jQuery('.fo_pay_table_button').attr('fotableid', jQuery(target).attr('fo_tableid') );
 
 	jQuery('.fo_tab_table_name').text( jQuery(target).attr('fotable') );
@@ -1702,7 +1710,7 @@ function FO_tab_clear_table( def_confirm = false, hide = true ){
 		FO_confirm('FO_tab_clear_table(true)',text);
 		return false;
 	}
-	jQuery('.FOloadingCardPublic').show();
+	// jQuery('.FOloadingCardPublic').show();
 	jQuery('.FO_flash_tab_order_container').find('.FOloadingCardPublic').fadeOut();
 
 	jQuery('.fo_table_cell[fo_tableid="'+jQuery('input[name="table_ID"]').val()+'"]').attr('onclick','return false;');
@@ -1734,6 +1742,8 @@ function FO_tab_clear_table( def_confirm = false, hide = true ){
 			jQuery('.FO_table_grid [fo_tableid="'+response.table_id+'"]').css('backgroundColor','green');
 			jQuery('.FO_table_grid [fo_tableid="'+response.table_id+'"]').find('.fo_status_string')
 				.text(jQuery('#fo_tab_table_status_free_text').text());
+			jQuery('.FO_table_grid [fo_tableid="'+response.table_id+'"]').find('.fo_tab_notify').hide();
+				
 			// jQuery('.FO_flash_tab_order_container').find('.FOloadingCardPublic').fadeOut();
 			// FO_tab_Card_hide();
 			jQuery(".FOloadingCardPublicMain").fadeOut(200);
@@ -1777,6 +1787,7 @@ function fo_clear_all_tables( def_confirm = false ){
 
 			jQuery(".FOloadingCardPublicMain").fadeOut(200);
 			jQuery('.fo_table_cell').attr('onclick','FO_tab_Card_show(this)');
+			jQuery('.FO_table_grid').find('.fo_tab_notify').hide();
 			jQuery('.FO_table_grid .FOloadingTable').hide();
 			return;
 		}
@@ -1805,14 +1816,6 @@ function FO_order_tab_ajax(input = '.fo_column_riepilogo', action = 'FO_flash_ta
 	    container[item.name] = item.value;
 	    return container;
 	}); 
-	// console.log(foserialmap);
-	// 	var N_custom = jQuery('.fot_pay_new_customer input').serializeArray();
-	// var N_customers = N_custom.map(({ name, value }) => ({ [name]: value }));
-	// N_customers = N_custom.map(item => {
-	//     var N_container = {};
-	//     N_container[item.name] = item.value;
-	//     return N_container;
-	// }); console.log(N_customers);
 		var Src_custom = jQuery('.FO_customers_container input').serializeArray();
 	var Src_customers = Src_custom.map(({ name, value }) => ({ [name]: value }));
 	Src_customers = Src_custom.map(item => {
@@ -1860,6 +1863,8 @@ function FO_order_tab_ajax(input = '.fo_column_riepilogo', action = 'FO_flash_ta
 			table_name_cpt: jQuery('input[name="table_name_cpt"]').val(),
 			order_note: jQuery('textarea[name="order_note"]').val(),
 			table_id: jQuery('input[name="table_ID"]').val(),
+			table_total: jQuery('input[name="table_total"]').val(),
+
 			user_id: jQuery('input[name="user_ID"]').val(),
 			// customer_id: jQuery('input[name="customer_ID"]').val(),
 			// N_customers: N_customers,

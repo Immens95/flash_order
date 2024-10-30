@@ -4788,7 +4788,7 @@ width: 100%;
 	right: 5px;
 }
 
-.fo_tab_abs_info{
+.fo_tab_abs_info, .fo_tab_abs_info span{
 	position: absolute;
 	bottom: 0px;
 	left: 0px;

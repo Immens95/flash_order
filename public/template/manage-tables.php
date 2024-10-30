@@ -20,6 +20,9 @@ function FO_manage_table(){
     echo '<input type="hidden" id="_fononce_insert_post_ajax_nonce" name="_fononce_insert_post_ajax_nonce" value="'.esc_attr($nonce).'" />';
     
     FO_get_settings_head_manage_tables();
+
+    // $tavoli_info = FO_get_all_tables_by_status_last();
+    // FO_debug($tavoli_info);
 ?>
 <div id="FO_Front_Content">
     <?php 
@@ -70,11 +73,17 @@ function FO_manage_table(){
         } else{
             $Style = 'background-color:var(--fo-bg4-color);';$status_string = '';
         }
-            $tab_info = FO_get_table_by_table_number_status_last($tavolo->post_title);
+            // $tab_info = FO_get_table_by_table_id_status_last($tavolo->ID);
+            // FO_debug( $tab_info);
             ?>
-            <div class="fo_table_cell relative" fotable="<?php echo esc_attr($tavolo->post_title);?>" fo_tableid="<?php echo esc_attr($tavolo->ID);?>" fotable_status="<?php echo esc_attr($status);?>" style="<?php echo esc_attr($Style);?>" onclick="FO_tab_Card_show( this )">
+            <div class="fo_table_cell relative" fotable="<?php echo esc_attr($tavolo->post_title);?>" fo_tableid="<?php echo esc_attr($tavolo->ID);?>" fotable_status="<?php echo esc_attr($status);?>" style="<?php echo esc_attr($Style);?>" onclick="FO_tab_Card_show( this )" table_start_time="" table_last_update="" table_orders="" table_info="" table_receipt="" table_other="" table_totals="" table_end_time="" table_table_tableid="">
+
                 <span class="fo_tab_notify" fo_not_counter="" onclick="" style="display:none;">0</span>
-                <span class="fo_tab_abs_info dashicons dashicons-info" onclick="" style="display: none;"></span>
+                
+                <div class="fo_tab_abs_info" style="display: none;" onclick="" >
+                    <span class="dashicons dashicons-info"></span>
+                </div>
+                
                 <div class="FOloadingTable" style="display:none;">
                     <span style="animation: fospin 1s infinite;font-size:120px;width:120px;height:120px;" class="dashicons dashicons-update"></span>
                 </div>
@@ -84,15 +93,10 @@ function FO_manage_table(){
                     <strong> <?php echo esc_attr($zona->name);?> </strong>
                 <?php } } ?>
                 <p class="fo_status_string"> <?php echo esc_attr($status_string);?> </p>
-                <?php 
-                // if ( $status >= 1 ) { 
-                	// if ( $tab_info != null ) {
-                    $date = new DateTime($tavolo->last_update);?>
-                    <span class="fo_tab_abs_data" title="<?php esc_html_e( 'Ora e data dell\'ultima modifica', 'flash_order' );?>"><?php echo esc_attr(date_format($date, 'H:i:s d/m')); ?></span>
-                <?php 
-            // } 
-            		// } 
-            	?>
+
+                <?php $date = new DateTime($tavolo->last_update); ?>
+
+                <span class="fo_tab_abs_data" title="<?php esc_html_e( 'Ora e data dell\'ultima modifica', 'flash_order' );?>"><?php echo esc_attr(date_format($date, 'H:i:s d/m')); ?></span>
             </div>
         <?php } ?>
         <?php FO_flash_tab_order( $tavoli );?>
