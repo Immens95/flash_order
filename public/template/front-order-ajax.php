@@ -51,7 +51,8 @@ if ( isset($_GET['table']) && $_GET['table'] != '' ) {
 		<div class="Hide_FOListRapidView" onclick="Hide_FOListRapidView()">
 			<?php esc_html_e( 'CHIUDI', 'flash_order' ); ?>
 		</div>
-
+		<a class="FOListRapidView_cathead" href="#FO_favourite" style="background-color:var(--fo-main-color)!important;backdrop-filter: opacity(20%);"><?php esc_html_e('Prodotti Preferiti','flash_order' );?>
+		</a>
 		<?php foreach ($products as $key => $value) { 
 			$term = get_term_by('name', $key, 'product_cat');
 			$term_meta = (FOcheck($term))? get_term_meta($term->term_id):false;
@@ -85,7 +86,7 @@ if ( isset($_GET['table']) && $_GET['table'] != '' ) {
 
 			</div>
 
-			<div class="focathead" style="background-color: var(--fo-main-color)!important;">
+			<div class="focathead" id="FO_favourite" style="background-color: var(--fo-main-color)!important;">
 				<div class="title" style="font-weight:800;font-size:30px;z-index:10;">
 					<?php esc_html_e('Prodotti Preferiti','flash_order' );?>
 				</div>
