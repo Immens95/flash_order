@@ -801,20 +801,56 @@ function Hide_FOListRapidView(){
 	fo_toggle_header_footer();
 }
 
-function FO_Advanced_Prod_Card( target ){
-	jQuery('.Advanced_Card').slideDown();
-	jQuery('.Advanced_Card_background').show();
+function FO_Advanced_Prod_Card( input ){
+	jQuery('.Advanced_Card').fadeIn();
+	jQuery('.Advanced_Card_background').fadeIn();
 	jQuery('header').css('display','none');
 	jQuery('footer').css('display','none');
-	// fo_toggle_header_footer();
+
+	var AC_ID = jQuery(input).closest('.foProdCard').attr('foid');
+	var AC_Name = jQuery(input).closest('.foProdCard').attr('foname');
+	var Advanced_Card_gallery = jQuery(input).closest('.foProdCard').attr('fo_gallery');
+
+	var AC_description = jQuery(input).closest('.foProdCard').attr('fo_description');
+
+	var AC_tax_cat = jQuery(input).closest('.foProdCard').attr('fo_tax_cat');
+	var AC_tax_tag = jQuery(input).closest('.foProdCard').attr('fo_tax_tag');
+	var AC_tax_ing = jQuery(input).closest('.foProdCard').attr('fo_tax_ing');
+	var AC_tax_allerg = jQuery(input).closest('.foProdCard').attr('fo_tax_allerg');
+
+	var AC_tot = jQuery(input).closest('.foProdCard').attr('fo_tot');
+	var AC_Variant = jQuery(input).closest('.foProdCard').find('.fovariantcont').clone();
+	AC_Variant.show();
+
+	jQuery('.AC_ID').text(AC_ID);
+	jQuery('.AC_Name').text(AC_Name);
+	jQuery('.AC_description').text(AC_description);
+	jQuery('.Advanced_Card_gallery').text(Advanced_Card_gallery);
+	jQuery('.AC_tax_cat').text(AC_tax_cat);
+	jQuery('.AC_tax_tag').text(AC_tax_tag);
+	jQuery('.AC_tax_ing').text(AC_tax_ing);
+	jQuery('.AC_tax_allerg').text(AC_tax_allerg);
+	jQuery('.AC_tot').text(AC_tot);
+	jQuery('.AC_Variant').append(AC_Variant);
 }
 
 function FO_Advanced_Prod_Card_hide( target ){
-	jQuery('.Advanced_Card').slideUp();
-	jQuery('.Advanced_Card_background').hide();
+	jQuery('.Advanced_Card').fadeOut();
+	jQuery('.Advanced_Card_background').fadeOut();
 	// jQuery('header').css('display','');
 	// jQuery('footer').css('display','');
 	fo_toggle_header_footer();
+
+	jQuery('.AC_ID').text('');
+	jQuery('.AC_Name').text('');
+	jQuery('.AC_description').text('');
+	jQuery('.Advanced_Card_gallery').text('');
+	jQuery('.AC_tax_cat').text('');
+	jQuery('.AC_tax_tag').text('');
+	jQuery('.AC_tax_ing').text('');
+	jQuery('.AC_tax_allerg').text('');
+	jQuery('.AC_tot').text('');
+	jQuery('.AC_Variant').empty();
 }
 
 function FO_Advanced_Prod_Card_hide_all(){

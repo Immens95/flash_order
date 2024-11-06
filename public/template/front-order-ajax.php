@@ -108,7 +108,7 @@ if ( isset($_GET['table']) && $_GET['table'] != '' ) {
 
 		</div>
 
-		<?php FO_Advanced_prod_card(); ?>
+
 
 		<div class="FO_show_order_summary" onclick="Show_FO_Front_Float()">
 			<strong class="text_white" style="z-index:99;"> 
@@ -157,6 +157,8 @@ if ( isset($_GET['table']) && $_GET['table'] != '' ) {
 				</div>
 			</div>
 		</div>
+
+		<?php FO_Advanced_prod_card(); ?>
 	
 		<script type="text/javascript">
 			function fo_ajax_form_height(){

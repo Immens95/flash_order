@@ -2525,11 +2525,11 @@ function FO_product_to_div_loop( $product, $cat_slug ){
 	$fo_tax_ing = wp_json_encode( get_the_terms( $id, 'product_cat' ) );
 	$fo_tax_allerg = wp_json_encode( get_the_terms( $id, 'product_cat' ) );
 ?>
-	<div class="foProdCard" foware="<?php echo esc_attr($fo_ware);?>" focategories="<?php echo esc_attr($cat_slug);?>" focatid="<?php echo esc_attr($category);?>" id="<?php echo 'prod-'.esc_attr($id);?>" style="transition:var(--fo-main-tran);position:relative;" foid="<?php echo esc_attr($id);?>" foname="<?php echo esc_attr($product->get_name());?>" fovariations="<?php echo esc_attr($vari_arr);?>" nat-ing="<?php echo esc_attr($count_ing);?>" fo_gallery="<?php echo esc_attr($product->get_gallery_image_ids());?>" fo_tax_cat="<?php echo esc_attr($fo_tax_cat);?>" fo_tax_tag="<?php echo esc_attr($fo_tax_tag);?>" fo_tax_ing="<?php echo esc_attr($fo_tax_ing);?>" fo_tax_allerg="<?php echo esc_attr($fo_tax_allerg);?>">
+	<div class="foProdCard" foware="<?php echo esc_attr($fo_ware);?>" focategories="<?php echo esc_attr($cat_slug);?>" focatid="<?php echo esc_attr($category);?>" id="<?php echo 'prod-'.esc_attr($id);?>" style="transition:var(--fo-main-tran);position:relative;" foid="<?php echo esc_attr($id);?>" foname="<?php echo esc_attr($product->get_name());?>" fovariations="<?php echo esc_attr($vari_arr);?>" nat-ing="<?php echo esc_attr($count_ing);?>" fo_gallery="<?php echo esc_attr($product->get_gallery_image_ids());?>" fo_description="<?php echo esc_attr($product->get_description());?>" fo_tot="<?php echo esc_attr($product->get_price());?>" fo_tax_cat="<?php echo esc_attr($fo_tax_cat);?>" fo_tax_tag="<?php echo esc_attr($fo_tax_tag);?>" fo_tax_ing="<?php echo esc_attr($fo_tax_ing);?>" fo_tax_allerg="<?php echo esc_attr($fo_tax_allerg);?>">
 
 		<input type="hidden" name="[id][<?php echo esc_attr($id);?>]" value="1">
 		<div class="foProdCardHead">
-			<?php echo wp_kses_post($product->get_image(array( 'auto', 'auto' ), array( 'foprod'=>'foprod', 'onclick'=>'FO_Advanced_Prod_Card(this)', 'class'=>'FO_prod_img_menu' ))); ?>
+			<?php echo $product->get_image(array( 'auto', 'auto' ), array( 'foprod'=>'foprod', 'onclick'=>'FO_Advanced_Prod_Card(this)', 'class'=>'FO_prod_img_menu' )); ?>
 			<div class="foname target_search" onclick="FO_Advanced_Prod_Card(this)"><?php echo esc_attr($product->get_name());?></div>
 			<?php 
 				// FO_get_product_temperature_options($product);
