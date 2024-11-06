@@ -7,7 +7,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 FO_soft_access_denied();
 $role = FO_access_autorization();
-// FO_debug(wp_get_current_user());
+$user_id = get_current_user();
+
 $options = array(
 	'menu' 		=> '',
 	'closebtn' 	=> '',
@@ -17,15 +18,9 @@ $options = array(
 
 $tavoli = get_posts( array(
     'numberposts'      => -1,
-    // 'category'         => 0,
     'orderby'          => 'title',
     'order'            => 'ASC',
-    // 'include'          => array(),
-    // 'exclude'          => array(),
-    // 'meta_key'         => '',
-    // 'meta_value'       => '',
     'post_type'        => 'tavoli',
-    // 'suppress_filters' => true,
 ) );
 
 $products = FO_get_products_for_loop();
@@ -71,21 +66,48 @@ if ( isset($_GET['table']) && $_GET['table'] != '' ) {
 
 	</div>
 
-<?php 
-echo FO_list_view_selector(); 
-// FO_debug(get_post_types());
-// get_post_types();
-?>
 		<div id="products_container" class="foflex">
-			<div class="focathead" style="background-color: var(--fo-main-color)!important;">
+
+			<div class="focathead FO_list_view_selector" style="background-color: var(--fo-main-color)!important;">
 				<input type="search" onkeyup="FO_search_for_all(this)" class="focatsearchall" placeholder="<?php esc_html_e('Cerchi Qualcosa?','flash_order' );?>">
+
+				<select onchange="jQuery('.foProdCard').attr('foview',jQuery(this).val())" foview="normal">
+					<option value="list">
+						<span class="dashicons dashicons-list-view"> List View </span>
+					</option>
+					<option value="small">
+						<span class="dashicons dashicons-grid-view"> Small View </span>
+					</option>
+					<option value="normal" selected>
+						<span class="dashicons dashicons-format-image"> Normal View </span>
+					</option>
+				</select>
+
 			</div>
+
+			<div class="focathead" style="background-color: var(--fo-main-color)!important;">
+				<div class="title" style="font-weight:800;font-size:30px;z-index:10;">
+					<?php esc_html_e('Prodotti Preferiti','flash_order' );?>
+				</div>
+				<input type="search" fotargetcat="FO_favourite" onkeyup="FO_refine_search(this)" class="focatsearch" placeholder="Cerca..." style="z-index:10;">
+			</div>
+			<div class="FO_favourites_container"></div>
 			<?php 
-			// echo FO_list_view_selector(); 
-				// $products = FO_get_products_for_loop();
-				FO_products_for_div_loop( $products );
-			?>
+					$fav_prod = get_user_meta($user_id, 'FO_favourite_products');
+					if (isset($fav_prod) && $fav_prod != '') {
+						$fav_prod_arr = json_decode($fav_prod);
+						foreach ($fav_prod_arr as $key => $value) {
+							
+						}
+					}
+
+				?>
+
+			<?php FO_products_for_div_loop( $products ); ?>
+
 		</div>
+
+		<?php FO_Advanced_prod_card(); ?>
 
 		<div class="FO_show_order_summary" onclick="Show_FO_Front_Float()">
 			<strong class="text_white" style="z-index:99;"> 
@@ -96,7 +118,6 @@ echo FO_list_view_selector();
 		</div>
 		
 		<div id="FO_Front_Float">
-
 			<div class="Hide_FO_Front_Float" onclick="Hide_FO_Front_Float()">
 				<?php esc_html_e( 'CHIUDI', 'flash_order' ); ?>
 			</div>
@@ -144,6 +165,11 @@ echo FO_list_view_selector();
 			window.addEventListener('scroll', fo_ajax_form_height);
 			window.addEventListener('resize', fo_ajax_form_height);
 			fo_ajax_form_height();
+
+			jQuery(window).on('load', function() {
+            	jQuery(".FOloadingCardPublicMain").fadeOut(200);
+           		fo_toggle_header_footer(true);
+        	});
 		</script>
 	</div>
 </div>

@@ -2519,106 +2519,47 @@ function FO_product_to_div_loop( $product, $cat_slug ){
 	$Sticker = get_the_terms($product->get_id(), 'Sticker');
 	$sticker = (isset($meta_data['sticker']) && $meta_data['sticker'] != null ) ? $meta_data['sticker'] : array();
 	$sticker = ( $Sticker ) ? $Sticker : $sticker;
+
+	$fo_tax_cat = wp_json_encode( get_the_terms( $id, 'product_cat' ) );
+	$fo_tax_tag = wp_json_encode( get_the_terms( $id, 'product_cat' ) );
+	$fo_tax_ing = wp_json_encode( get_the_terms( $id, 'product_cat' ) );
+	$fo_tax_allerg = wp_json_encode( get_the_terms( $id, 'product_cat' ) );
 ?>
-	<div class="foProdCard" foware="<?php echo esc_attr($fo_ware);?>" focategories="<?php echo esc_attr($cat_slug);?>" focatid="<?php echo esc_attr($category);?>" id="<?php echo 'prod-'.esc_attr($id);?>" style="transition:var(--fo-main-tran);position:relative;" foid="<?php echo esc_attr($id);?>" foname="<?php echo esc_attr($product->get_name());?>" fovariations="<?php echo esc_attr($vari_arr);?>" nat-ing="<?php echo esc_attr($count_ing);?>" >
+	<div class="foProdCard" foware="<?php echo esc_attr($fo_ware);?>" focategories="<?php echo esc_attr($cat_slug);?>" focatid="<?php echo esc_attr($category);?>" id="<?php echo 'prod-'.esc_attr($id);?>" style="transition:var(--fo-main-tran);position:relative;" foid="<?php echo esc_attr($id);?>" foname="<?php echo esc_attr($product->get_name());?>" fovariations="<?php echo esc_attr($vari_arr);?>" nat-ing="<?php echo esc_attr($count_ing);?>" fo_gallery="<?php echo esc_attr($product->get_gallery_image_ids());?>" fo_tax_cat="<?php echo esc_attr($fo_tax_cat);?>" fo_tax_tag="<?php echo esc_attr($fo_tax_tag);?>" fo_tax_ing="<?php echo esc_attr($fo_tax_ing);?>" fo_tax_allerg="<?php echo esc_attr($fo_tax_allerg);?>">
+
 		<input type="hidden" name="[id][<?php echo esc_attr($id);?>]" value="1">
 		<div class="foProdCardHead">
-			<?php echo wp_kses_post($product->get_image(array( 340, 340 ), array( 'foprod'=>'foprod', 'onclick'=>'FO_Advanced_Prod_Card(this)' ))); ?>
+			<?php echo wp_kses_post($product->get_image(array( 'auto', 'auto' ), array( 'foprod'=>'foprod', 'onclick'=>'FO_Advanced_Prod_Card(this)', 'class'=>'FO_prod_img_menu' ))); ?>
 			<div class="foname target_search" onclick="FO_Advanced_Prod_Card(this)"><?php echo esc_attr($product->get_name());?></div>
 			<?php 
 				// FO_get_product_temperature_options($product);
 			?>
-			<span class="dashicons dashicons-heart"></span>
-
-		<?php if ( $role ) { ?>
-			<img class="gear" color="" style="right:-10px"src="<?php echo esc_url( get_home_url() ).'/wp-content/plugins/flash_order/includes/img/gear.webp'?>" onclick="jQuery(this).parent().parent().find('.fo_flash_ing').slideToggle();return false;"/>
-			<div id="FOeditIngTab" class="FOEditProdTab fo_ajax_edit_tab fo_flash_ing" style="display:none;overflow:auto;">
-				<div onclick="jQuery(this).parent().slideToggle()" class="FOCloseProdTab fo_ajax_edit_tab_close"><?php echo esc_html__('CHIUDI','flash_order');?></div>
-				<?php 
-				// $Ingredienti = get_the_terms($product->get_id(), 'Ingredienti');
-				if ( $Ingredienti != null ) {
-					foreach( $Ingredienti as $key => $value ){ 
-						$tax_img = get_term_meta($value->term_id, 'taxonomy_image');
-						?>
-						<div class="FOIngredProdTab">
-							<input type="checkbox" name="[Ingredienti][<?php echo esc_attr($product->get_id());?>][<?php echo esc_attr($value->term_id);?>]" value="<?php echo esc_attr($value->name);?>" checked="checked" onclick="FOcheckIfModified(this)" nat-ing="<?php echo count($Ingredienti);?>" modified="native">
-							<?php  
-							if ( isset($tax_img[0]) && FOcheck($tax_img[0]) ) { ?>
-								<img class="fotax_image" src="<?php echo esc_attr($tax_img[0]);?>">
-							<?php } ?>
-							<p class="fo_ing_text"><?php echo esc_attr($value->name); ?></p>
-							
-						</div>
-					<?php }
-					}
-
-				?>
-				<input type="search" name="searched" class="FOSearchIngred fo_ajax_search_ing" onkeyup="FOSearchIngred(this)" placeholder="<?php echo esc_html__( 'Cerca ingredienti da aggiungere...', 'flash_order' ); ?>">
-				<div class="FOIngredProdSec fo_ajax_ing_sect">
-					<?php 
-						$terms = get_terms( array('taxonomy'=>'Ingredienti','hide_empty'=>false) );
-						// FO_debug($terms);
-						foreach ($terms as $k => $v) {
-							$tax_img = get_term_meta($v->term_id, 'taxonomy_image');
-							 ?>
-								<div id="FOselSearchIng" class="FOIngredProdTab" style="display:none;">
-								<?php if ( $tax_img != null && FOcheck($tax_img[0]) ) { ?>
-									<img class="fotax_image" width="30" height="30" src="<?php echo esc_attr($tax_img[0]);?>">
-								<?php } ?>
-									<p class="fo_ing_text"><?php echo esc_attr($v->name); ?></p>
-									<input type="checkbox" name="[Ingredienti][<?php echo esc_attr($product->get_id());?>][<?php echo  esc_attr($v->term_id);?>]" value="<?php echo esc_attr($v->name);?>" onclick="FOaddIng(this);FOcheckCardModified(this)" modified="modified">
-								</div>
-							<?php
-						}
-					?>
-				</div>
-				<div class="foRole"> 
-				<textarea type="text" name="<?php echo '[note]['.esc_attr($id).']';?>" placeholder="<?php esc_html_e('Note del prodotto...','flash_order');?>" style="height:100%;"></textarea> 
-				</div>
+			<div class="foheart" onclick="FO_add_prod_to_favorites(jQuery(this).closest('.foProdCard'));">
+				<span class="dashicons dashicons-heart"></span>
 			</div>
-		<?php } ?>
+			
 
-			<div id="FOeditIngTab" class="FOEditProdTab fo_ajax_edit_tab fovariation_card" style="display:none;overflow:auto;">
-				<div onclick="jQuery(this).parent().slideToggle()" class="FOCloseProdTab fo_ajax_edit_tab_close"><?php echo esc_html__('CHIUDI','flash_order');?></div>
-				<?php 
-					if ( !empty( $product->get_children() ) ) {
-						?><div class="fovariantcont"><?php esc_html_e('Seleziona la variante: ','flash_order');?><?php 
-							$product_attr = $product->get_attributes();
-							foreach ($product_attr as $k => $v) {
-								$attr = explode( ' | ', $product->get_attribute( $k ) );
-								?><div class="fovariant" fovariant="<?php echo esc_attr($k);?>" ><?php 
-								echo esc_attr($k);
-									?>
-									<input type="hidden" name="[Variante][<?php echo esc_attr($product->get_id());?>][<?php echo esc_attr($k);?>]" founivariant="<?php echo esc_attr($k);?>">
-									<select onchange="FO_variant_set(this);" founivariant="<?php echo esc_attr($k);?>">
-										<option value=""><?php esc_html_e( '- seleziona -', 'flash_order' );?></option>
-										<?php 
-									foreach ($attr as $key => $opt) {
-										?><option value="<?php echo esc_attr($opt);?>"><?php echo esc_attr($opt);?></option><?php 
-									}
-								?></select></div><?php 
-							}
-						?></div><?php 
-					}
-				?>
-				<div class="foadd foaddfix" onclick="FO_ajax_selectVarAfter_Add_Item_to_Order(this);" style=""> +
+<!-- <input type="search" name="searched" class="FOSearchIngred fo_ajax_search_ing" onkeyup="FOSearchIngred(this)" placeholder="<?php echo esc_html__( 'Cerca ingredienti da aggiungere...', 'flash_order' ); ?>">
+<div class="FOIngredProdSec fo_ajax_ing_sect">
+	<?php 
+		$terms = get_terms( array('taxonomy'=>'Ingredienti','hide_empty'=>false) );
+		// FO_debug($terms);
+		foreach ($terms as $k => $v) {
+			$tax_img = get_term_meta($v->term_id, 'taxonomy_image');
+			 ?>
+				<div id="FOselSearchIng" class="FOIngredProdTab" style="display:none;">
+				<?php if ( $tax_img != null && FOcheck($tax_img[0]) ) { ?>
+					<img class="fotax_image" width="30" height="30" src="<?php echo esc_attr($tax_img[0]);?>">
+				<?php } ?>
+					<p class="fo_ing_text"><?php echo esc_attr($v->name); ?></p>
+					<input type="checkbox" name="[Ingredienti][<?php echo esc_attr($product->get_id());?>][<?php echo  esc_attr($v->term_id);?>]" value="<?php echo esc_attr($v->name);?>" onclick="FOaddIng(this);FOcheckCardModified(this)" modified="modified">
 				</div>
-			</div>
-
+			<?php
+		}
+	?>
+</div> -->
 
 <div class="fovariantag_container" onclick="FO_Advanced_Prod_Card(this)">
-	<?php /*
-	$product_attr = (isset($product_attr))? $product_attr: $product->get_attributes();
-	foreach ($product_attr as $k => $v) {
-		$attr = explode( ' | ', $product->get_attribute( $k ) );
-		foreach ($attr as $key => $opt) {
-			?>
-			<div style="display:none;" founivariant="<?php echo esc_attr($k);?>" founitag="<?php echo esc_attr($opt);?>">
-				<p class="fotype"><?php echo esc_attr($k);?></p>
-				<p class="fovari"><?php echo esc_attr($opt);?></p>
-			</div>
-		<?php } ?>
-	<?php } */ ?>
 </div>
 
 <div class="fosticker">
@@ -2665,122 +2606,19 @@ function FO_product_to_div_loop( $product, $cat_slug ){
 				<img color="<?php echo esc_attr($ware_color);?>" src="<?php echo esc_url( get_home_url() ).'/wp-content/plugins/flash_order/includes/img/sphere4.webp'?>"/>
 				<p><?php echo esc_attr($ware_text);?></p>
 			</div>
+
 			<?php if (FOcheck($variations)) {?>
-				<div class="foadd" onclick="FO_Advanced_Prod_Card(this)"> +
+				<div class="foadd" onclick="FO_Advanced_Prod_Card(this)">
+					<span class="dashicons dashicons-plus"></span>
 					<input type="hidden" name="[<?php echo esc_attr($id);?>]" value="1">
 				</div>
 			<?php } else{ ?>
-				<div class="foadd" onclick="FO_ajax_selectVarBefore_Add_Item_to_Order(this);"> +
+				<div class="foadd" onclick="FO_ajax_selectVarBefore_Add_Item_to_Order(this);">
+					<span class="dashicons dashicons-plus"></span>
 					<input type="hidden" name="[<?php echo esc_attr($id);?>]" value="1">
 				</div>
 			<?php } ?>
 		</div>
-
-		<div class="Advanced_Card" style="display:none;">
-			<div class="Advanced_Card_Close" onclick="FO_Advanced_Prod_Card_hide(jQuery(this))" style="padding: 5px;">
-				<span class="dashicons dashicons-no" style="font-size:40px;display:contents;"></span>
-			</div>
-			<div class="Advanced_Card_header">
-				<div class="fowarehouse fixware" style="top:-10px;max-width:230px;">
-					<!-- <p><?php echo esc_attr($ware_text);?></p> -->
-					<img color="<?php echo esc_attr($ware_color);?>" src="<?php echo esc_url( get_home_url() ).'/wp-content/plugins/flash_order/includes/img/sphere4.webp'?>"/>
-				</div>
-				<p style="width:80px;">#<?php echo esc_attr($product->get_id());?></p>
-				<p style="max-width:calc(100% - 250px);"><?php echo esc_attr($product->get_name());?></p>
-				<?php if ( $product->get_sku() != '' ) { ?>
-					<p style="width:80px;">SKU: <?php echo esc_attr($product->get_sku());?></p>
-				<?php } ?>
-				
-				<div class="Advanced_Card_Close fo_close"onclick="FO_Advanced_Prod_Card_hide(jQuery(this).parent())"><?php esc_html_e('CHIUDI','flash_order');?></div>
-			</div>
-
-			<div class="Advanced_Card_gallery">
-			<?php 
-				echo wp_kses_post($product->get_image(array( 300, 300 ), array( 'foprod'=>'gallery' )));
-
-				if ( !empty($product->get_gallery_image_ids()) ) {
-					foreach ($product->get_gallery_image_ids() as $key => $value) {
-						echo wp_get_attachment_image( $value, array(300, 300), false, array('foprod'=>'gallery') );
-					}
-				}
-			?>
-			</div>
-			<div class="Advanced_Card_column">
-				<div class="focol">
-					<?php echo esc_attr($product->get_description()); ?>
-				</div>
-
-				<div class="focol">
-	<?php
-	$product_cat = get_the_terms($product->get_id(),'product_cat');
-		if ( !empty( $product_cat ) ) {
-		?><span class="fo_adv_tax"><strong><?php esc_html_e('Category:','flash_order');?></strong></span><?php
-			echo wp_kses_post(FO_get_tax_cloud( $product_cat ));
-		}
-	$product_tag = get_the_terms($product->get_id(),'product_tag');
-		if ( !empty( $product_tag ) ) {
-			?><span class="fo_adv_tax"><strong><?php esc_html_e('Tag:','flash_order');?></strong></span><?php
-			echo wp_kses_post(FO_get_tax_cloud( $product_tag ));
-		}
-	$Ingredienti = get_the_terms($product->get_id(),'Ingredienti');
-	// FO_debug($Ingredienti);
-		if ( !empty( $Ingredienti ) ) {
-			?><span class="fo_adv_tax"><strong><?php esc_html_e('Ingredienti:','flash_order');?></strong></span><?php
-			echo wp_kses_post(FO_get_tax_cloud( $Ingredienti, $product->get_id() ));
-		}
-	$Allergeni = get_the_terms($product->get_id(),'Allergeni');
-		if ( !empty( $Allergeni ) ) {
-			?><span class="fo_adv_tax"><strong><?php esc_html_e('Allergeni:','flash_order');?></strong></span><?php
-			echo wp_kses_post(FO_get_tax_cloud( $Allergeni ));
-		}
-	?>
-				</div>
-			</div>
-
-			<div class="Advanced_Card_footer">
-				<p class="fo_adv_tot"><?php
-				FOecho(number_format(floatval($product->get_price()), 2, '.', ',').get_woocommerce_currency_symbol());?></p>
-
-				<?php if ( !empty( $product->get_children() ) ) { ?>
-						<div class="fovariantcont">
-							<?php esc_html_e('Seleziona la variante: ','flash_order');
-
-								$product_attr = $product->get_attributes();
-								foreach ($product_attr as $k => $v) {
-									if (str_contains($k, 'pa_')) {
-										$k = str_replace('pa_', '', $k);
-										$attr = explode( ', ', $product->get_attribute( $k ) );
-										$attr_term = 'pa_'.$k;
-									} else{
-										$attr_term = false;
-										$attr = explode( ' | ', $product->get_attribute( $k ) );
-									}
-									?>
-									<div class="fovariant" fovariant="<?php echo esc_attr($k);?>">
-										<strong><?php echo esc_attr($k);?></strong>
-
-										<select class="fo_button_thin" foadvariant="<?php echo esc_attr($k);?>" fo_prod_id="<?php echo esc_attr($product->get_id());?>" fo_price="<?php echo esc_attr($product->get_price());?>" onchange="FO_variant_set(this);">
-
-											<?php foreach ($attr as $key => $opt) { 
-												$price_to_add = '0.0';
-												if ( taxonomy_exists( $attr_term ) ) {
-													$price_to_add = get_string_between(get_term_by('name', $opt, $attr_term )->description,'[',']');
-												}
-												?>
-												<option name="[Variante][<?php echo esc_attr($product->get_id());?>][<?php echo esc_attr($k);?>]" type="radio" value="<?php echo esc_attr($opt);?>" fovariant="<?php echo esc_attr($k);?>" fo_price_to_add="<?php echo esc_attr($price_to_add);?>"><?php echo esc_attr($opt);?></option>
-											<?php } ?>
-										</select>
-									</div>
-								<?php } ?>
-						</div><?php 
-					}
-				?>
-				<div class="foadd" style="scale:0.8;bottom:25px;right:-10px;" onclick="FO_Advanced_Prod_Card_hide_all();FO_ajax_selectVarAfter_Add_Item_to_Order(this);"> +
-				</div>
-
-			</div>
-		</div>
-		<div class="Advanced_Card_background" style="display:none;"></div>
 
 		<div class="foProdCardFoot">
 		<?php if ( $role ) { ?>
@@ -2788,6 +2626,112 @@ function FO_product_to_div_loop( $product, $cat_slug ){
 		<?php } ?>
 		</div>
 	</div>
+	<?php
+}
+
+function FO_Advanced_prod_card(){
+	?>
+	<div class="Advanced_Card" style="display:none;">
+	<div class="Advanced_Card_Close" onclick="FO_Advanced_Prod_Card_hide(jQuery(this))" style="padding: 5px;">
+		<span class="dashicons dashicons-no" style="font-size:40px;display:contents;"></span>
+	</div>
+	<div class="Advanced_Card_header">
+		<div class="fowarehouse fixware" style="top:-10px;max-width:230px;">
+			<!-- <p><?php echo esc_attr($ware_text);?></p> -->
+			<img color="<?php echo esc_attr($ware_color);?>" src="<?php echo esc_url( get_home_url() ).'/wp-content/plugins/flash_order/includes/img/sphere4.webp'?>"/>
+		</div>
+		<p class="AC_ID" style="width:80px;">#<?php echo esc_attr($product->get_id());?></p>
+		<p class="AC_Name" style="max-width:calc(100% - 250px);"><?php echo esc_attr($product->get_name());?></p>
+		
+		<div class="Advanced_Card_Close fo_close"onclick="FO_Advanced_Prod_Card_hide(jQuery(this).parent())"><?php esc_html_e('CHIUDI','flash_order');?></div>
+	</div>
+
+	<div class="Advanced_Card_gallery">
+	<?php 
+		echo wp_kses_post($product->get_image(array( 300, 300 ), array( 'foprod'=>'gallery' )));
+		if ( !empty($product->get_gallery_image_ids()) ) {
+			foreach ($product->get_gallery_image_ids() as $key => $value) {
+				echo wp_get_attachment_image( $value, array(300, 300), false, array('foprod'=>'gallery') );
+			}
+		}
+	?>
+	</div>
+	<div class="Advanced_Card_column">
+		<div class="focol AC_description">
+			<?php echo esc_attr($product->get_description()); ?>
+		</div>
+
+		<div class="focol AC_tax">
+<?php
+			$product_cat = get_terms(array('taxonomy'=>'product_cat','hide_empty'=>false,));
+				if ( !empty( $product_cat ) ) {
+				?><span class="fo_adv_tax AC_tax_cat"><strong><?php esc_html_e('Category:','flash_order');?></strong></span><?php
+					echo wp_kses_post(FO_get_tax_cloud( $product_cat ));
+				}
+			$product_tag = get_terms(array('taxonomy'=>'product_tag','hide_empty'=>false,));
+				if ( !empty( $product_tag ) ) {
+					?><span class="fo_adv_tax AC_tax_tag"><strong><?php esc_html_e('Tag:','flash_order');?></strong></span><?php
+					echo wp_kses_post(FO_get_tax_cloud( $product_tag ));
+				}
+			$Ingredienti = get_terms(array('taxonomy'=>'Ingredienti','hide_empty'=>false,));
+				if ( !empty( $Ingredienti ) ) {
+					?><span class="fo_adv_tax AC_tax_ing"><strong><?php esc_html_e('Ingredienti:','flash_order');?></strong></span><?php
+					echo wp_kses_post(FO_get_tax_cloud( $Ingredienti, $product->get_id() ));
+				}
+			$Allergeni = get_terms(array('taxonomy'=>'Allergeni','hide_empty'=>false,));
+				if ( !empty( $Allergeni ) ) {
+					?><span class="fo_adv_tax AC_tax_cat"><strong><?php esc_html_e('Allergeni:','flash_order');?></strong></span><?php
+					echo wp_kses_post(FO_get_tax_cloud( $Allergeni ));
+				}
+			?>
+		</div>
+	</div>
+
+		<div class="Advanced_Card_footer">
+
+			<p class="fo_adv_tot AC_tot"></p>
+
+		<?php if ( !empty( $product->get_children() ) ) { ?>
+				<div class="fovariantcont">
+					<?php esc_html_e('Seleziona la variante: ','flash_order');
+
+						$product_attr = $product->get_attributes();
+						foreach ($product_attr as $k => $v) {
+							if (str_contains($k, 'pa_')) {
+								$k = str_replace('pa_', '', $k);
+								$attr = explode( ', ', $product->get_attribute( $k ) );
+								$attr_term = 'pa_'.$k;
+							} else{
+								$attr_term = false;
+								$attr = explode( ' | ', $product->get_attribute( $k ) );
+							}
+							?>
+							<div class="fovariant" fovariant="<?php echo esc_attr($k);?>">
+								<strong><?php echo esc_attr($k);?></strong>
+
+								<select class="fo_button_thin" foadvariant="<?php echo esc_attr($k);?>" fo_prod_id="<?php echo esc_attr($product->get_id());?>" fo_price="<?php echo esc_attr($product->get_price());?>" onchange="FO_variant_set(this);">
+
+									<?php foreach ($attr as $key => $opt) { 
+										$price_to_add = '0.0';
+										if ( taxonomy_exists( $attr_term ) ) {
+											$price_to_add = get_string_between(get_term_by('name', $opt, $attr_term )->description,'[',']');
+										}
+										?>
+										<option name="[Variante][<?php echo esc_attr($product->get_id());?>][<?php echo esc_attr($k);?>]" type="radio" value="<?php echo esc_attr($opt);?>" fovariant="<?php echo esc_attr($k);?>" fo_price_to_add="<?php echo esc_attr($price_to_add);?>"><?php echo esc_attr($opt);?></option>
+									<?php } ?>
+								</select>
+							</div>
+						<?php } ?>
+				</div><?php 
+			}
+		?>
+			<div class="foadd" style="scale:0.8;bottom:25px;right:-10px;" onclick="FO_Advanced_Prod_Card_hide_all();FO_ajax_selectVarAfter_Add_Item_to_Order(this);"> +
+			</div>
+
+		</div>
+	</div>
+	<div class="Advanced_Card_background" style="display:none;"></div>
+
 	<?php
 }
 
@@ -2816,56 +2760,18 @@ function FO_list_view_selector(){
 
 
 function FO_get_tax_cloud( $terms = array(), $product_id = '', $check = 'checked'  ){
-	$role = FO_access_autorization();
 	foreach ($terms as $key=>$value) {
 		$tax_img = get_term_meta($value->term_id, 'taxonomy_image'); ?>
 		<div class="FOAdvIngredProdTab">
 			<p><?php echo esc_attr($value->name);?></p>
 			<?php if ( FOcheck($tax_img) && isset($tax_img[0]) && $tax_img[0] != '' ) { ?>
 				<img class="fotax_image"width="30"height="30"src="<?php echo esc_attr($tax_img[0]);?>">
-			<?php } 
-			if ( $role && $product_id != '' && false ) { ?>
-				<input type="checkbox"name="[Ingredienti][<?php echo esc_attr($product_id);?>][<?php echo esc_attr($value->term_id);?>]" value="<?php echo esc_attr($value->name);?>" onclick="FOcheckIfModified(this);FOadvToRegularFit(this);" modified="modified" <?php echo esc_attr($check);?>>
 			<?php } ?>
 		</div>
 		<?php
 	}
 }
-function FO_get_tax_cloud_ajax( $terms = array(), $product_id = '', $check = 'checked' ){
-	$return = ''; $role = FO_access_autorization();
-	foreach ($terms as $key=>$value) {
-		// if (is_int($value)) { $value = get_term( $value, $taxonomy ); }
-		$tax_img = get_term_meta($value->term_id, 'taxonomy_image'); 
-		$return .= '<div class="FOAdvIngredProdTab">';
-			$return .= '<p>'.esc_attr($value->name).'</p>';
-			if ( FOcheck($tax_img) && isset($tax_img[0]) && $tax_img[0] != '' ) {
-				$return .= '<img class="fotax_image"width="30"height="30"src="'.esc_attr($tax_img[0]).'">';
-			}
-			if ( $role && $product_id != '' ) {
-				$return .= '<input type="checkbox"name="[Ingredienti]['.esc_attr($product_id).']['.esc_attr($value->term_id).']" value="'.esc_attr($value->name).'" modified="modified" '.esc_attr($check).'>';
-			}
-		$return .= '</div>';
-	}
-	return $return;
-}
 
-function FO_get_tax_cloud_from_id_ajax( $terms = array(), $taxonomy = '', $product_id = '', $check = 'checked' ){
-	$return = ''; $role = FO_access_autorization();
-	foreach ($terms as $key=>$value) {
-		$value = get_term( $value, $taxonomy );
-		$tax_img = get_term_meta($value->term_id, 'taxonomy_image'); 
-		$return .= '<div class="FOAdvIngredProdTab">';
-			$return .= '<p>'.esc_attr($value->name).'</p>';
-			if ( FOcheck($tax_img) && isset($tax_img[0]) && $tax_img[0] != '' ) {
-				$return .= '<img class="fotax_image"width="30"height="30"src="'.esc_attr($tax_img[0]).'">';
-			}
-			if ( $role && $product_id != '' ) {
-				$return .= '<input type="checkbox"name="[Ingredienti]['.esc_attr($product_id).']['.esc_attr($value->term_id).']" value="'.esc_attr($value->name).'" modified="modified" '.esc_attr($check).'>';
-			}
-		$return .= '</div>';
-	}
-	return $return;
-}
 function FO_get_product_temperature_options( $product ){
 	if ( FO_get_meta('product_temperature_tax') == 'yes') {
 		$Temperature = get_the_terms($product->get_id(), 'Temperature');
@@ -4099,7 +4005,15 @@ function FO_flash_tab_order( $tavoli = array() ){
 							foreach ((array)$story as $story_v) {
 								$order = new WC_Order($story_v);
 								?>
-								<div class="fo_button fo_story fo_order_table_story" fotableid="<?php echo esc_attr($tavolo->ID);?>"  ondblclick="fo_change_order_status(<?php echo "'".esc_attr($order->get_id())."'";?>, 'processing' );console.log('yesssss')" onclick="fo_filter_tab_story(this,<?php echo "'".esc_attr($order->get_id())."'";?>)" fo_order_id="<?php echo esc_attr($order->get_id());?>" fo_order_total="<?php echo esc_attr($order->get_total());?>" fo_order_subtotal="<?php echo esc_attr($order->get_subtotal());?>">
+								<div class="fo_button fo_story fo_order_table_story" fotableid="<?php echo esc_attr($tavolo->ID);?>"  ondblclick="fo_change_order_status(<?php echo "'".esc_attr($order->get_id())."'";?>, 'processing' );console.log('yesssss')" onclick="fo_filter_tab_story(this,<?php echo "'".esc_attr($order->get_id())."'";?>)" fo_order_id="<?php echo esc_attr($order->get_id());?>" fo_order_total="<?php echo esc_attr($order->get_total());?>" fo_order_subtotal="<?php echo esc_attr($order->get_subtotal());?>" 
+									fo_order_date_created="<?php echo esc_attr($order->get_date_created());?>"
+									fo_order_date_modified="<?php echo esc_attr($order->get_date_modified());?>"
+									fo_order_date_completed="<?php echo esc_attr($order->get_date_completed());?>"
+									fo_order_date_paid="<?php echo esc_attr($order->get_date_paid());?>"
+									fo_order_customer_user_agent="<?php echo esc_attr($order->get_customer_user_agent());?>"
+									fo_order_created_via="<?php echo esc_attr($order->get_created_via());?>"
+									fo_order_customer_note="<?php echo esc_attr($order->get_customer_note());?>"
+									fo_order_status="<?php echo esc_attr($order->get_status());?>">
 									<?php echo esc_attr($order->get_id());?>
 								</div>
 								<?php //fo_change_order_status

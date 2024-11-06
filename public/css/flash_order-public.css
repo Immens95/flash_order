@@ -1752,7 +1752,7 @@ img[color="red"]{
 	height: 25px;
 	margin-top: 10px;
 }
-.foadd {
+.foadd, .foheart {
     position: absolute;
     bottom: 0px;
     right: 0px;
@@ -1761,8 +1761,8 @@ img[color="red"]{
     color: var(--fo-text-color);
     text-shadow: 2px 2px 5px black;
     border-radius: 30% 0 0 0;
-    background: -o-radial-gradient(var(--fo-bg-color) 30%, #fff0 70%);
-    background: radial-gradient(var(--fo-bg-color) 30%, #fff0 70%);
+    background: -o-radial-gradient(var(--fo-bg-color) 45%, #fff0 50%);
+    background: radial-gradient(var(--fo-bg-color) 45%, #fff0 50%);
     font-size: 120px;
     opacity: 0.7;
     text-align: center;
@@ -1780,10 +1780,29 @@ img[color="red"]{
 	-o-transition: var(--fo-main-tran);
 	transition: var(--fo-main-tran);
 }
+.foheart {
+	top: 0;
+}
+.foadd .dashicons, .foheart .dashicons {
+    width: 90px;
+    height: 45px;
+    font-size: 50px;
+}
+
+.FO_favourites_container{
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    align-content: center;
+    justify-content: center;
+}
+
+
+
 .foaddfix{
 	margin: 35px 0px;
 }
-.foadd:hover, .foadd:focus{
+.foadd:hover, .foadd:focus, .foheart:hover, .foheart:focus{
 	scale: 1.2;
 	opacity: 1;
 		-webkit-transition: var(--fo-scnd-tran);
@@ -1792,6 +1811,20 @@ img[color="red"]{
 }
 
 .foProdCardHead{
+	width: 100%;
+	-ms-flex-preferred-size: 100%;
+	    flex-basis: 100%;
+/*	position: relative!important;*/
+	-webkit-box-pack: center;
+    -ms-flex-pack: center;
+        justify-content: center;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.FO_prod_img_menu{
 	width: 100%;
 	-ms-flex-preferred-size: 100%;
 	    flex-basis: 100%;
@@ -2216,10 +2249,7 @@ img[foprod="gallery"]:hover, img[foprod="gallery"]:focus{
     color: var(--fo-text-color);
     background-color: var(--fo-bg4-color);
     z-index: 999;
-background: -webkit-gradient(linear, left top, right top, from(var(--fo-bg4-color)), color-stop(50%, var(--fo-main-color)), to(var(--fo-invert-color)));
-background: -o-linear-gradient(left, var(--fo-bg4-color) 0%, var(--fo-main-color) 50%, var(--fo-invert-color) 100%);
-background: linear-gradient(90deg, var(--fo-bg4-color) 0%, var(--fo-main-color) 50%, var(--fo-invert-color) 100%);
-
+background: linear-gradient(90deg, var(--fo-bg4-color) 0%, var(--fo-invert-color) 50%, var(--fo-bg4-color) 100%);
 }
 .Advanced_Card_footer select{
 	padding: 5px;
@@ -3970,7 +4000,7 @@ width: 100%;
     right: -50%;
     top: 0;
     bottom: 0;
-    z-index: 9999;
+    z-index: 999999;
 /*    display: flex;*/
 /*    flex-wrap: wrap;*/
         -webkit-transition: var(--fo-main-tran);

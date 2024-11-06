@@ -466,6 +466,36 @@ function FOtouchdrop(event) {
 
 
 
+
+
+function FO_add_prod_to_favorites(input){
+
+	var p_clone = jQuery(input).clone();
+
+	p_clone.attr('focategories','FO_favourite');
+
+	p_clone.find('.foheart span').removeClass('dashicons-heart');
+	p_clone.find('.foheart span').addClass('dashicons-no');
+	
+	p_clone.find('.foheart').attr('onclick',"FO_remove_prod_from_favorites(jQuery(this).closest('.foProdCard'))");
+
+	jQuery('.FO_favourites_container').prepend(p_clone);
+
+
+}
+
+function FO_remove_prod_from_favorites(input){
+	jQuery(input).remove();
+}
+
+
+
+
+
+
+
+
+
 function FO_refine_search(input){
 	var searchVal = jQuery(input).val();
 	var target = jQuery(input).attr('fotargetcat');
@@ -483,9 +513,12 @@ function FO_refine_search(input){
 				}
 			});
 			if(found === true) {
+				// jQuery(row).css('scale','0');
+				jQuery(row).css('scale','1');
 				jQuery(row).show();
 			}else {
-				jQuery(row).hide();
+				jQuery(row).css('scale','0');
+				jQuery(row).fadeOut();
 				// jQuery(row).hide();
 			}
 		}
@@ -769,16 +802,16 @@ function Hide_FOListRapidView(){
 }
 
 function FO_Advanced_Prod_Card( target ){
-	jQuery(target).parent().parent().find('.Advanced_Card').slideDown();
-	jQuery(target).parent().parent().find('.Advanced_Card_background').show();
+	jQuery('.Advanced_Card').slideDown();
+	jQuery('.Advanced_Card_background').show();
 	jQuery('header').css('display','none');
 	jQuery('footer').css('display','none');
 	// fo_toggle_header_footer();
 }
 
 function FO_Advanced_Prod_Card_hide( target ){
-	jQuery(target).parent().parent().find('.Advanced_Card').slideUp();
-	jQuery(target).parent().parent().find('.Advanced_Card_background').hide();
+	jQuery('.Advanced_Card').slideUp();
+	jQuery('.Advanced_Card_background').hide();
 	// jQuery('header').css('display','');
 	// jQuery('footer').css('display','');
 	fo_toggle_header_footer();
@@ -2347,6 +2380,7 @@ function FO_settings_show(){
 	jQuery('#FO_active_settings').animate({
 		right: '0px',
 	}, 300);
+	jQuery('.fo_setting_show').fadeIn();
 	setTimeout(function() {
 		jQuery('#FO_active_settings').addClass('setting_is_show');
 	}, 1000);
@@ -2359,6 +2393,8 @@ function FO_statistics_show(){
 
 	fo_stat_filter_table();
 	jQuery('.fo_stat_container').slideDown();
+	jQuery('.fo_statistic_show').fadeIn();
+	
 
 	setTimeout(function() {
 		jQuery('.fo_stat_container').addClass('setting_is_show');
@@ -2370,6 +2406,7 @@ function FO_statistics_hide(){
 
 	jQuery('.fo_stat_container').removeClass('setting_is_show');
 	jQuery('.fo_stat_container').slideUp();
+	jQuery('.fo_statistic_show').fadeOut();
 }
 
 function FO_settings_hide(){
@@ -2380,6 +2417,7 @@ function FO_settings_hide(){
 	jQuery('#FO_active_settings').animate({
 		right: str,
 	}, 300);
+	jQuery('.fo_setting_show').fadeOut();
 	jQuery('#FO_active_settings').removeClass('setting_is_show');
 	fo_toggle_header_footer();
 }
