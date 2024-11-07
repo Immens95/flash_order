@@ -23,6 +23,18 @@ $tavoli = get_posts( array(
     'post_type'        => 'tavoli',
 ) );
 
+$args = array(
+	'status'            => 'publish',
+	'orderby' 			=> 'title',
+	'order'             => 'DESC',
+	'limit'             => -1,  // -1 for unlimited
+    'offset'            => null,
+    'page'              => 1,
+    'return'            => 'objects',
+	'paginate'          => false,
+);
+$search_products = wc_get_products( $args );
+
 $products = FO_get_products_for_loop();
 
 $fo_front_surname = (!in_array(FO_get_meta('flash_order_front_surname'), array(null, ''), true)) ? explode(",", FO_get_meta('flash_order_front_surname')): '';
@@ -38,6 +50,13 @@ if ( isset($_GET['table']) && $_GET['table'] != '' ) {
 		<div id="FO_select_variant_alert"><?php esc_html_e( 'Seleziona prima la variante', 'flash_order' );?></div>
 		<div id="FO_warehouse_alert"><?php esc_html_e( 'Siamo spiacenti ma il prodotto non é al momento disponibile', 'flash_order' );?></div>
 		<div id="FO_access_alert"><?php esc_html_e( 'Per poter effettuare ordini su questa pagina, é neccessario Effettuare l\'accesso!', 'flash_order' );?></div>
+
+		<div id="FO_favourite_alert"><?php esc_html_e( 'Il prodotto é già tra i favoriti', 'flash_order' );?></div>
+
+		<div id="FO_home_url"><?php echo get_home_url();?></div>
+
+		<div id="FO_woo_currency_sym"><?php echo get_woocommerce_currency_symbol();?></div>
+
 		<style type="text/css">
 			#eltdf-back-to-top{
 				margin-bottom: 120px!important;
@@ -70,7 +89,7 @@ if ( isset($_GET['table']) && $_GET['table'] != '' ) {
 		<div id="products_container" class="foflex">
 
 			<div class="focathead FO_list_view_selector" style="background-color: var(--fo-main-color)!important;">
-				<input type="search" onkeyup="FO_search_for_all(this)" class="focatsearchall" placeholder="<?php esc_html_e('Cerchi Qualcosa?','flash_order' );?>">
+				<input type="search" onkeyup="FO_refine_search(this, 'hide')" fotargetcat="search" class="focatsearchall" placeholder="<?php esc_html_e('Cerchi Qualcosa?','flash_order' );?>">
 
 				<select onchange="jQuery('.foProdCard').attr('foview',jQuery(this).val())" foview="normal">
 					<option value="list">
@@ -85,12 +104,22 @@ if ( isset($_GET['table']) && $_GET['table'] != '' ) {
 				</select>
 
 			</div>
+			<div class="FO_search_container">
+				<?php 
+				foreach ($search_products as $key => $value) {
+					FO_product_to_div_loop( $value ); 
+				}
+				?>
+			</div>
 
 			<div class="focathead" id="FO_favourite" style="background-color: var(--fo-main-color)!important;">
 				<div class="title" style="font-weight:800;font-size:30px;z-index:10;">
 					<?php esc_html_e('Prodotti Preferiti','flash_order' );?>
 				</div>
 				<input type="search" fotargetcat="FO_favourite" onkeyup="FO_refine_search(this)" class="focatsearch" placeholder="Cerca..." style="z-index:10;">
+				<div class="fo_button" onclick="FO_toggle_Favourite(this);">
+					<span class="dashicons dashicons-arrow-down-alt2"></span>
+				</div>
 			</div>
 			<div class="FO_favourites_container"></div>
 			<?php 

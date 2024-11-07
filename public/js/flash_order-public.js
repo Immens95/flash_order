@@ -469,6 +469,10 @@ function FOtouchdrop(event) {
 
 
 function FO_add_prod_to_favorites(input){
+	if (jQuery('.FO_favourites_container').find('.foProdCard[foname="'+jQuery(input).attr('foname')+'"]').length > 0 ) {
+		FO_alert('',jQuery('#FO_favourite_alert').text());
+		return;
+	}
 
 	var p_clone = jQuery(input).clone();
 
@@ -496,7 +500,7 @@ function FO_remove_prod_from_favorites(input){
 
 
 
-function FO_refine_search(input){
+function FO_refine_search(input, def = 'show'){
 	var searchVal = jQuery(input).val();
 	var target = jQuery(input).attr('fotargetcat');
 	var items = jQuery('#products_container [focategories='+target+']');
@@ -512,6 +516,9 @@ function FO_refine_search(input){
 					return false;
 				}
 			});
+			if (def == 'hide' && searchVal == '') {
+				jQuery(items).fadeOut();
+			}
 			if(found === true) {
 				// jQuery(row).css('scale','0');
 				jQuery(row).css('scale','1');
@@ -822,20 +829,57 @@ function FO_Advanced_Prod_Card( input ){
 	var AC_Variant = jQuery(input).closest('.foProdCard').find('.fovariantcont').clone();
 	AC_Variant.show();
 
+	var foware = jQuery(input).closest('.foProdCard').attr('foware');
+
 	jQuery('.AC_ID').text(AC_ID);
 	jQuery('.AC_Name').text(AC_Name);
 	jQuery('.AC_description').text(AC_description);
-	jQuery('.Advanced_Card_gallery').text(Advanced_Card_gallery);
-	jQuery('.AC_tax_cat').text(AC_tax_cat);
-	jQuery('.AC_tax_tag').text(AC_tax_tag);
-	jQuery('.AC_tax_ing').text(AC_tax_ing);
-	jQuery('.AC_tax_allerg').text(AC_tax_allerg);
+
+	Advanced_Card_gallery = JSON.parse(Advanced_Card_gallery);
+	if ( Advanced_Card_gallery == '' || Advanced_Card_gallery == null ) {
+		jQuery('.FO_no_images').show();
+	} else{
+		jQuery('.FO_no_images').hide();
+		if (jQuery('[fo_prod_target_id="'+AC_ID+'"]').length ) {
+			jQuery('[fo_prod_target_id="'+AC_ID+'"]').show();
+		} else{
+			jQuery('.Advanced_Card_gallery').append('<div class="fo_cont_gall_img" fo_prod_target_id="'+AC_ID+'"></div>');
+
+			jQuery(Advanced_Card_gallery).each(function(i,e){
+				var img = '<img class="fo_gallery_img" src="'+e+'">';
+				jQuery('.Advanced_Card_gallery [fo_prod_target_id="'+AC_ID+'"]').append(img);
+			});
+		}
+	}
+
+	AC_tax_cat = JSON.parse(AC_tax_cat);
+	jQuery(AC_tax_cat).each(function(i,e){
+		jQuery('.AC_tax [fo_tax_id="'+e+'"]').show();
+	});
+
+	AC_tax_tag = JSON.parse(AC_tax_tag);
+	jQuery(AC_tax_tag).each(function(i,e){
+		jQuery('.AC_tax [fo_tax_id="'+e+'"]').show();
+	});
+
+	AC_tax_ing = JSON.parse(AC_tax_ing);
+	jQuery(AC_tax_ing).each(function(i,e){
+		jQuery('.AC_tax [fo_tax_id="'+e+'"]').show();
+	});
+
+	AC_tax_allerg = JSON.parse(AC_tax_allerg);
+	jQuery(AC_tax_allerg).each(function(i,e){
+		jQuery('.AC_tax [fo_tax_id="'+e+'"]').show();
+	});
+
 	jQuery('.AC_tot').text(AC_tot);
 	jQuery('.AC_Variant').append(AC_Variant);
+
+	jQuery('.Advanced_Card .fowarehouse').attr('foware', foware); 
 }
 
 function FO_Advanced_Prod_Card_hide( target ){
-	jQuery('.Advanced_Card').fadeOut();
+	jQuery('.Advanced_Card').hide();
 	jQuery('.Advanced_Card_background').fadeOut();
 	// jQuery('header').css('display','');
 	// jQuery('footer').css('display','');
@@ -844,11 +888,10 @@ function FO_Advanced_Prod_Card_hide( target ){
 	jQuery('.AC_ID').text('');
 	jQuery('.AC_Name').text('');
 	jQuery('.AC_description').text('');
-	jQuery('.Advanced_Card_gallery').text('');
-	jQuery('.AC_tax_cat').text('');
-	jQuery('.AC_tax_tag').text('');
-	jQuery('.AC_tax_ing').text('');
-	jQuery('.AC_tax_allerg').text('');
+
+	jQuery('.FOAdvIngredProdTab').hide();
+	jQuery('.fo_cont_gall_img').hide();
+
 	jQuery('.AC_tot').text('');
 	jQuery('.AC_Variant').empty();
 }
@@ -858,6 +901,20 @@ function FO_Advanced_Prod_Card_hide_all(){
 	jQuery('.Advanced_Card_background').hide();
 	
 }
+
+function FO_toggle_Favourite( input ){
+	jQuery('.FO_favourites_container').slideToggle();
+	if (jQuery(input).find('span').hasClass('dashicons-arrow-down-alt2')) {
+		jQuery(input).find('span').removeClass('dashicons-arrow-down-alt2');
+		jQuery(input).find('span').addClass('dashicons-arrow-up-alt2');
+	} else{
+		jQuery(input).find('span').removeClass('dashicons-arrow-up-alt2');
+		jQuery(input).find('span').addClass('dashicons-arrow-down-alt2');
+	}
+	
+}
+
+
 // if ( !jQuery('.fothermo').is(':focus') ) {
 // jQuery(this).hide();
 // }
@@ -886,7 +943,7 @@ document.addEventListener('click', function handleClickOutsideBox(event) {
 
 
 function FO_check_warehouse(item){
-	if (jQuery(item).closest('.foProdCard').attr('foware')>0) {
+	if (jQuery(item).closest('.foProdCard').attr('foware')>0 || jQuery(item).closest('.Advanced_Card').find('.fowarehouse').attr('foware')>0) {
 		FO_ajax_Add_Item_to_Order(item);
 		jQuery(item).closest('.foProdCard').find('.fovariation_card').slideUp();
 	}else{
@@ -897,11 +954,11 @@ function FO_check_warehouse(item){
 }
 
 function FO_ajax_selectVarBefore_Add_Item_to_Order(item){
-	if (jQuery(item).closest('.foProdCard').attr('fovariations') != '') {
-		jQuery(item).closest('.foProdCard').find('.fovariation_card').slideDown();
-	} else{
+	//if (jQuery(item).closest('.foProdCard').attr('fovariations') != '') {
+		//jQuery(item).closest('.foProdCard').find('.fovariation_card').slideDown();
+	//} else{
 		FO_check_warehouse(item);
-	}
+	//}
 }
 
 function FO_ajax_selectVarAfter_Add_Item_to_Order(item){
@@ -924,7 +981,11 @@ function FO_ajax_Remove_Item_to_Order( target ) {
 	jQuery('#FOProdNumberMenu').text( parseInt(jQuery('#FOProdNumberMenu').text()) - 1 );
 }
 function FO_ajax_Add_Item_to_Order(item){
-	var id, category, name, permalink, image, quantity, note, value;
+	var id, category, name, permalink, image, quantity, note, value, prod;
+	if (jQuery('.AC_ID').text()!='') {
+		prod = jQuery('.foProdCard[foid="'+jQuery('.AC_ID').text()+'"]')
+	}
+
 	id = jQuery(item).closest('.foProdCard').attr('foid');
 	category = jQuery(item).closest('.foProdCard').attr('focategories');
 	name = jQuery(item).closest('.foProdCard').attr('foname');
@@ -968,22 +1029,22 @@ jQuery('#FO_sum_order').append( copy );
 
 function FO_variant_set(input){
 	jQuery(input).attr('value',jQuery(input).val());
-	jQuery(input).parent().find('input').val(jQuery(input).val());
+
+	//jQuery(input).parent().find('input').val(jQuery(input).val());
 	// jQuery(input).closest('.fovariation_card').find('.foadd').show(); 
+	//jQuery(input).closest('.foProdCard').find(`.Advanced_Card select[foadvariant='`+jQuery(input).attr('founivariant')+`']`).val(jQuery(input).val());
+	//jQuery(input).closest('.foProdCard').find(`.Advanced_Card select[foadvariant='`+jQuery(input).attr('founivariant')+`']`).attr('value',jQuery(input).val());
+	//jQuery(input).closest('.foProdCard').find(`[fovariant='`+jQuery(input).attr('foadvariant')+`'] input, [fovariant='`+jQuery(input).attr('foadvariant')+`'] select`).val(jQuery(input).val());
+	//jQuery(input).closest('.foProdCard').find(`[fovariant='`+jQuery(input).attr('foadvariant')+`'] input, [fovariant='`+jQuery(input).attr('foadvariant')+`'] select`).attr('value',jQuery(input).val());
 
-	jQuery(input).closest('.foProdCard').find(`.Advanced_Card select[foadvariant='`+jQuery(input).attr('founivariant')+`']`)
-		.val(jQuery(input).val());
-	jQuery(input).closest('.foProdCard').find(`.Advanced_Card select[foadvariant='`+jQuery(input).attr('founivariant')+`']`)
-		.attr('value',jQuery(input).val());
+	var fo_price_to_add = parseFloat(jQuery(input).find('option[value="'+jQuery(input).val()+'"]').attr('fo_price_to_add'));
+	var fo_price = parseFloat(jQuery(input).attr('fo_price'));
 
-	jQuery(input).closest('.foProdCard')
-		.find(`[fovariant='`+jQuery(input).attr('foadvariant')+`'] input, [fovariant='`+jQuery(input).attr('foadvariant')+`'] select`)
-			.val(jQuery(input).val());
-	jQuery(input).closest('.foProdCard')
-		.find(`[fovariant='`+jQuery(input).attr('foadvariant')+`'] input, [fovariant='`+jQuery(input).attr('foadvariant')+`'] select`)
-			.attr('value',jQuery(input).val());
+	var final_price = parseFloat( fo_price + fo_price_to_add ).toFixed(2);
+	//jQuery(input).attr('fo_price', );
 
-	FO_show_variant_tag(input);
+jQuery('.AC_tot').text( final_price + ' ' + jQuery('#FO_woo_currency_sym').text() );
+	//FO_show_variant_tag(input);
 }
 
 function FO_show_variant_tag(input){
@@ -1530,6 +1591,9 @@ function fo_tab_parse_variant( input ){
 	finalPrice = parseFloat(  parseFloat(price)+parseFloat(priceToAdd) ).toFixed(2);
 	jQuery('.fo_tab_price').text( parseFloat(finalPrice).toFixed(2) );
 	jQuery('.fo_tab_reset_price').attr('fovalue', parseFloat(finalPrice).toFixed(2) );
+
+	prod.find('input[fo_tab_target="price"]').val(parseFloat(finalPrice).toFixed(2));
+
 }
 
 function fo_tab_price_default( input ){
