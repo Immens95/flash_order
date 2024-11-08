@@ -831,6 +831,8 @@ function FO_Advanced_Prod_Card( input ){
 
 	var foware = jQuery(input).closest('.foProdCard').attr('foware');
 
+	var fowarehouse = jQuery(input).closest('.foProdCard').find('.fowarehouse img').attr('color');
+
 	jQuery('.AC_ID').text(AC_ID);
 	jQuery('.AC_Name').text(AC_Name);
 	jQuery('.AC_description').text(AC_description);
@@ -852,21 +854,22 @@ function FO_Advanced_Prod_Card( input ){
 		}
 	}
 
+if (AC_tax_cat == '[]') {jQuery('.AC_tax_cat').hide();}else{jQuery('.AC_tax_cat').show();}
 	AC_tax_cat = JSON.parse(AC_tax_cat);
 	jQuery(AC_tax_cat).each(function(i,e){
 		jQuery('.AC_tax [fo_tax_id="'+e+'"]').show();
 	});
-
+if (AC_tax_tag == '[]') {jQuery('.AC_tax_tag').hide();}else{jQuery('.AC_tax_tag').show();}
 	AC_tax_tag = JSON.parse(AC_tax_tag);
 	jQuery(AC_tax_tag).each(function(i,e){
 		jQuery('.AC_tax [fo_tax_id="'+e+'"]').show();
 	});
-
+if (AC_tax_ing == '[]') {jQuery('.AC_tax_ing').hide();}else{jQuery('.AC_tax_ing').show();}
 	AC_tax_ing = JSON.parse(AC_tax_ing);
 	jQuery(AC_tax_ing).each(function(i,e){
 		jQuery('.AC_tax [fo_tax_id="'+e+'"]').show();
 	});
-
+if (AC_tax_allerg == '[]') {jQuery('.AC_tax_allerg').hide();}else{jQuery('.AC_tax_allerg').show();}
 	AC_tax_allerg = JSON.parse(AC_tax_allerg);
 	jQuery(AC_tax_allerg).each(function(i,e){
 		jQuery('.AC_tax [fo_tax_id="'+e+'"]').show();
@@ -876,6 +879,7 @@ function FO_Advanced_Prod_Card( input ){
 	jQuery('.AC_Variant').append(AC_Variant);
 
 	jQuery('.Advanced_Card .fowarehouse').attr('foware', foware); 
+	jQuery('.Advanced_Card .fowarehouse img').attr('color', fowarehouse);
 }
 
 function FO_Advanced_Prod_Card_hide( target ){
@@ -981,50 +985,40 @@ function FO_ajax_Remove_Item_to_Order( target ) {
 	jQuery('#FOProdNumberMenu').text( parseInt(jQuery('#FOProdNumberMenu').text()) - 1 );
 }
 function FO_ajax_Add_Item_to_Order(item){
-	var id, category, name, permalink, image, quantity, note, value, prod;
+	var id, image, prod, copy;
 	if (jQuery('.AC_ID').text()!='') {
-		prod = jQuery('.foProdCard[foid="'+jQuery('.AC_ID').text()+'"]')
+		prod = jQuery('.foProdCard[foid="'+jQuery('.AC_ID').text()+'"]');
+	} else{
+		prod = jQuery(item).closest('.foProdCard');
 	}
 
-	id = jQuery(item).closest('.foProdCard').attr('foid');
-	category = jQuery(item).closest('.foProdCard').attr('focategories');
-	name = jQuery(item).closest('.foProdCard').attr('foname');
-	image = jQuery(item).closest('.foProdCard').find('img').attr('src');
+	id = prod.attr('foid');
+	image = prod.find('img').attr('src');
 
-	quantity = jQuery(item).closest('.foProdCard').find('.foquantity').text();
-	note = jQuery(item).closest('.foProdCard').find('.fonote textarea').val();
-// 	value = jQuery(item).parent().find('input').val();
-
-	// jQuery(item).closest('.foProdCard').removeClass('selected');
-	// jQuery(item).closest('.foProdCard').addClass('selected');
-	var copy = jQuery(item).closest('.foProdCard').clone();
+	copy = prod.clone();
 
 	copy.find('.foadd').attr('onclick', 'FO_ajax_Remove_Item_to_Order(this);');
 	copy.find('.foadd').text('-');
 	copy.find('.fovariation_card .foadd').remove();
+
+	copy.find('.foheart').remove();
+
 	copy.find('.fovariation_card').slideUp();
 
 	copy.find('select').each(function(i,e){
 		jQuery(e).find('option[value="'+jQuery(e).attr('value')+'"]').attr('selected','selected');
-		// jQuery(e).val(jQuery(e).attr('value'));
 	});
 
-	// jQuery(e).val(jQuery(e).attr('value'));
-
-	// copy.find('.foProdCardHead img').attr('onclick', '');
-	// copy.find('.Advanced_Card').remove();
-	
-// 	// copy.find('.prod_input input').attr('name', jQuery('#FOProdNumber').text()+'~'+id+'~' );
 	jQuery('#FOProdNumber').text( parseInt(jQuery('#FOProdNumber').text()) + 1 );
 	jQuery('#FO_order_live_count').text( parseInt(jQuery('#FO_order_live_count').text()) + 1 );
 
-jQuery('.FO_show_order_summary').addClass('foBorderPulse');
-jQuery('.FO_show_order_summary img').attr('src', image);
-jQuery('.FO_show_order_summary img').show();
-	
+	jQuery('.FO_show_order_summary').addClass('foBorderPulse');
+	jQuery('.FO_show_order_summary img').attr('src', image);
+	jQuery('.FO_show_order_summary img').show();
+		
 	copy.attr('foindex', jQuery('#FOProdNumber').text());
 
-jQuery('#FO_sum_order').append( copy );
+	jQuery('#FO_sum_order').append( copy );
 }
 
 function FO_variant_set(input){
@@ -1072,15 +1066,15 @@ function FO_validate_flash_order_form_ajax( target ){
 		jQuery('.FO_logIn_popUp').fadeIn();
 		return false;
     } else{
-		if ( jQuery(target).parent().find('#table_name').val() <= 0 ) {
-			event.preventDefault();
-			alert('seleziona il numero del tavolo');
-			return false;
-		} else {
+		// if ( jQuery(target).parent().find('#table_name').val() <= 0 ) {
+		// 	event.preventDefault();
+		// 	alert('seleziona il numero del tavolo');
+		// 	return false;
+		// } else {
 			jQuery('.FOloadingMessage').fadeIn();
 			FO_assign_index_to_ajax_inputs(target);
 			FO_submit_flash_order_ajax_form(target);
-		}
+		// }
 	}
 }
 function FO_assign_index_to_ajax_inputs(){
@@ -1120,8 +1114,8 @@ console.log(foserialmap);
 		data: {
 		    action: 'FO_submit_order_ajax',
 		    nonce: flash_orders_ajax_view_orders_vars.nonce,
-		    table_name: jQuery('#table_name').val(),
-		    table_surname: jQuery('select[name="table_surname"]').val(),
+		    table_id: jQuery('select[name="table_name_cpt"]').val(),
+		    table_name_cpt: jQuery('select[name="table_name_cpt"]').text(),
 		    order_note: jQuery('#orderNote').val(),
 		    foserial: foserial,
 		    foserialmap: foserialmap,
@@ -1130,13 +1124,14 @@ console.log(foserialmap);
 		},
 		success: function (response) {
 			console.log(response);
-			jQuery(target).closest('#FO_Front_Float').find('#FO_sum_order').empty();
+				jQuery('#FO_sum_order').empty();
 
 				jQuery('#FOProdNumber').text( 0 );
 				jQuery('#FO_order_live_count').text( 0 );
 				jQuery('.FO_show_order_summary').removeClass('foBorderPulse');
 				jQuery('.FO_show_order_summary img').attr('src', '');
 				jQuery('.FO_show_order_summary img').hide();
+				jQuery('#orderNote').empty();
 				Hide_FO_Front_Float();
 				jQuery('.FOloadingMessage').fadeOut();
 			return;
@@ -1958,7 +1953,7 @@ function FO_order_tab_ajax(input = '.fo_column_riepilogo', action = 'FO_flash_ta
 	}); 
 	console.log(Src_customers);
 
-	var created_via = 'tab';
+	var created_via = 'tab_ajax';
 	if (action == 'FO_flash_tab_pay_ajax') {
 		created_via = 'pay_tab';
 		console.log(' Pay order submitted sucessfully !!! ');

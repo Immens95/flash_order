@@ -147,6 +147,8 @@ if ( isset($_GET['table']) && $_GET['table'] != '' ) {
 			<img class="FO_img_summary" src="" style="display:none;">
 		</div>
 		
+		<?php FO_Advanced_prod_card(); ?>
+		
 		<div id="FO_Front_Float">
 			<div class="Hide_FO_Front_Float" onclick="Hide_FO_Front_Float()">
 				<?php esc_html_e( 'CHIUDI', 'flash_order' ); ?>
@@ -186,8 +188,6 @@ if ( isset($_GET['table']) && $_GET['table'] != '' ) {
 				</div>
 			</div>
 		</div>
-
-		<?php FO_Advanced_prod_card(); ?>
 	
 		<script type="text/javascript">
 			function fo_ajax_form_height(){

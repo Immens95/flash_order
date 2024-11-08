@@ -2008,7 +2008,7 @@ div[focategories="search"]{
 	transition: var(--fo-main-tran);
 	background-color: var(--fo-bg4-color);
 	border-top: 2px solid var(--fo-invert-color);
-	z-index: 9999999999;
+	z-index: 999999;
 }
 .FO_show_order_summary{
 	position: fixed;
@@ -2508,7 +2508,7 @@ background: linear-gradient(90deg, var(--fo-bg4-color) 0%, var(--fo-invert-color
 	left: 0;
 	right: 0;
 	bottom: 0;
-	z-index: 99999;
+	z-index: 9999999;
 }
 .fovariantag_container{
 	position: absolute;
@@ -4009,7 +4009,7 @@ width: 100%;
     right: -50%;
     top: 0;
     bottom: 0;
-    z-index: 999999;
+    z-index: 99999999;
 /*    display: flex;*/
 /*    flex-wrap: wrap;*/
         -webkit-transition: var(--fo-main-tran);
@@ -5013,6 +5013,30 @@ width: 100%;
     border-radius: 5px;
     font-size: 16px;
 }
+
+.fo_story_menu_ajax{
+	background-color: var(--fo-tab-5);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

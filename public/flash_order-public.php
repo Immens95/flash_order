@@ -2557,7 +2557,12 @@ $fo_gallery = array();
 ?>
 	<div class="foProdCard" foware="<?php echo esc_attr($fo_ware);?>" focategories="<?php echo esc_attr($cat_slug);?>" focatid="<?php echo esc_attr($category);?>" id="<?php echo 'prod-'.esc_attr($id);?>" style="transition:var(--fo-main-tran);position:relative;" foid="<?php echo esc_attr($id);?>" foname="<?php echo esc_attr($product->get_name());?>" fovariations="<?php echo esc_attr($vari_arr);?>" nat-ing="<?php echo esc_attr($count_ing);?>" fo_gallery="<?php echo esc_attr($fo_gallery);?>" fo_description="<?php echo esc_attr($product->get_description());?>" fo_tot="<?php echo FO_price(esc_attr($product->get_price()));?>" fo_tax_cat="<?php echo esc_attr($fo_tax_cat);?>" fo_tax_tag="<?php echo esc_attr($fo_tax_tag);?>" fo_tax_ing="<?php echo esc_attr($fo_tax_ing);?>" fo_tax_allerg="<?php echo esc_attr($fo_tax_allerg);?>">
 
-		<input type="hidden" name="[id][<?php echo esc_attr($id);?>]" value="1">
+		<input fo_tab_target="id" type="hidden" name="[id][<?php echo esc_attr($id);?>]" value="1">
+		<input fo_tab_target="qty" type="hidden" name="[qty][<?php echo esc_attr($id);?>]" value="1">
+		<input fo_tab_target="price" type="hidden" name="[price][<?php echo esc_attr($id);?>]" value="<?php echo esc_attr($product->get_price());?>" regularprice="<?php echo esc_attr($product->get_price());?>" price_added="">
+		<input fo_tab_target="note" type="hidden" name="[note][<?php echo esc_attr($id);?>]" value="">
+
+
 		<div class="foProdCardHead">
 			<?php echo $product->get_image(array( 'auto', 'auto' ), array( 'foprod'=>'foprod', 'onclick'=>'FO_Advanced_Prod_Card(this)', 'class'=>'FO_prod_img_menu' )); ?>
 			<div class="foname target_search" onclick="FO_Advanced_Prod_Card(this)"><?php echo esc_attr($product->get_name());?></div>
@@ -2703,7 +2708,7 @@ function FO_Advanced_prod_card(){
 		<div class="fowarehouse fixware" foware="" style="display:contents;">
 			<img color="" style="padding:0;" src="<?php echo esc_url( get_home_url() ).'/wp-content/plugins/flash_order/includes/img/sphere4.webp'?>"/>
 		</div>
-		<p class="AC_ID" style="width:80px;">#</p>
+		<p class="AC_ID" style="width:80px;"></p>
 		<p class="AC_Name" style="max-width:calc(100% - 250px);"></p>
 		
 		<div class="Advanced_Card_Close fo_close"onclick="FO_Advanced_Prod_Card_hide(jQuery(this).parent())"><?php esc_html_e('CHIUDI','flash_order');?></div>
@@ -2722,7 +2727,7 @@ function FO_Advanced_prod_card(){
 		<?php
 			$product_cat = get_terms(array('taxonomy'=>'product_cat','hide_empty'=>false,));
 			if ( !empty( $product_cat ) ) {
-			?><span class="fo_adv_tax AC_tax_cat"><strong><?php esc_html_e('Category:','flash_order');?></strong></span>
+			?><span class="fo_adv_tax AC_tax_cat"><strong><?php esc_html_e('Categorie:','flash_order');?></strong></span>
 			<?php
 				echo FO_get_tax_cloud( $product_cat );
 			}
@@ -3091,10 +3096,22 @@ foreach ($_POST['foindex'] as $K => $E) {//phpcs:ignore
 
 
 function FO_submit_order_ajax() {
-	// $_POST = FO_recursive_sanitize_text_field($_POST);
+
 	if (!isset($_POST['_fononce_front_order_ajax']) && !wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['_fononce_front_order_ajax'])), 'FO_front_order_ajax' ) ) {
 		return;
+	} else{
+		$_POST['__verified_nonces'] = true;
+
+		// $_POST['user_id'] = '';
+		$_POST['created_via'] = 'menu_ajax';
 	}
+	
+
+	FO_flash_tab_order_ajax( $_POST );
+
+	/*
+	// $_POST = FO_recursive_sanitize_text_field($_POST);
+	
 	$user = wp_get_current_user();
 	$order = new WC_Order();
 	$table_name_cpt = ( isset($_POST['table_name_cpt']) ) ? sanitize_text_field(wp_unslash($_POST['table_name_cpt'])) : esc_html__('Tavolo','flash_order');
@@ -3164,9 +3181,7 @@ if (isset($_POST['foserialmap'])) {
 	if (isset($_POST['table_name_cpt'])) {
 		$order->update_meta_data( 'Table_cpt', sanitize_text_field(wp_unslash($_POST['table_name_cpt'])) );
 	}
-	if (isset($_POST['table_name'])) {
-		$order->update_meta_data( 'Table', sanitize_text_field(wp_unslash($_POST['table_name'])) );
-	}
+
 	if (isset($_POST['order_note'])) {
 		$order->update_meta_data( 'order_note', sanitize_text_field(wp_unslash($_POST['order_note'])) );
 		$order->add_order_note( sanitize_text_field(wp_unslash($_POST['order_note'])) );
@@ -3195,6 +3210,7 @@ do_action( 'FO_submit_order_ajax', $order_id );
 		// 'loop_array' => $loop_array
 	));
 	die();
+	*/
 }
 add_action('wp_ajax_FO_submit_order_ajax', 'FO_submit_order_ajax');
 add_action('wp_ajax_nopriv_FO_submit_order_ajax', 'FO_submit_order_ajax');
@@ -3545,24 +3561,24 @@ function FO_flash_list_order(){
 
 
 function FO_flash_tab_order_ajax( $poste = '', $clear = false ){
-	if ( !isset($_POST['_fononce_flash_tab_order']) && !wp_verify_nonce( sanitize_text_field(wp_unslash($_POST['_fononce_flash_tab_order'])), 'FO_flash_tab_order' ) ) {
-		return;
+	if ( isset($poste['__verified_nonces']) && $poste['__verified_nonces'] === true ) {
+
+	} else{
+		if ( !isset($_POST['_fononce_flash_tab_order']) && !wp_verify_nonce( sanitize_text_field(wp_unslash($_POST['_fononce_flash_tab_order'])), 'FO_flash_tab_order' ) ) {
+			return;
+		}
 	}
+
+	
 	$check_for_pay = false;
 	if (FOcheck($poste) && is_array($poste) ) {
 		$_POST = $poste;
 		$check_for_pay = true;
 	}
-	// wp_send_json(array(
-	// 	// 'S_customers' => $_POST['S_customers'],
-	// 	// 'customer_type' => $_POST['customer_type'],
-	// 	'post' => $_POST,
-	// ));
-	// die();
 	$order = new WC_Order();
 
 	$user_id = (isset($_POST['user_id'])) ? sanitize_text_field(wp_unslash($_POST['user_id'])):'';
-	$created_via = (isset($_POST['created_via'])) ? sanitize_text_field(wp_unslash($_POST['created_via'])):'';
+	$created_via = (isset($_POST['created_via'])) ? sanitize_text_field(wp_unslash($_POST['created_via'])):'tab_ajax';
 	// $user = wp_get_current_user();
 
 	$order->update_meta_data( 'created_via', $created_via );
@@ -3748,7 +3764,7 @@ if (isset($_POST['foserialmap'])) {
 	$order->update_meta_data( 'delivery_type', 'table' );
 
 	$order->set_payment_method('cod');
-	$order->set_created_via( 'tab_ajax' );
+	$order->set_created_via( $created_via );
 
 if ($total_fee > 0.0 ) {
 	$fee = new WC_Order_Item_Fee();
