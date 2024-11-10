@@ -62,9 +62,9 @@ function FO_manage_table(){
         } else { $tab_check = true;}
         if ( $tab_check ) {
             if ($status == 0) {
-                $Style = 'background-color:green;';$status_string = __( 'Libero', 'flash_order' );
+                $Style = 'background-color:var(--fo-tab-1);';$status_string = __( 'Libero', 'flash_order' );
             } elseif ($status == 1) {
-                $Style = 'background-color:red;';$status_string = __( 'Occupato', 'flash_order' );
+                $Style = 'background-color:var(--fo-tab-2);';$status_string = __( 'Occupato', 'flash_order' );
             } elseif ($status == 2) {
                 $Style = 'background-color:yellow;';$status_string = __( 'Libero', 'flash_order' );
             } else{

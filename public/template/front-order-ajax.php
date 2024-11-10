@@ -5,6 +5,21 @@ if ( ! defined( 'ABSPATH' ) ) {
 // FO_access_denied();
 // FO_loading_message();
 
+FO_debug( gethostname() );
+
+FO_debug( gethostbyname( gethostname() ) );
+//FO_debug( dns_get_record( gethostname() ) );
+
+
+FO_debug( net_get_interfaces() );
+
+
+//FO_debug( checkdnsrr( gethostbyname( gethostname() ), "MX" ) );
+
+
+
+
+
 FO_soft_access_denied();
 $role = FO_access_autorization();
 $user_id = get_current_user();

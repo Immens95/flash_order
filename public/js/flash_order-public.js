@@ -1867,7 +1867,7 @@ function FO_tab_clear_table( def_confirm = false, hide = true ){
 			jQuery('.fo_tab_prod[fo_type="story"][fotableid="'+response.table_id+'"]').remove();
 			// jQuery('.fo_column_story').append(strong);
 			jQuery('.FO_table_grid [fo_tableid="'+response.table_id+'"]').attr('fotable_status','0');
-			jQuery('.FO_table_grid [fo_tableid="'+response.table_id+'"]').css('backgroundColor','green');
+			jQuery('.FO_table_grid [fo_tableid="'+response.table_id+'"]').css('backgroundColor','var(--fo-tab-1)');
 			jQuery('.FO_table_grid [fo_tableid="'+response.table_id+'"]').find('.fo_status_string')
 				.text(jQuery('#fo_tab_table_status_free_text').text());
 			jQuery('.FO_table_grid [fo_tableid="'+response.table_id+'"]').find('.fo_tab_notify').hide();
@@ -1910,7 +1910,7 @@ function fo_clear_all_tables( def_confirm = false ){
 			jQuery('.fo_order_table_story[fo_order_id]').remove();
 			jQuery('.fo_tab_prod[fo_type="story"]').remove();
 			jQuery('.fo_table_cell').attr('fotable_status','0');
-			jQuery('.fo_table_cell').css('backgroundColor','green');
+			jQuery('.fo_table_cell').css('backgroundColor','var(--fo-tab-1)');
 			jQuery('.fo_table_cell').find('.fo_status_string').text(jQuery('#fo_tab_table_status_free_text').text());
 
 			jQuery(".FOloadingCardPublicMain").fadeOut(200);
@@ -2006,7 +2006,7 @@ function FO_order_tab_ajax(input = '.fo_column_riepilogo', action = 'FO_flash_ta
 		success: function (response) {
 			console.log(response);
 
-			jQuery('.FO_table_grid [fo_tableid="'+response.table_id+'"]').css('backgroundColor','red');
+			jQuery('.FO_table_grid [fo_tableid="'+response.table_id+'"]').css('backgroundColor','var(--fo-tab-2)');
 			jQuery('.FO_table_grid').removeClass('fo_tab_prod_last_modify');
 			jQuery('.FO_table_grid [fo_tableid="'+response.table_id+'"]').find('.fo_status_string')
 				.text(jQuery('#fo_tab_table_status_close_text').text());
@@ -2041,7 +2041,7 @@ function FO_order_tab_ajax(input = '.fo_column_riepilogo', action = 'FO_flash_ta
 				jQuery('.FO_table_grid [fo_tableid="'+response.table_id+'"]').attr('fotable_status','0');
 				jQuery('.fo_order_table_story[fotableid="'+response.table_id+'"][fo_order_id]').remove();
 				jQuery('.fo_tab_prod[fo_type="story"][fotableid="'+response.table_id+'"]').remove();
-				jQuery('.FO_table_grid [fo_tableid="'+response.table_id+'"]').css('backgroundColor','green');
+				jQuery('.FO_table_grid [fo_tableid="'+response.table_id+'"]').css('backgroundColor','var(--fo-tab-1)');
 				jQuery('.FO_table_grid [fo_tableid="'+response.table_id+'"]').find('.fo_status_string')
 					.text(jQuery('#fo_tab_table_status_free_text').text());
 				jQuery('.FO_table_grid [fo_tableid="'+response.table_id+'"]').find('.fo_tab_notify').hide();
@@ -2245,7 +2245,7 @@ function FO_order_tab_pay_ajax(){
 	// 	success: function (response) {
 	// 		console.log(response);
 	// 			// jQuery('.FO_order_list_summary').empty();
-	// 		// jQuery('.FO_table_grid [fo_tableid="'+response.table_id+'"]').css('backgroundColor','red');
+	// 		// jQuery('.FO_table_grid [fo_tableid="'+response.table_id+'"]').css('backgroundColor','var(--fo-tab-2)');
 	// 		// jQuery('.FO_table_grid').removeClass('fo_tab_prod_last_modify');
 	// 		// // jQuery('.FO_table_grid [fo_tableid="'+response.table_id+'"]').addClass('fo_tab_prod_last_modify');
 

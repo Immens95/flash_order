@@ -281,7 +281,7 @@ function FO_manage_pages( $setting = array() ){
                 <div class="FObutton" style="height:20px;cursor:pointer;" onclick="FO_delete_page(<?php echo "'".esc_attr( substr($value->meta_key, 8) )."'"; ?>);">
                     <?php esc_html_e('ELIMINA pagina', 'flash_order');?>
                 </div>
-                <a class="FObutton" style="height:20px;cursor:pointer;text-decoration:none;" href="<?php echo get_home_url().'?p='.esc_attr($value->meta_value);?>">
+                <a class="FObutton" style="height:20px;cursor:pointer;text-decoration:none;" href="<?php echo esc_attr(get_home_url()).'?p='.esc_attr($value->meta_value);?>">
                     <?php esc_html_e('VISITA pagina', 'flash_order');?>
                 </a>
             </div>

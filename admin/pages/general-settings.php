@@ -94,14 +94,14 @@ FO_general_setting( array( 'name' => 'fo_show_admin_bar_all',
     'info'      => __('scegli se mostrare la barra admin', 'flash_order')
 ) );
 
-FO_general_setting( array( 'name' => 'fo_notify_audio',
-    'default'   => '',
-    'options'   => '',
-    'type'      => 'audio',
-    'class'     => '',
-    'text'      => __('seleziona l\'audio delle notifiche per i nuovi ordini nella pagina (manage-order)', 'flash_order'),
-    'info'      => __('la notifica per i nuovi ordini verrà riprodotta nella pagina (manage-order)', 'flash_order')
-) );
+// FO_general_setting( array( 'name' => 'fo_notify_audio',
+//     'default'   => '',
+//     'options'   => '',
+//     'type'      => 'audio',
+//     'class'     => '',
+//     'text'      => __('seleziona l\'audio delle notifiche per i nuovi ordini nella pagina (manage-order)', 'flash_order'),
+//     'info'      => __('la notifica per i nuovi ordini verrà riprodotta nella pagina (manage-order)', 'flash_order')
+// ) );
 
 FO_general_setting( array( 'name' => 'fo_pickup_delivery_checkout',
     'options'   => array('yes','no'),
@@ -111,13 +111,13 @@ FO_general_setting( array( 'name' => 'fo_pickup_delivery_checkout',
     'info'      => __('visualizza la sezione per scegliere la modalità di consegna (ritiro o consegna), la data e l\'ora, nella pagina (checkout)', 'flash_order')
 ) );
 
-FO_general_setting( array( 'name' => 'fo_default_grid_view',
-    'options'   => array('yes','no'),
-    'type'      => 'select',
-    'class'     => '',
-    'text'      => __('visualizzazione delle tabelle in griglia per impostazione di default', 'flash_order'),
-    'info'      => __('visualizzazione delle tabelle in griglia per impostazione di default', 'flash_order')
-) );
+// FO_general_setting( array( 'name' => 'fo_default_grid_view',
+//     'options'   => array('yes','no'),
+//     'type'      => 'select',
+//     'class'     => '',
+//     'text'      => __('visualizzazione delle tabelle in griglia per impostazione di default', 'flash_order'),
+//     'info'      => __('visualizzazione delle tabelle in griglia per impostazione di default', 'flash_order')
+// ) );
 
 /*
 
@@ -228,7 +228,7 @@ FO_general_setting( array( 'name' => 'flash_orders_table_visualize_actions',
 ?>
 <!-- page_flash_order --></div>
 
-    <div class="FOFormSeparator" onclick="jQuery(`[board='page_manage_order']`).slideToggle()">
+    <div class="FOFormSeparator" onclick="jQuery(`[board='page_manage_order']`).slideToggle()" style="display:none;">
         <b> <?php esc_html_e('Pagina gestione ordini (manage-orders)' , 'flash_order'); ?> </b>
         <span class="dashicons dashicons-arrow-down"></span>
     </div>
@@ -363,7 +363,7 @@ FO_general_setting( array( 'name' => 'show_product_ingredients_tax',
     'type'      => 'select',
     'class'     => '',
     'title'      => __('VISUALIZZA INGREDIENTI', 'flash_order'),
-    'text'      => __('visualizza la tassonomia ingredienti nella pagina prodotto' , 'flash_order'),
+    'text'      => __('visualizza la tassonomia ingredienti nella pagina del prodotto' , 'flash_order'),
     'info'      => __('mostrerà la tassonomia degli ingredienti di cui è composto un piatto, nella pagina prodotto di woocommerce', 'flash_order')
 ) );
 
@@ -382,7 +382,7 @@ FO_general_setting( array( 'name' => 'show_product_allergens_tax',
     'type'      => 'select',
     'class'     => '',
     'title'      => __('VISUALIZZA ALLERGENI', 'flash_order'),
-    'text'      => __('visualizza la tassonomia allergeni nella pagina prodotto' , 'flash_order'),
+    'text'      => __('visualizza la tassonomia allergeni nella pagina del prodotto' , 'flash_order'),
     'info'      => __('mostrerà la tassonomia degli allergeni di un piatto, nella pagina prodotto di woocommerce', 'flash_order')
 ) );
 
