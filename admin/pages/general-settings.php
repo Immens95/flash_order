@@ -111,13 +111,13 @@ FO_general_setting( array( 'name' => 'fo_pickup_delivery_checkout',
     'info'      => __('visualizza la sezione per scegliere la modalità di consegna (ritiro o consegna), la data e l\'ora, nella pagina (checkout)', 'flash_order')
 ) );
 
-// FO_general_setting( array( 'name' => 'fo_default_grid_view',
-//     'options'   => array('yes','no'),
-//     'type'      => 'select',
-//     'class'     => '',
-//     'text'      => __('visualizzazione delle tabelle in griglia per impostazione di default', 'flash_order'),
-//     'info'      => __('visualizzazione delle tabelle in griglia per impostazione di default', 'flash_order')
-// ) );
+FO_general_setting( array( 'name' => 'fo_allow_menu_order',
+    'options'   => array('yes','no'),
+    'type'      => 'select',
+    'class'     => '',
+    'text'      => __('abilita l\'inserimento ordini dalla pagina del menu ( flash-order-ajax )', 'flash_order'),
+    'info'      => __('i clienti potranno inserire gli ordini direttamente dalla pagina del menu', 'flash_order')
+) );
 
 /*
 

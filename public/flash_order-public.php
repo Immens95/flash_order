@@ -2518,9 +2518,9 @@ function FO_product_to_div_loop( $product, $cat_slug = 'search' ){
 	$meta_data = get_post_meta( $product->get_id() );
 	$Sticker = get_the_terms($product->get_id(), 'Sticker');
 	$sticker = (isset($meta_data['sticker']) && $meta_data['sticker'] != null ) ? $meta_data['sticker'] : array();
-	$sticker = ( $Sticker ) ? $Sticker : $sticker;
 
-
+	$sticker = array_merge( (array)$Sticker, (array)$sticker );
+	// $sticker = ( $Sticker ) ? $Sticker : $sticker;
 	$t_array = array();
 	foreach ((array)get_the_terms( $id, 'product_cat' ) as $key => $value) {
 		if (!FOcheck($value)) { continue; }
@@ -2564,7 +2564,7 @@ $fo_gallery = array();
 
 
 		<div class="foProdCardHead">
-			<?php echo $product->get_image(array( 'auto', 'auto' ), array( 'foprod'=>'foprod', 'onclick'=>'FO_Advanced_Prod_Card(this)', 'class'=>'FO_prod_img_menu' )); ?>
+			<?php echo $product->get_image(array( 'auto', 'auto' ), array( 'foprod'=>'foprod', 'onclick'=>'FO_Advanced_Prod_Card(this)', 'class'=>'FO_prod_img_menu' ));//phpcs:ignore ?>
 			<div class="foname target_search" onclick="FO_Advanced_Prod_Card(this)"><?php echo esc_attr($product->get_name());?></div>
 			<?php 
 				// FO_get_product_temperature_options($product);
@@ -2616,34 +2616,37 @@ $fo_gallery = array();
 		<?php if ( $value == 'fo-vegan' ) { ?>
 			<div>
 				<p style="display:none;" onclick="jQuery(this).toggle()"><?php esc_html_e('VEGANO','flash_order');?></p>
-				<img width="50"height="50"src="<?php echo esc_url( get_home_url() ).'/wp-content/plugins/flash_order/includes/img/vegan.webp'?>" onclick="jQuery(this).prev().toggle()">
+				<img width="50"height="50"src="https://innovazioneweb.com/wp-content/uploads/2024/09/vegan.webp" onclick="jQuery(this).prev().toggle()">
 			</div>
 		<?php } ?>
 		<?php if ( $value == 'fo-veget' ) { ?>
 			<div>
 				<p style="display:none;" onclick="jQuery(this).toggle()"><?php esc_html_e('VEGETARIANO','flash_order');?></p>
-				<img width="50"height="50"src="<?php echo esc_url( get_home_url() ).'/wp-content/plugins/flash_order/includes/img/veget.webp'?>" onclick="jQuery(this).prev().toggle()">
+				<img width="50"height="50"src="https://innovazioneweb.com/wp-content/uploads/2024/09/veget.webp" onclick="jQuery(this).prev().toggle()">
 			</div>
 		<?php } ?>
 		<?php if ( $value == 'fo-bio' ) { ?>
 			<div>
 				<p style="display:none;" onclick="jQuery(this).toggle()"><?php esc_html_e('BIOLOGICO','flash_order');?></p>
-				<img width="50"height="50"src="<?php echo esc_url( get_home_url() ).'/wp-content/plugins/flash_order/includes/img/bio.webp'?>" onclick="jQuery(this).prev().toggle()">
+				<img width="50"height="50"src="https://innovazioneweb.com/wp-content/uploads/2024/09/bio.webp" onclick="jQuery(this).prev().toggle()">
 			</div>
 		<?php } ?>
 		<?php if ( $value == 'fo-spicy' ) { ?>
 			<div>
 				<p style="display:none;" onclick="jQuery(this).toggle()"><?php esc_html_e('PICCANTE','flash_order');?></p>
-				<img width="50"height="50"src="<?php echo esc_url( get_home_url() ).'/wp-content/plugins/flash_order/includes/img/spicy.webp'?>" onclick="jQuery(this).prev().toggle()">
+				<img width="50"height="50"src="https://innovazioneweb.com/wp-content/uploads/2024/09/spicy.webp" onclick="jQuery(this).prev().toggle()">
 			</div>
 		<?php } ?>
 
-		<?php if ($value !='fo-vegan'&&$value!='fo-veget'&&$value!='fo-bio'&&$value!='fo-spicy') { 
+		<?php if ( $value!='fo-vegan' && $value!='fo-veget' && $value!='fo-bio' && $value!='fo-spicy' ) { 
 			if ( !is_object($value) ) { continue; }
 			$sticker_img = get_term_meta($value->term_id, 'taxonomy_image');
+			if (!isset($sticker_img[0])) {
+				$sticker_img[0] = 'https://innovazioneweb.com/wp-content/uploads/2024/09/sphere.webp'; $stick_disp = '';
+			} else{ $stick_disp = 'none'; }
 			?>
 			<div>
-				<p style="display:none;" onclick="jQuery(this).toggle()" title="<?php echo esc_attr($value->description);?>"><?php echo esc_attr($value->name);?></p>
+				<p style="display:<?php echo esc_attr($stick_disp);?>" onclick="jQuery(this).toggle()" title="<?php echo esc_attr($value->description);?>"><?php echo esc_attr($value->name);?></p>
 				<img width="50"height="50"src="<?php echo esc_attr($sticker_img[0]);?>" onclick="jQuery(this).prev().toggle()">
 			</div>
 		<?php } ?>
@@ -2729,25 +2732,25 @@ function FO_Advanced_prod_card(){
 			if ( !empty( $product_cat ) ) {
 			?><span class="fo_adv_tax AC_tax_cat"><strong><?php esc_html_e('Categorie:','flash_order');?></strong></span>
 			<?php
-				echo FO_get_tax_cloud( $product_cat );
+				echo FO_get_tax_cloud( $product_cat );//phpcs:ignore
 			}
 			$product_tag = get_terms(array('taxonomy'=>'product_tag','hide_empty'=>false,));
 			if ( !empty( $product_tag ) ) {
 				?><span class="fo_adv_tax AC_tax_tag"><strong><?php esc_html_e('Tag:','flash_order');?></strong></span>
 			<?php
-				echo FO_get_tax_cloud( $product_tag );
+				echo FO_get_tax_cloud( $product_tag );//phpcs:ignore
 			}
 			$Ingredienti = get_terms(array('taxonomy'=>'Ingredienti','hide_empty'=>false,));
 			if ( !empty( $Ingredienti ) ) {
 				?><span class="fo_adv_tax AC_tax_ing"><strong><?php esc_html_e('Ingredienti:','flash_order');?></strong></span>
 			<?php
-				echo FO_get_tax_cloud( $Ingredienti );
+				echo FO_get_tax_cloud( $Ingredienti );//phpcs:ignore
 			}
 			$Allergeni = get_terms(array('taxonomy'=>'Allergeni','hide_empty'=>false,));
 			if ( !empty( $Allergeni ) ) {
 				?><span class="fo_adv_tax AC_tax_allerg"><strong><?php esc_html_e('Allergeni:','flash_order');?></strong></span>
 			<?php
-				echo FO_get_tax_cloud( $Allergeni );
+				echo FO_get_tax_cloud( $Allergeni );//phpcs:ignore
 			}
 		?>
 		</div>
@@ -2919,7 +2922,7 @@ function FO_get_products_macro_for_loop( $args = array() ){
 	    'offset'            => null,
 	    'page'              => 1,
 	    'include'           => array(),
-	    'exclude'           => array(),
+	    // 'exclude'           => array(),
 	    'orderby'           => 'menu_order',
 	    'taxonomy'			=> 'product_cat',
 	    'order'             => 'DESC',
@@ -5112,14 +5115,10 @@ if (isset( $_GET['post_type']) && $_GET['post_type'] === 'product' ) {//phpcs:ig
 }
 
 function FO_add_extra_field_to_post() {
-	// if ( !isset($_POST['_fononce_product']) && !wp_verify_nonce( sanitize_text_field(wp_unslash( $_POST['_fononce_product'])), 'FO_product_nonce' ) ) {
-	// 	return;
-	// }
-
 	$short_title = array('');
 	$slang_title = array('');
-	if ( isset( $_GET['post'] ) ) {
-		$post_id = sanitize_text_field(wp_unslash( $_GET['post']));
+	if ( isset( $_GET['post'] ) ) {//phpcs:ignore
+		$post_id = sanitize_text_field(wp_unslash( $_GET['post']));//phpcs:ignore
 		$short_title = (get_post_meta( $post_id , 'short_title'))?get_post_meta($post_id , 'short_title'): array('');
 		$slang_title = (get_post_meta( $post_id , 'slang_title'))?get_post_meta($post_id , 'slang_title'):array('');
 	}
@@ -6482,6 +6481,53 @@ function FO_save_pickup_delivery_section($order_id){
 
 
 
+function FO_get_connection_info( $interfaces = false ){
+	$info = array();
+
+	$info['ip'] = gethostbyname( gethostname() );
+	$info['host'] = gethostname();
+
+	//get if host is connected in a local network ( router / modem ) or not
+	if ( !filter_var($info['ip'], FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE) ){
+	    $info['is_local'] = true;
+	} else{
+		$info['is_local'] = false;
+	}
+
+	if ($interfaces) {
+		$info['interfaces'] = net_get_interfaces();
+	}
+
+	// FO_debug( $info );
+	return $info;
+}
+
+function FO_check_meta_setting( $setting ){
+
+	if ( FOcheck( FO_get_meta($setting) ) && FO_get_meta($setting) == 'yes' || FO_get_meta($setting) == 'si' ){
+	    $return = true;
+	} else{
+		$return = false;
+	}
+
+	return $return;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -6490,12 +6536,17 @@ function FO_save_pickup_delivery_section($order_id){
 //ajax & auto refresh
 
 function FO_check_for_orders() {
+	if ( !isset($_POST['_fononce_check_for_orders']) && !wp_verify_nonce( sanitize_text_field(wp_unslash( $_POST['_fononce_check_for_orders'])), 'FO_check_for_orders' ) ) {
+		return;
+	}
     $update_needed = false;
     $orders_to_refresh = array();
     $order_items = array();
     $string = '';
     $orders_date_created = intval( FO_get_meta('orders_date_created') ) * 3600;
 	$orders_date_created_operator =  ( $orders_date_created == 0 ) ? '<' : '>';
+
+	$order_id_table = (isset($_POST['order_id_table'])) ? sanitize_text_field(wp_unslash($_POST['order_id_table'])) : '';
 
 	$orders = wc_get_orders( array(
 		'numberposts'    	=> 5,
@@ -6509,11 +6560,11 @@ function FO_check_for_orders() {
 	) );
 	$last_id = $orders[0]->get_id();
 	
-	if ( $_POST['last_order_id'] != $last_id ) {
+	if ( isset($_POST['last_order_id']) && sanitize_text_field(wp_unslash($_POST['last_order_id'])) != $last_id ) {
 		foreach( $orders as $k => $v ){
 			FO_add_products_to_order( $v->get_id(), $v );
-			if ( $v->get_date_modified() > $_POST['last_order_data']) {
-				if ( !in_array( $v->get_id(), $_POST['order_id_table'] ) ) {
+			if ( isset($_POST['last_order_data']) && $v->get_date_modified() > sanitize_text_field(wp_unslash($_POST['last_order_data']))) {
+				if ( !in_array( $v->get_id(), $order_id_table ) ) {
 					$orders_to_refresh[$k] = $v->get_data();
 					//$order_items[$k] = $v->get_items();
 					$string .= FO_manage_order_add_order( $v );
@@ -6532,7 +6583,7 @@ function FO_check_for_orders() {
 		'updateNeeded' 	=> $update_needed,
 		'newOrders' 	=> $orders_to_refresh,
 		'last_id' 		=> $last_id,
-		'order_id_table' => $_POST['order_id_table'],
+		'order_id_table' => $order_id_table,
 		'string' 		=> $string,
 		//'debug' 		=> $orders[0]->get_data()
 	));
@@ -6544,11 +6595,14 @@ add_action('wp_ajax_nopriv_FO_check_for_orders', 'FO_check_for_orders');
 
 
 function FO_ajax_change_order_status( $poste = '' ){
+	if ( !isset($_POST['_fononce_change_order_status']) && !wp_verify_nonce( sanitize_text_field(wp_unslash( $_POST['_fononce_change_order_status'])), 'FO_change_order_status' ) ) {
+		return;
+	}
 	if (FOcheck($poste) && is_array($poste) ) {
 		$_POST = $poste;
 	}
-	$order_id = sanitize_text_field( $_POST['order_id'] );
-	$status = sanitize_text_field( $_POST['status'] );
+	$order_id = (isset($_POST['order_id'])) ? sanitize_text_field(wp_unslash( $_POST['order_id'] )) : '';
+	$status = (isset($_POST['status'])) ? sanitize_text_field(wp_unslash( $_POST['status'] )) : '';
 	$order = wc_get_order($order_id);
 	// $order = new WC_Order($order_id); 
 	if (!empty($order)) {

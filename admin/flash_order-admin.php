@@ -338,9 +338,9 @@ function FO_submit_suggestions(){
     ?>
     <div class="FO_section">
         <?php 
-        esc_html_e('Se desideri darci un feedback, fare una richiesta o proporre una nuova sezione, ','flash_order');
+        esc_html_e('Se desideri darci un feedback o fare una richiesta, ','flash_order');
         echo '<a href="https://innovazioneweb.com/feedback" target="_blank">'.esc_html__(' Clicca QUI ','flash_order').'</a>';
-        esc_html_e('. Siamo sempre disponibili ad ascoltare le tue opinioni e suggerimenti, e ci impegniamo a soddisfare tutte le richieste per migliorare il nostro plugin.','flash_order');
+        esc_html_e('. Siamo sempre pronti ad ascoltare le tue opinioni e suggerimenti, impegnandoci al massimo per soddisfare ogni tua richiesta con attenzione e dedizione.','flash_order');
         ?>
     </div>
     <?php

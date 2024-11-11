@@ -5,24 +5,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 // FO_access_denied();
 // FO_loading_message();
 
-FO_debug( gethostname() );
-
-FO_debug( gethostbyname( gethostname() ) );
-//FO_debug( dns_get_record( gethostname() ) );
-
-
-FO_debug( net_get_interfaces() );
-
-
-//FO_debug( checkdnsrr( gethostbyname( gethostname() ), "MX" ) );
-
-
-
-
 
 FO_soft_access_denied();
-$role = FO_access_autorization();
+// $role = FO_access_autorization();
 $user_id = get_current_user();
+
+$net_info = FO_get_connection_info();
 
 $options = array(
 	'menu' 		=> '',
@@ -52,12 +40,20 @@ $search_products = wc_get_products( $args );
 
 $products = FO_get_products_for_loop();
 
-$fo_front_surname = (!in_array(FO_get_meta('flash_order_front_surname'), array(null, ''), true)) ? explode(",", FO_get_meta('flash_order_front_surname')): '';
 
-$table_link_num = 0;
-if ( isset($_GET['table']) && $_GET['table'] != '' ) {
-	$table_link_num = sanitize_text_field($_GET['table']);
+if ( isset($_GET['_fononce_tab_check']) && wp_verify_nonce( sanitize_text_field(wp_unslash( $_POST['_fononce_tab_check'])), 'FO_check_table_nonce' ) ) {
+// get table_id from link
+	if ( isset($_GET['tab_hs']) && sanitize_text_field(wp_unslash($_GET['tab_hs'])) != '' ) {
+		$table_link_hs = sanitize_text_field(wp_unslash($_GET['tab_hs']));
+	} else{ $table_link_hs = ''; }
+// get table_id from link
+	if ( isset($_GET['tab_id']) && sanitize_text_field(wp_unslash($_GET['tab_id'])) != '' ) {
+		$table_link_id = sanitize_text_field(wp_unslash($_GET['tab_id']));
+	} else{ $table_link_id = '0'; }
+} else{
+	$net_info['is_local'] = false;
 }
+
 ?>
 <div class="FOmniContent">
 	
@@ -68,9 +64,9 @@ if ( isset($_GET['table']) && $_GET['table'] != '' ) {
 
 		<div id="FO_favourite_alert"><?php esc_html_e( 'Il prodotto é già tra i favoriti', 'flash_order' );?></div>
 
-		<div id="FO_home_url"><?php echo get_home_url();?></div>
+		<div id="FO_home_url"><?php echo esc_attr(get_home_url());?></div>
 
-		<div id="FO_woo_currency_sym"><?php echo get_woocommerce_currency_symbol();?></div>
+		<div id="FO_woo_currency_sym"><?php echo esc_attr(get_woocommerce_currency_symbol());?></div>
 
 		<style type="text/css">
 			#eltdf-back-to-top{
@@ -174,33 +170,40 @@ if ( isset($_GET['table']) && $_GET['table'] != '' ) {
 			<div id="FO_sum_order">
 			</div>
 
+<?php 
+	if ( !FO_check_meta_setting('fo_allow_menu_order') ) {
+		$net_info['is_local'] = false;
+	}
+?>
 			<div id="order_actions">
-				<?php 	$nonce = wp_create_nonce( 'FO_front_order_ajax' );
+				<?php if ($net_info['is_local']) {
+					$nonce = wp_create_nonce( 'FO_front_order_ajax' );
     				echo '<input type="hidden" id="_fononce_front_order_ajax" name="_fononce_front_order_ajax" value="'.esc_attr($nonce).'" />';
-				?>
+				} ?>
+
 				<p><?php esc_html_e( 'Varianti Prodotti', 'flash_order' );?>
 					<div id="FOProdNumber" style="margin-left:15px">0</div>
 				</p>
-				<div id="table_input"> 
-					<!-- <div class="title"> <?php esc_html_e( 'TAVOLO', 'flash_order' ); ?> </div>
-					<div class="spinner-button-big" onclick="jQuery(this).next().val(parseInt(jQuery(this).next().val()) - 1)">-</div>
-					<input id="table_name" type="number" name="table_name" value="<?php echo esc_attr($table_link_num);?>">
-					<div class="spinner-button-big" onclick="jQuery(this).prev().val(parseInt(jQuery(this).prev().val()) + 1)">+</div> -->
-					<select class="fo-select" name="table_name_cpt">
-						<option value=""> <?php esc_html_e( 'Seleziona il Tavolo', 'flash_order' );?> </option>
-						<?php foreach ($tavoli as $tavolo) { ?>
-							<option value="<?php echo esc_attr($tavolo->ID);?>">
-								<?php echo esc_attr($tavolo->post_title);?>
-							</option>
-						<?php } ?>
-					</select>
-				</div>
-			<?php if ( $role ) { ?>
-				<textarea id="orderNote" type="text" name="order_note" class="" style="width:300px;margin:10px 20px;" placeholder="<?php esc_html_e('Note dell\'ordine...' , 'flash_order'); ?>"></textarea>
-			<?php } ?>
-				<div class="FO_order_sub" id="submit_order" onclick="FO_validate_flash_order_form_ajax(this);">
-					<?php esc_html_e( 'AVVIA ORDINE', 'flash_order' ); ?>
-				</div>
+
+				<?php if ( $net_info['is_local'] ) { ?>
+					<div id="table_input"> 
+						<select class="fo-select" name="table_name_cpt">
+							<option value=""> <?php esc_html_e( 'Seleziona il Tavolo', 'flash_order' );?> </option>
+							<?php foreach ($tavoli as $tavolo) { ?>
+								<option value="<?php echo esc_attr($tavolo->ID);?>">
+									<?php echo esc_attr($tavolo->post_title);?>
+								</option>
+							<?php } ?>
+						</select>
+					</div>
+				<?php } ?>
+
+				<?php if ( $net_info['is_local'] ) { ?>
+					<div class="FO_order_sub" id="submit_order" onclick="FO_validate_flash_order_form_ajax(this);">
+						<?php esc_html_e( 'AVVIA ORDINE', 'flash_order' ); ?>
+					</div>
+				<?php } ?>
+
 			</div>
 		</div>
 	
