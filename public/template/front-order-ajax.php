@@ -41,7 +41,7 @@ $search_products = wc_get_products( $args );
 $products = FO_get_products_for_loop();
 
 
-if ( isset($_GET['_fononce_tab_check']) && wp_verify_nonce( sanitize_text_field(wp_unslash( $_POST['_fononce_tab_check'])), 'FO_check_table_nonce' ) ) {
+if ( isset($_GET['_fononce_tab_check']) && wp_verify_nonce( sanitize_text_field(wp_unslash( $_GET['_fononce_tab_check'])), 'FO_check_table_nonce' ) ) {
 // get table_id from link
 	if ( isset($_GET['tab_hs']) && sanitize_text_field(wp_unslash($_GET['tab_hs'])) != '' ) {
 		$table_link_hs = sanitize_text_field(wp_unslash($_GET['tab_hs']));

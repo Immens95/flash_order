@@ -2185,10 +2185,10 @@ function FOP_update_table( $id, $args ){
 	}
 	$meta_order = ($meta->orders!='')?json_decode( $meta->orders ):array();
 	$args_order = ($meta->orders!='')?json_decode( $args['orders'] ):array();
-// FO_debug( count(array_diff( $final_args, (array)$meta )) );
+
 	$final['orders'] = wp_json_encode( array_unique(array_merge( (array)$meta_order, (array)$args_order )) );
-	// if ( count(array_diff( $args, (array)$meta )) ) {
-		$result = $wpdb->update( $table, array( 
+
+		$result = $wpdb->update( $table, array( //phpcs:ignore
 			'table_number'=> $final['table_number'], 
 			'table_id'	=> $final['table_id'], 
 			'orders'	=> $final['orders'], 
@@ -2200,23 +2200,11 @@ function FOP_update_table( $id, $args ){
 			'receipt'	=> $final['receipt'], 
 			'other'		=> $final['other'], 
 			'last_update'=> wp_date('Y-m-d H:i:s') 
-		), array( 'id'	=> $id ) );//phpcs:ignore
-	// } else{
-	// 	$result = $wpdb->update( $table, array( 
-	// 		'table_number'=>$final['table_number'], 
-	// 		'table_id'=>$final['table_id'], 
-	// 		'orders'=>$final['orders'], 
-	// 		'status'=>$final['status'], 
-	// 		'prev_status'=>$meta->status, 
-	// 		'end_time'=>$final['end_time'], 
-	// 		'totals'=>$final['totals'], 
-	// 		'info'=>$final['info'], 
-	// 		'receipt'=>$final['receipt'], 
-	// 		'other'=>$final['other'] 
-	// 	), array( 'id'=>$id ) );//phpcs:ignore
-	// }
+		), array( 'id'	=> $id ) );
+
   return $result;
 }
+
 function FOP_get_all_active_tables( $type = 'OBJECT' ){
   global $wpdb;
   $table = $wpdb->prefix . "flash_order_table";
@@ -3964,7 +3952,7 @@ function FOP_get_table_by_table_id_last( $table_id, $type = 'OBJECT' ){
   global $wpdb;
   $table = $wpdb->prefix . "flash_order_table";
   // $date = wp_date('Y-m-d H:i:s');
-	$result = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM %i WHERE table_id = %s AND status < 10", $table, $table_id ), $type );
+	$result = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM %i WHERE table_id = %s AND status < 10", $table, $table_id ), $type );//phpcs:ignore
 	return $result;
 }
 
@@ -6007,7 +5995,7 @@ function FO_get_all_order_meta( $order_id ){
 	global $wpdb;
 	$table = $wpdb->prefix . "wc_orders_meta";
 
-	$result = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM %i WHERE order_id = %s", [ $table, $order_id ] ) );
+	$result = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM %i WHERE order_id = %s", [ $table, $order_id ] ) );//phpcs:ignore
 
 	return $result;
 }
@@ -6644,7 +6632,6 @@ function enqueue_ajax_view_orders_scripts() {
 add_action('wp_enqueue_scripts', 'enqueue_ajax_view_orders_scripts');
 
 function enqueue_ajax_manage_restaurant_scripts() {
-	// wp_enqueue_script('flash-order-ajax-manage-tables',plugin_dir_url(__FILE__).'js/ajax-manage-tables.js', array('jquery', 'wp-api'), '1.0', false);
     wp_localize_script('flash-order-ajax-manage-tables', 'flash_orders_ajax_manage_restaurant_vars', array(
         'ajaxurl' => admin_url('admin-ajax.php'),
         'nonce' => wp_create_nonce('flash_orders_ajax_manage_restaurant_vars'),

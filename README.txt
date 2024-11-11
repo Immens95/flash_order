@@ -1,6 +1,6 @@
-=== Flash Order ===
+=== IW Flash Order ===
 Contributors: InnovazioneWeb
-Tags: menu page, instant order, order management, responsive design, sales boost, order tracking, one-click order, inventory management
+Tags: menu management, instant ordering, table management, sales enhancement, one-click ordering
 Donate link: https://innovazioneweb.com/donate
 Requires at least: 6.5
 Tested up to: 6.6
@@ -16,11 +16,7 @@ Flash Order is an advanced WordPress plugin designed to optimize online ordering
 
 With Flash Order, customers can place orders in just a few clicks, thanks to its user-friendly, mobile-responsive interface that works flawlessly on any device. The plugin supports a complete product catalog and facilitates real-time order management, streamlining the workflow for business owners.
 
-One of the standout features of Flash Order is its table management capability, essential for restaurants, bars, and cafés. Managers can easily assign and monitor orders for each table, optimizing service and reducing wait times. This feature integrates smoothly with the online ordering system, allowing for centralized management of both online and on-site orders.
-
-Additionally, Flash Order offers secure payment options, supporting multiple payment methods to accommodate diverse customer preferences. The plugin is highly customizable, allowing business owners to tailor the interface and functionalities to meet their specific needs.
-
-With features like inventory management, order tracking, and the ability to offer promotions and discounts, Flash Order is a powerful tool for any business looking to enhance their online presence and provide an exceptional shopping experience. Moreover, the plugin integrates seamlessly with WooCommerce and other eCommerce tools, ensuring smooth compatibility and easy setup.
+One of the standout features of Flash Order is its table management capability, essential for restaurants and cafe. Managers can easily assign and monitor orders for each table, optimizing service and reducing wait times. This feature integrates smoothly with the online ordering system, allowing for centralized management of both online and on-site orders.
 
 In summary, Flash Order is the complete solution for businesses seeking to improve order and table management, optimize checkout processes, and deliver top-tier customer service.
 
