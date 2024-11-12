@@ -2543,7 +2543,7 @@ $fo_gallery = array();
 
 
 ?>
-	<div class="foProdCard" foware="<?php echo esc_attr($fo_ware);?>" focategories="<?php echo esc_attr($cat_slug);?>" focatid="<?php echo esc_attr($category);?>" id="<?php echo 'prod-'.esc_attr($id);?>" style="transition:var(--fo-main-tran);position:relative;" foid="<?php echo esc_attr($id);?>" foname="<?php echo esc_attr($product->get_name());?>" fovariations="<?php echo esc_attr($vari_arr);?>" nat-ing="<?php echo esc_attr($count_ing);?>" fo_gallery="<?php echo esc_attr($fo_gallery);?>" fo_description="<?php echo esc_attr($product->get_description());?>" fo_tot="<?php echo esc_attr(FO_price($product->get_price()));?>" fo_tax_cat="<?php echo esc_attr($fo_tax_cat);?>" fo_tax_tag="<?php echo esc_attr($fo_tax_tag);?>" fo_tax_ing="<?php echo esc_attr($fo_tax_ing);?>" fo_tax_allerg="<?php echo esc_attr($fo_tax_allerg);?>">
+	<div class="foProdCard" foware="<?php echo esc_attr($fo_ware);?>" focategories="<?php echo esc_attr($cat_slug);?>" focatid="<?php echo esc_attr($category);?>" id="<?php echo 'prod-'.esc_attr($id);?>" style="transition:var(--fo-main-tran);position:relative;" foid="<?php echo esc_attr($id);?>" foname="<?php echo esc_attr($product->get_name());?>" fovariations="<?php echo esc_attr($vari_arr);?>" nat-ing="<?php echo esc_attr($count_ing);?>" fo_gallery="<?php echo esc_attr($fo_gallery);?>" fo_description="<?php echo esc_attr($product->get_description());?>" fo_tot="<?php echo esc_attr(FO_price($product->get_price()));?>" fo_tax_cat="<?php echo esc_attr($fo_tax_cat);?>" fo_tax_tag="<?php echo esc_attr($fo_tax_tag);?>" fo_tax_ing="<?php echo esc_attr($fo_tax_ing);?>" fo_tax_allerg="<?php echo esc_attr($fo_tax_allerg);?>" fo_menu_prod="fo_menu_prod">
 
 		<input fo_tab_target="id" type="hidden" name="[id][<?php echo esc_attr($id);?>]" value="1">
 		<input fo_tab_target="qty" type="hidden" name="[qty][<?php echo esc_attr($id);?>]" value="1">
@@ -2582,7 +2582,7 @@ $fo_gallery = array();
 			<div class="fovariant" fovariant="<?php echo esc_attr($k);?>">
 				<strong><?php echo esc_attr($k);?></strong>
 
-				<select class="fo_button_thin" foadvariant="<?php echo esc_attr($k);?>" fo_prod_id="<?php echo esc_attr($product->get_id());?>" fo_price="<?php echo esc_attr($product->get_price());?>" fo_regular_price="<?php echo esc_attr($product->get_price());?>" onchange="FO_variant_set(this);">
+				<select class="fo_button_thin" foadvariant="<?php echo esc_attr($k);?>" fo_prod_id="<?php echo esc_attr($product->get_id());?>" fo_price="<?php echo esc_attr($product->get_price());?>" fo_regular_price="<?php echo esc_attr($product->get_price());?>" onchange="FO_variant_set(this);" name="[Variante][<?php echo esc_attr($product->get_id());?>][<?php echo esc_attr($k);?>]" value="">
 
 						<option value=""><?php esc_html_e(' - Seleziona - ','flash_order');?></option>
 					<?php foreach ($attr as $key => $opt) { 
@@ -2591,7 +2591,7 @@ $fo_gallery = array();
 							$price_to_add = get_string_between(get_term_by('name', $opt, $attr_term )->description,'[',']');
 						}
 						?>
-						<option name="[Variante][<?php echo esc_attr($product->get_id());?>][<?php echo esc_attr($k);?>]" value="<?php echo esc_attr($opt);?>" fovariant="<?php echo esc_attr($k);?>" fo_price_to_add="<?php echo esc_attr($price_to_add);?>"><?php echo esc_attr($opt);?></option>
+						<option value="<?php echo esc_attr($opt);?>" fovariant="<?php echo esc_attr($k);?>" fo_price_to_add="<?php echo esc_attr($price_to_add);?>"><?php echo esc_attr($opt);?></option>
 					<?php } ?>
 				</select>
 			</div>
@@ -2604,25 +2604,25 @@ $fo_gallery = array();
 		<?php if ( $value == 'fo-vegan' ) { ?>
 			<div>
 				<p style="display:none;" onclick="jQuery(this).toggle()"><?php esc_html_e('VEGANO','flash_order');?></p>
-				<img width="50"height="50"src="https://innovazioneweb.com/wp-content/uploads/2024/09/vegan.webp" onclick="jQuery(this).prev().toggle()">
+				<img width="50"height="50"src="<?php echo wp_kses_post('https://innovazioneweb.com/wp-content/uploads/2024/09/vegan.webp');?>" onclick="jQuery(this).prev().toggle()">
 			</div>
 		<?php } ?>
 		<?php if ( $value == 'fo-veget' ) { ?>
 			<div>
 				<p style="display:none;" onclick="jQuery(this).toggle()"><?php esc_html_e('VEGETARIANO','flash_order');?></p>
-				<img width="50"height="50"src="https://innovazioneweb.com/wp-content/uploads/2024/09/veget.webp" onclick="jQuery(this).prev().toggle()">
+				<img width="50"height="50"src="<?php echo wp_kses_post('https://innovazioneweb.com/wp-content/uploads/2024/09/veget.webp');?>" onclick="jQuery(this).prev().toggle()">
 			</div>
 		<?php } ?>
 		<?php if ( $value == 'fo-bio' ) { ?>
 			<div>
 				<p style="display:none;" onclick="jQuery(this).toggle()"><?php esc_html_e('BIOLOGICO','flash_order');?></p>
-				<img width="50"height="50"src="https://innovazioneweb.com/wp-content/uploads/2024/09/bio.webp" onclick="jQuery(this).prev().toggle()">
+				<img width="50"height="50"src="<?php echo wp_kses_post('https://innovazioneweb.com/wp-content/uploads/2024/09/bio.webp');?>" onclick="jQuery(this).prev().toggle()">
 			</div>
 		<?php } ?>
 		<?php if ( $value == 'fo-spicy' ) { ?>
 			<div>
 				<p style="display:none;" onclick="jQuery(this).toggle()"><?php esc_html_e('PICCANTE','flash_order');?></p>
-				<img width="50"height="50"src="https://innovazioneweb.com/wp-content/uploads/2024/09/spicy.webp" onclick="jQuery(this).prev().toggle()">
+				<img width="50"height="50"src="<?php echo wp_kses_post('https://innovazioneweb.com/wp-content/uploads/2024/09/spicy.webp');?>" onclick="jQuery(this).prev().toggle()">
 			</div>
 		<?php } ?>
 
@@ -2643,7 +2643,7 @@ $fo_gallery = array();
 <!-- clip-path: polygon(0% 0%, 75% 0%, 100% 50%, 75% 100%, 0% 100%); -->
 
 			<div class="fowarehouse">
-				<img color="<?php echo esc_attr($ware_color);?>" src="<?php echo esc_url( get_home_url() ).'/wp-content/plugins/flash_order/includes/img/sphere4.webp'?>"/>
+				<img color="<?php echo esc_attr($ware_color);?>" src="<?php echo wp_kses_post('https://innovazioneweb.com/wp-content/uploads/2024/09/sphere4.webp');?>"/>
 				<p><?php echo esc_attr($ware_text);?></p>
 			</div>
 
@@ -2697,7 +2697,7 @@ function FO_Advanced_prod_card(){
 	</div>
 	<div class="Advanced_Card_header">
 		<div class="fowarehouse fixware" foware="" style="display:contents;">
-			<img color="" style="padding:0;" src="<?php echo esc_url( get_home_url() ).'/wp-content/plugins/flash_order/includes/img/sphere4.webp'?>"/>
+			<img color="" style="padding:0;" src="<?php echo wp_kses_post('https://innovazioneweb.com/wp-content/uploads/2024/09/sphere4.webp');?>"/>
 		</div>
 		<p class="AC_ID" style="width:80px;"></p>
 		<p class="AC_Name" style="max-width:calc(100% - 250px);"></p>
@@ -4036,7 +4036,9 @@ function FO_flash_tab_order( $tavoli = array() ){
 
 					<div class="fo_ghost_draft" style="display:none;"></div>
 					<!-- <strong class="fo_title_" style=""><?php esc_html_e('STORICO:','flash_order'); ?></strong> -->
-					<?php $abs_total = 0; foreach ( $tavoli as $tavolo_key => $tavolo ) { ?>
+					<?php $abs_total = 0; 
+					
+					foreach ( $tavoli as $tavolo_key => $tavolo ) { ?>
 						<strong class="fo_button fo_story fo_order_table_story fo_tab_prod_story fo_title_all" fotableid="<?php echo esc_attr($tavolo->ID);?>" ondblclick="console.log('yesssss')" onclick="fo_filter_tab_story(this,'all')">
 							<?php esc_html_e('STORY','flash_order');?>
 						</strong>
@@ -4046,7 +4048,7 @@ function FO_flash_tab_order( $tavoli = array() ){
 							foreach ((array)$story as $story_v) {
 								$order = new WC_Order($story_v);
 								?>
-								<div class="fo_button fo_story fo_order_table_story" fotableid="<?php echo esc_attr($tavolo->ID);?>"  ondblclick="fo_change_order_status(<?php echo "'".esc_attr($order->get_id())."'";?>, 'processing' );console.log('yesssss')" onclick="fo_filter_tab_story(this,<?php echo "'".esc_attr($order->get_id())."'";?>)" fo_order_id="<?php echo esc_attr($order->get_id());?>" fo_order_total="<?php echo esc_attr($order->get_total());?>" fo_order_subtotal="<?php echo esc_attr($order->get_subtotal());?>" 
+								<div class="fo_button fo_story fo_order_table_story <?php if ($order->get_created_via()=='menu_ajax'){echo 'fo_story_menu_ajax';} ?>" fotableid="<?php echo esc_attr($tavolo->ID);?>"  ondblclick="fo_change_order_status(<?php echo "'".esc_attr($order->get_id())."'";?>, 'processing' );console.log('yesssss')" onclick="fo_filter_tab_story(this,<?php echo "'".esc_attr($order->get_id())."'";?>)" fo_order_id="<?php echo esc_attr($order->get_id());?>" fo_order_total="<?php echo esc_attr($order->get_total());?>" fo_order_subtotal="<?php echo esc_attr($order->get_subtotal());?>" 
 									fo_order_date_created="<?php echo esc_attr($order->get_date_created());?>"
 									fo_order_date_modified="<?php echo esc_attr($order->get_date_modified());?>"
 									fo_order_date_completed="<?php echo esc_attr($order->get_date_completed());?>"
@@ -4078,7 +4080,7 @@ function FO_flash_tab_order( $tavoli = array() ){
 									$ingredient = (isset($meta_value['ingredient'])) ? $meta_value['ingredient'] : '';
 									$allergeni = (isset($meta_value['allergeni'])) ? $meta_value['allergeni'] : '';
 									$temperature = (isset($meta_value['temperature'])) ? $meta_value['temperature'] : '';
-									$variant = (isset($meta_value['variant'])) ? $meta_value['variant'] : '';
+									$variant = (isset($meta_value['variant'])) ? $meta_value['variant'] : array();
 
 									// $product = $item->get_product();
 									$product = wc_get_product($prod_id);
@@ -4093,7 +4095,7 @@ function FO_flash_tab_order( $tavoli = array() ){
 											$style = 'background-color:var(--fo-modified);';
 										}
 										?>
-										<div class="fo_tab_prod fo_story relative" foprodid="<?php echo esc_attr($prod_id);?>" foprodtot="<?php echo esc_attr($total);?>" onclick="FO_filter_tab_variant(this,<?php echo "'".esc_attr($prod_id)."'"; ?>)" fo_index="<?php echo esc_attr($order_index);?>" fo_index_story="<?php echo esc_attr($story_v);?>" fo_modificable="false" fo_type="story" fotableid="<?php echo esc_attr($tavolo->ID);?>" style="<?php echo esc_attr($style);?>">
+										<div class="fo_tab_prod fo_story relative <?php if ($order->get_created_via()=='menu_ajax'){echo 'fo_story_menu_ajax';} ?>" foprodid="<?php echo esc_attr($prod_id);?>" foprodtot="<?php echo esc_attr($total);?>" onclick="FO_filter_tab_variant(this,<?php echo "'".esc_attr($prod_id)."'"; ?>)" fo_index="<?php echo esc_attr($order_index);?>" fo_index_story="<?php echo esc_attr($story_v);?>" fo_modificable="false" fo_type="story" fotableid="<?php echo esc_attr($tavolo->ID);?>" style="<?php echo esc_attr($style);?>">
 											<div class="FO_prod_name_manage fo_text_fix">
 												<?php echo esc_attr($slang_title);?>
 											</div>

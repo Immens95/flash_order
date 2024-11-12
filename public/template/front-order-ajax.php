@@ -174,8 +174,10 @@ if ( isset($_GET['_fononce_tab_check']) && wp_verify_nonce( sanitize_text_field(
 	if ( !FO_check_meta_setting('fo_allow_menu_order') ) {
 		$net_info['is_local'] = false;
 	}
+	$net_info['is_local'] = true;
 ?>
 			<div id="order_actions">
+				<input type="hidden" id="FO_order_index" name="FO_order_index" value="10000">
 				<?php if ($net_info['is_local']) {
 					$nonce = wp_create_nonce( 'FO_front_order_ajax' );
     				echo '<input type="hidden" id="_fononce_front_order_ajax" name="_fononce_front_order_ajax" value="'.esc_attr($nonce).'" />';

@@ -43,7 +43,7 @@ function FO_head_menu_page(){
     ?>
     <div id="FOadminContent">
     <h1 style="margin:30px 0px;display:flex;"> 
-        <img src="<?php echo wp_kses_post('https://innovazioneweb.com/wp-content/uploads/2023/10/cropped-logo-512-transparent-bg.png" width="50" height="50" alt="light logo'); ?>">
+        <img src="<?php echo wp_kses_post('https://innovazioneweb.com/wp-content/uploads/2023/10/cropped-logo-512-transparent-bg.png');?>" width="50" height="50" alt="light logo">
         Flash Order 
         <img src="<?php echo wp_kses_post('https://innovazioneweb.com/wp-content/uploads/2024/09/logo-512.png'); ?>" width="50" height="50" alt="light logo">
         <!-- <button class="FOzero FObutton" onclick="FOtutorialPage();" style="margin: 0px 20px 0px auto!important;padding: 0px 10px!important;"> tutorial </button>  -->

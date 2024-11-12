@@ -74,7 +74,7 @@ class Flash_order_Public {
 		 * between the defined hooks and the functions defined in this
 		 * class.
 		 */
-
+		
 		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/flash_order-public.css', array(), $this->version, 'all' );
 
 	}
@@ -96,7 +96,7 @@ class Flash_order_Public {
 		 * between the defined hooks and the functions defined in this
 		 * class.
 		 */
-		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/flash_order-public.js', array( 'jquery', 'wp-api' ), $this->version, false );
+		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/flash_order-public.js', array( 'jquery', 'wp-api' ), $this->version, true );
 
 	}
 

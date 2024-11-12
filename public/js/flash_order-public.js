@@ -942,10 +942,12 @@ function FO_ajax_Remove_Item_to_Order( target ) {
 function FO_ajax_Add_Item_to_Order(item){
 	var id, image, prod, copy;
 	if (jQuery('.AC_ID').text()!='') {
-		prod = jQuery('.foProdCard[foid="'+jQuery('.AC_ID').text()+'"]');
+		prod = jQuery('.foProdCard[foid="'+jQuery('.AC_ID').text()+'"][fo_menu_prod="fo_menu_prod"]');
 	} else{
-		prod = jQuery(item).closest('.foProdCard');
+		prod = jQuery(item).closest('.foProdCard[fo_menu_prod="fo_menu_prod"]');
 	}
+	var current_index = jQuery('#FO_order_index').val();
+	var stringToAdd = '['+current_index+']';
 
 	id = prod.attr('foid');
 	image = prod.find('img').attr('src');
@@ -958,7 +960,15 @@ function FO_ajax_Add_Item_to_Order(item){
 
 	copy.find('.foheart').remove();
 
+	copy.attr('fo_menu_prod','');
+
 	copy.find('.fovariation_card').slideUp();
+
+//assign unique index
+	copy.attr('foindex', current_index);
+	copy.find('input, select, textarea').each(function(i,e){
+		jQuery(e).attr('name', stringToAdd+jQuery(e).attr('name'));
+	});
 
 	copy.find('select').each(function(i,e){
 		jQuery(e).find('option[value="'+jQuery(e).attr('value')+'"]').attr('selected','selected');
@@ -971,20 +981,21 @@ function FO_ajax_Add_Item_to_Order(item){
 	jQuery('.FO_show_order_summary img').attr('src', image);
 	jQuery('.FO_show_order_summary img').show();
 		
-	copy.attr('foindex', jQuery('#FOProdNumber').text());
 
 	jQuery('#FO_sum_order').append( copy );
+
+	jQuery('#FO_order_index').val( parseInt(current_index) + 1 );
 }
 
 function FO_variant_set(input){
-	jQuery(input).attr('value',jQuery(input).val());
+	var prod = jQuery('.foProdCard[foid="'+jQuery('.AC_ID').text()+'"][fo_menu_prod="fo_menu_prod"]');
 
-	//jQuery(input).parent().find('input').val(jQuery(input).val());
-	// jQuery(input).closest('.fovariation_card').find('.foadd').show(); 
-	//jQuery(input).closest('.foProdCard').find(`.Advanced_Card select[foadvariant='`+jQuery(input).attr('founivariant')+`']`).val(jQuery(input).val());
-	//jQuery(input).closest('.foProdCard').find(`.Advanced_Card select[foadvariant='`+jQuery(input).attr('founivariant')+`']`).attr('value',jQuery(input).val());
-	//jQuery(input).closest('.foProdCard').find(`[fovariant='`+jQuery(input).attr('foadvariant')+`'] input, [fovariant='`+jQuery(input).attr('foadvariant')+`'] select`).val(jQuery(input).val());
-	//jQuery(input).closest('.foProdCard').find(`[fovariant='`+jQuery(input).attr('foadvariant')+`'] input, [fovariant='`+jQuery(input).attr('foadvariant')+`'] select`).attr('value',jQuery(input).val());
+	prod.find('select[name="'+jQuery(input).attr('name')+'"]').attr('value', jQuery(input).find('option[value="'+jQuery(input).val()+'"]').val() );
+
+	prod.find('select[name="'+jQuery(input).attr('name')+'"] option').removeAttr('selected');
+	prod.find('select[name="'+jQuery(input).attr('name')+'"] option[value="'+jQuery(input).val()+'"]').attr('selected','selected');
+
+	jQuery(input).attr('value', jQuery(input).find('option[value="'+jQuery(input).val()+'"]').val());
 
 	var fo_price_to_add = parseFloat(jQuery(input).find('option[value="'+jQuery(input).val()+'"]').attr('fo_price_to_add'));
 	var fo_price = parseFloat(jQuery(input).attr('fo_price'));
@@ -1027,11 +1038,28 @@ function FO_validate_flash_order_form_ajax( target ){
 		// 	return false;
 		// } else {
 			jQuery('.FOloadingMessage').fadeIn();
-			FO_assign_index_to_ajax_inputs(target);
+			// FO_assign_index_to_ajax_inputs(target);
 			FO_submit_flash_order_ajax_form(target);
 		// }
 	}
 }
+function FO_assign_index_to_input(input){
+	// event.preventDefault();
+	var table = jQuery('#FO_sum_order').find('.foProdCard');
+
+	table.each(function(I,E){
+		var foindex = jQuery(E).attr('foindex');
+		var stringToAdd = '['+foindex+']';
+// console.log(jQuery(E).find('input, textarea'));
+		jQuery(E).find('input, textarea').each(function(i,e){
+			var name = jQuery(e).attr('name');
+			var newName = stringToAdd+name;
+			jQuery(e).attr('name', newName );
+			console.log(newName);
+		});
+	});
+}
+
 function FO_assign_index_to_ajax_inputs(){
 	// event.preventDefault();
 	var table = jQuery('#FO_sum_order').find('.foProdCard');
@@ -1525,25 +1553,27 @@ function fo_tab_parse_temp( input ){
 
 function fo_tab_parse_variant( input ){
 	var prod = jQuery('.fo_tab_prod[foprodid="'+jQuery('.fo_actual_prod').text()+'"][fo_index="'+jQuery('.fo_actual_index').text()+'"][fo_index_story="'+jQuery('.fo_actual_index_story').text()+'"]');
-	var price = parseFloat(prod.find('input[fo_tab_target="price"]').attr('regularPrice')).toFixed(2);
-	var finalPrice = price;
-	var priceToAdd = 0.00;
-//variant --------------------------------
-	prod.find('input[fo_tab_target="variante"][fovariant="'+jQuery(input).attr('fovariant')+'"]').val(jQuery(input).val());
-	var variVal = prod.find('input[fo_tab_target="variante"][fovariant="'+jQuery(input).attr('fovariant')+'"]').val();
-	prod.find('input[fo_tab_target="variante"][fovariant="'+jQuery(input).attr('fovariant')+'"]').attr('priceadded',jQuery(input).parent().attr('fo_price_to_add'));
-//price ----------------------------------
-	prod.find('input[fo_tab_target="variante"]').each(function(i,e){
-		if ( jQuery(e).attr('priceadded') != null && jQuery(e).attr('priceadded') != '' ) {
-			priceToAdd = parseFloat( parseFloat(priceToAdd)+parseFloat( jQuery(e).attr('priceadded') ) ).toFixed(2);
-		}
-	});
-	finalPrice = parseFloat(  parseFloat(price)+parseFloat(priceToAdd) ).toFixed(2);
-	jQuery('.fo_tab_price').text( parseFloat(finalPrice).toFixed(2) );
-	jQuery('.fo_tab_reset_price').attr('fovalue', parseFloat(finalPrice).toFixed(2) );
 
-	prod.find('input[fo_tab_target="price"]').val(parseFloat(finalPrice).toFixed(2));
+	if ( prod.attr('fo_modificable') == 'true' ) {
+		var price = parseFloat(prod.find('input[fo_tab_target="price"]').attr('regularPrice')).toFixed(2);
+		var finalPrice = price;
+		var priceToAdd = 0.00;
+	//variant --------------------------------
+		prod.find('input[fo_tab_target="variante"][fovariant="'+jQuery(input).attr('fovariant')+'"]').val(jQuery(input).val());
+		var variVal = prod.find('input[fo_tab_target="variante"][fovariant="'+jQuery(input).attr('fovariant')+'"]').val();
+		prod.find('input[fo_tab_target="variante"][fovariant="'+jQuery(input).attr('fovariant')+'"]').attr('priceadded',jQuery(input).parent().attr('fo_price_to_add'));
+	//price ----------------------------------
+		prod.find('input[fo_tab_target="variante"]').each(function(i,e){
+			if ( jQuery(e).attr('priceadded') != null && jQuery(e).attr('priceadded') != '' ) {
+				priceToAdd = parseFloat( parseFloat(priceToAdd)+parseFloat( jQuery(e).attr('priceadded') ) ).toFixed(2);
+			}
+		});
+		finalPrice = parseFloat(  parseFloat(price)+parseFloat(priceToAdd) ).toFixed(2);
+		jQuery('.fo_tab_price').text( parseFloat(finalPrice).toFixed(2) );
+		jQuery('.fo_tab_reset_price').attr('fovalue', parseFloat(finalPrice).toFixed(2) );
 
+		prod.find('input[fo_tab_target="price"]').val(parseFloat(finalPrice).toFixed(2));
+	}
 }
 
 function fo_tab_price_default( input ){
