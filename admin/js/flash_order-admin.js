@@ -94,7 +94,13 @@ function FO_delete_page( page ){
 
 
 
-
+function FO_condition_setting(input){
+	if (jQuery(input).val() == jQuery(input).attr('fo_bool')) {
+		jQuery( jQuery(input).attr('target_bool') ).slideDown();
+	} else{
+		jQuery( jQuery(input).attr('target_bool') ).slideUp();
+	}
+}
 
 
 
