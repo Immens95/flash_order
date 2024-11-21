@@ -123,10 +123,12 @@ FO_general_setting( array( 'name' => 'fo_pickup_delivery_checkout',
 
 FO_conditional_setting( array( 'name' => 'fo_allow_menu_order',
     'options'   => array('yes','no'),
+    'id'        => 'FO_allow_menu_order_div',
     'type'      => 'select',
     'bool'      => 'yes',
     'target_bool' => '#FO_limit_ip_to_local_network',
     'class'     => '',
+    'fo_dep'    => '',
     'text'      => __('abilita l\'inserimento ordini dalla pagina del menu', 'flash_order'),
     'info'      => __('i clienti potranno inserire gli ordini direttamente dalla pagina del menu ( flash-order-ajax )', 'flash_order')
 ) );
@@ -138,12 +140,21 @@ FO_conditional_setting( array( 'name' => 'fo_limit_ip_to_local_network',
     'bool'      => 'yes',
     'target_bool' => '#FO_select_local_network',
     'class'     => '',
+    'fo_dep'    => '#FO_allow_menu_order_div',
     'text'      => __('limita l\'inserimento degli ordini solo a chi è connesso alla rete del locale', 'flash_order'),
     'info'      => __('i clienti potranno inserire gli ordini soltanto se sono connessi alla rete del locale, questo può essere utile per evitare di creare ordini a vuoto', 'flash_order')
 ) );
 
 FO_set_local_network();
 
+?>
+ <script type="text/javascript">
+    jQuery(window).on('load', function() {
+        FO_hide_condition_setting(jQuery('#FO_limit_ip_to_local_network'));
+        FO_hide_condition_setting(jQuery('#FO_select_local_network'));
+    });
+</script>
+<?php 
 /*
 // FO_general_setting( array( 'name' => 'flash_order_front_name',
 //     'default'   => __('TAVOLO','flash_order'),

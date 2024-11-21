@@ -200,16 +200,8 @@ function FO_general_setting( $setting = array() ){
             <select name="setting[<?php echo esc_attr($name); ?>]" value="<?php echo esc_attr($data_default); ?>" <?php echo esc_attr($other);?>>
                 <option selected disabled hidden><?php echo esc_attr($data_default); ?></option>
                 <?php if ( count($options) ) { ?>
-                    <?php foreach ($options as $option) { 
-                        if ($option == 'yes'||$option == 'si') {
-                            $k = $option;
-                            $string = "jQuery(`".$bool."`).show();";
-                        } else{
-                            $k = $option;
-                            $string = "jQuery(`".$bool."`).hide();";
-                        }$bool
-                        ?>
-                        <option value="<?php echo esc_attr($k);?>" onclick="<?php echo esc_attr($string);?>"><?php echo esc_attr($k);?></option>
+                    <?php foreach ($options as $option) { ?>
+                        <option value="<?php echo esc_attr($option);?>"><?php echo esc_attr($option);?></option>
                     <?php } ?>
                 <?php } ?>
             </select>
@@ -226,40 +218,38 @@ function FO_general_setting( $setting = array() ){
 function FO_conditional_setting( $setting = array() ){
     $name = ( isset($setting['name']) ) ? $setting['name'] : '';
     $title = ( isset($setting['title']) ) ? $setting['title'] : '';
-    $default = ( isset($setting['default']) ) ? $setting['default'] : null;
+
+    $default = ( isset($setting['default']) ) ? $setting['default'] : '';
     $data_default = ( FO_get_meta($name) ) ? FO_get_meta($name) : $default;
+
     $options = ( isset($setting['options']) ) ? $setting['options'] : array();
     $type = ( isset($setting['type']) ) ? $setting['type'] : 'text';
+
+    $id = ( isset($setting['id']) ) ? $setting['id'] : '';
     $class = ( isset($setting['class']) ) ? $setting['class'] : '';
+
     $text = ( isset($setting['text']) ) ? $setting['text'] : '';
     $info = ( isset($setting['info']) ) ? $setting['info'] : '';
     $other = ( isset($setting['other']) ) ? $setting['other'] : '';
 
-    $id = ( isset($setting['id']) ) ? $setting['id'] : '';
     $bool = ( isset($setting['bool']) ) ? $setting['bool'] : '';
+    $fo_dep = ( isset($setting['fo_dep']) ) ? $setting['fo_dep'] : '';
     $target_bool = ( isset($setting['target_bool']) ) ? $setting['target_bool'] : '';
-    if ($data_default == $bool) {
-        // code...
-    }
     ?>
-<?php //FO_debug( array_diff(scandir(plugin_dir_path( __DIR__ ) . 'includes/audio/'), array('..', '.') ) );?>
 
-    <div id="<?php echo esc_attr($id);?>" class="FOsettingEl <?php echo esc_attr($class);?>" title="<?php echo esc_attr($info).' ______ '.esc_html_e('nome dell\'impostazione nel database: ( ', 'flash_order').esc_attr($name).' )';?>">
-        <?php if($title != ''){ ?>
+    <div id="<?php echo esc_attr($id);?>" class="FOsettingEl <?php echo esc_attr($class);?>" title="<?php echo esc_attr($info).' ______ '.esc_html_e('nome dell\'impostazione nel database: ( ', 'flash_order').esc_attr($name).' )';?>" fo_val="<?php echo esc_attr($data_default);?>" fo_dep="<?php echo esc_attr($fo_dep);?>">
+        <?php if ($title != '') { ?>
             <strong class="FOtextSettings" style="flex-basis:100%"><?php echo esc_attr($title);?></strong>
-        <?php }?>
+        <?php } ?>
         <p class="FOtextSettings"><?php echo esc_attr($text);?></p>
         <?php if ($type == 'radio') { ?>
             <input type="<?php echo esc_attr($type); ?>" name="setting[<?php echo esc_attr($name); ?>]" value="<?php echo esc_attr($data_default);?>" <?php echo esc_attr($other);?>>
         <?php } elseif ($type == 'select'){ ?>
-            <script type="text/javascript">
-                FO_condition_setting("'"+<?php echo esc_attr($id);?>+" select'");
-            </script>
             <select name="setting[<?php echo esc_attr($name);?>]" value="<?php echo esc_attr($data_default);?>" onchange="FO_condition_setting(this);" fo_bool="<?php echo esc_attr($bool);?>" target_bool="<?php echo esc_attr($target_bool);?>" <?php echo esc_attr($other);?>>
                 <option selected disabled hidden><?php echo esc_attr($data_default);?></option>
                 <?php if ( count($options) ) { ?>
                     <?php foreach ($options as $option) { ?>
-                        <option value="<?php echo esc_attr($option);?>" onclick="<?php echo esc_attr($string);?>"><?php echo esc_attr($option);?></option>
+                        <option value="<?php echo esc_attr($option);?>"><?php echo esc_attr($option);?></option>
                     <?php } ?>
                 <?php } ?>
             </select>
@@ -274,15 +264,27 @@ function FO_conditional_setting( $setting = array() ){
     <?php
 }
 
-function FO_set_local_network(){
+function FO_set_local_network( $setting = array() ){
     $net_info = FO_get_connection_info();
-    // FO_debug($net_info);
+
+    $name = ( isset($setting['name']) ) ? $setting['name'] : '';
+
+    $data_default = ( FO_get_meta('fo_limit_ip_to_local_network') ) ? FO_get_meta('fo_limit_ip_to_local_network') : '';
+
+    $class = ( isset($setting['class']) ) ? $setting['class'] : '';
+
+    $text = ( isset($setting['text']) ) ? $setting['text'] : '';
+    $info = ( isset($setting['info']) ) ? $setting['info'] : '';
+    $other = ( isset($setting['other']) ) ? $setting['other'] : '';
+
+    $bool = ( isset($setting['bool']) ) ? $setting['bool'] : 'yes';
+    $fo_dep = ( isset($setting['fo_dep']) ) ? $setting['fo_dep'] : '#FO_limit_ip_to_local_network';
     ?>
-    <div class="FOsettingEl" id="FO_select_local_network" style="max-width:100%;flex-basis:100%;">
+    <div id="FO_select_local_network" class="FOsettingEl <?php echo esc_attr($class);?>" title="" style="max-width:100%;flex-basis:100%;" fo_val="<?php echo esc_attr($data_default);?>" fo_dep="<?php echo esc_attr($fo_dep);?>">
         <strong class="FOtextSettings title" style="flex-basis:100%;">
             <?php esc_html_e('Impostazioni di rete', 'flash_order' );?>
         </strong>
-        <input type="text" name="setting[ipv4]" value="<?php echo esc_attr($data_default);?>">
+        <input type="text" name="setting[ipv4]" value="<?php echo esc_attr($net_info['ip']);?>">
     </div>
     <?php 
 }

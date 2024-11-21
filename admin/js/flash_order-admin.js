@@ -104,4 +104,25 @@ function FO_condition_setting(input){
 
 
 
+function FO_hide_condition_setting(input){
+	if ( jQuery( jQuery(input).attr('fo_dep') ).attr('fo_val') != 'yes' || jQuery( jQuery(input).attr('fo_dep') ).attr('fo_val') != 'si') {
+		jQuery(input).hide();
+	} else{
+		jQuery(input).show();
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
