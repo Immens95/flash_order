@@ -607,61 +607,61 @@ $fo_pages = FO_get_meta_by_assoc_id('page_id','OBJECT');
 }
 
 
-add_shortcode( 'FO_front_order_section', 'FO_front_order_section' );
-function FO_front_order_section(){
-	if (!is_admin()) {
-		if ( FO_access_autorization() ){
-			FO_add_special_pages_navigations();
-			FO_pages_header_controls();
-		}
-		include_once('template/front-order.php');
-	}
-}
+
+include_once('template/front-order-ajax.php');
+include_once('template/manage-tables.php');
+include_once('template/manage-restaurant.php');
+
 add_shortcode( 'FO_front_order_ajax_section', 'FO_front_order_ajax_section' );
 function FO_front_order_ajax_section(){
-	if (!is_admin()) {
-		if ( FO_access_autorization() ){
-			// FO_add_special_pages_navigations();
-			// FO_pages_header_controls();
-		}
-		include_once('template/front-order-ajax.php');
-	}
+	ob_start();
+	FO_front_order_ajax();
+	return ob_get_clean();
 }
 
-add_shortcode( 'FO_manage_order_section', 'FO_manage_order_section' );
-function FO_manage_order_section(){
-	if (!is_admin()) {
-		if ( FO_access_autorization() ){
-			FO_add_special_pages_navigations();
-			FO_pages_header_controls();
-		}
-		include_once('template/manage-order.php');
-	}
-}
+// add_shortcode( 'FO_manage_order_section', 'FO_manage_order_section' );
+// function FO_manage_order_section(){
+// 	if (!is_admin()) {
+// 		if ( FO_access_autorization() ){
+// 			FO_add_special_pages_navigations();
+// 			FO_pages_header_controls();
+// 		}
+// 		include_once('template/manage-order.php');
+// 	}
+// }
+
 add_shortcode( 'FO_manage_tables_section', 'FO_manage_tables_section' );
 function FO_manage_tables_section(){
 	if (!is_admin()) {
+		// FO_access_denied();
 		if ( FO_access_autorization() ){
 			FO_add_special_pages_navigations();
 			FO_pages_header_controls();
 		}
-		include_once('template/manage-tables.php');
-		// if ( defined('FLASH_ORDER_PRO_VERSION') ) {
-		// 	FOP_manage_table();
-		// }
-		// do_action( 'manage_tables_page_head' );
+		ob_start();
+		FO_manage_table();
+		return ob_get_clean();
 	}
 }
+
 add_shortcode( 'FO_manage_restaurant_section', 'FO_manage_restaurant_section' );
 function FO_manage_restaurant_section(){
 	if (!is_admin()) {
+		// FO_access_denied();
 		if ( FO_access_autorization() ){
 			FO_add_special_pages_navigations();
 			FO_pages_header_controls();
 		}
-		include_once('template/manage-restaurant.php');
+		ob_start();
+		FO_manage_restaurant();
+		return ob_get_clean();
 	}
 }
+
+
+
+
+
 
 
 function FO_pages_header_controls(){
@@ -1521,12 +1521,12 @@ function FO_debug( $var ){
 	echo "</pre>";
 }
 function FO_access_autorization( $role = 'worker',  $mode = true ){
-	$user = wp_get_current_user();
+	$user_id = get_current_user();
 	$autorization = false;
 
-	$worker_checked = ( isset(get_user_meta($user->ID, 'flash_order_user_role_worker')[0]) ) ? get_user_meta($user->ID, 'flash_order_user_role_worker')[0] : false;
-	$supervisor_checked = ( isset(get_user_meta($user->ID, 'flash_order_user_role_supervisor')[0]) ) ? get_user_meta($user->ID, 'flash_order_user_role_supervisor')[0] : false;
-	$manager_checked = ( isset(get_user_meta($user->ID, 'flash_order_user_role_manager')[0]) ) ? get_user_meta($user->ID, 'flash_order_user_role_manager')[0] : false;
+	$worker_checked = ( isset(get_user_meta($user_id, 'flash_order_user_role_worker')[0]) ) ? get_user_meta($user_id, 'flash_order_user_role_worker')[0] : false;
+	$supervisor_checked = ( isset(get_user_meta($user_id, 'flash_order_user_role_supervisor')[0]) ) ? get_user_meta($user_id, 'flash_order_user_role_supervisor')[0] : false;
+	$manager_checked = ( isset(get_user_meta($user_id, 'flash_order_user_role_manager')[0]) ) ? get_user_meta($user_id, 'flash_order_user_role_manager')[0] : false;
 
 	$worker 	= ( $worker_checked !== false && $role == 'worker' ) ? true : false;
 	$supervisor = ( $supervisor_checked !== false && $role == 'supervisor' ) ? true : false;
@@ -1542,12 +1542,12 @@ function FO_access_autorization( $role = 'worker',  $mode = true ){
 	return $autorization;
 }
 function FO_access_autorization_level(){
-	$user = wp_get_current_user();
+	$user_id = get_current_user();
 	$autorization = 0;
 
-	$worker_checked = ( isset(get_user_meta($user->ID, 'flash_order_user_role_worker')[0]) ) ? get_user_meta($user->ID, 'flash_order_user_role_worker')[0] : false;
-	$supervisor_checked = ( isset(get_user_meta($user->ID, 'flash_order_user_role_supervisor')[0]) ) ? get_user_meta($user->ID, 'flash_order_user_role_supervisor')[0] : false;
-	$manager_checked = ( isset(get_user_meta($user->ID, 'flash_order_user_role_manager')[0]) ) ? get_user_meta($user->ID, 'flash_order_user_role_manager')[0] : false;
+	$worker_checked = ( isset(get_user_meta($user_id, 'flash_order_user_role_worker')[0]) ) ? get_user_meta($user_id, 'flash_order_user_role_worker')[0] : false;
+	$supervisor_checked = ( isset(get_user_meta($user_id, 'flash_order_user_role_supervisor')[0]) ) ? get_user_meta($user_id, 'flash_order_user_role_supervisor')[0] : false;
+	$manager_checked = ( isset(get_user_meta($user_id, 'flash_order_user_role_manager')[0]) ) ? get_user_meta($user_id, 'flash_order_user_role_manager')[0] : false;
 
 	$worker 	= ( $worker_checked !== false ) ? true : false;
 	$supervisor = ( $supervisor_checked !== false ) ? true : false;

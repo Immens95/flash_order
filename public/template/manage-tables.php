@@ -3,11 +3,9 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit; // Exit if accessed directly
 }
 
-    FO_access_denied();
+function FO_manage_table(){
 
     do_action( 'manage_tables_page_head' );
-
-function FO_manage_table(){
 
     $tavoli = get_posts( array(
         'numberposts'      => -1,
@@ -126,7 +124,7 @@ function FO_manage_table(){
 
 }
 
-FO_manage_table();
+// FO_manage_table();
 
 
 

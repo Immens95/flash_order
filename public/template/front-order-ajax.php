@@ -6,6 +6,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 // FO_loading_message();
 
 
+function FO_front_order_ajax(){
+
 FO_soft_access_denied();
 // $role = FO_access_autorization();
 $user_id = get_current_user();
@@ -229,6 +231,6 @@ if ( isset($_GET['_fononce_tab_check']) && wp_verify_nonce( sanitize_text_field(
 // if ( isset($_POST['submit']) && $_POST['submit'] == 'submit' ) {
 // 	flash_orders_ordination();
 // }
-
+}
 
 

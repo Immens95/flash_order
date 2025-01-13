@@ -3,11 +3,10 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit; // Exit if accessed directly
 }
 
+function FO_manage_restaurant(){
 //test 
 echo FO_create_post_QR_code();//phpcs:ignore
 //------------------
-
-FO_access_denied();
 
 do_action( 'manage_restaurant_page_head' );
 
@@ -17,7 +16,8 @@ if ( !is_plugin_active('flash_order_pro/flash_order_pro.php') ) {
     return;
 } else{
     do_action( 'manage_restaurant_pro_page_head' );
-    include_once( WP_PLUGIN_DIR .'/flash_order/public/template/manage-tables.php');
+    // include_once( WP_PLUGIN_DIR .'/flash_order/public/template/manage-tables.php');
+    FO_manage_table();
 }
 
 
@@ -25,5 +25,6 @@ if ( !is_plugin_active('flash_order_pro/flash_order_pro.php') ) {
 //     include_once( WP_PLUGIN_DIR .'/flash_order/public/template/manage-tables.php');
 // }
 
+}
 
 
