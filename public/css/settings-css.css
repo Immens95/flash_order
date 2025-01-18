@@ -1,0 +1,163 @@
+/**
+ * All of the CSS for your admin-specific functionality should be
+ * included in this file.
+ */
+
+
+
+
+
+
+.GenericDetailSection{
+    width: 95%;
+	height: 85vh;
+	position: fixed;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	z-index: 99999;
+	background-color: var(--fo-bg2-color);
+	border: 1px solid var(--fo-high-color);
+	border-radius: 10px;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 50px;
+}
+.GenericBackGroundSection{
+	background-color: #000;
+	opacity: 0.3;
+	z-index: 99995;
+	width: 100%;
+	height: 100%;
+	position: fixed;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+}
+.GenericDetailHead{
+	width: calc(100% - 10px);
+	height: 50px;
+	margin-bottom: 10px;
+	background-color: var(--fo-bg4-color);
+	padding: 5px;
+	border-radius: 10px 10px 0 0;
+	display: flex;
+	flex-wrap: wrap;
+}
+.GenericDetailHead strong{
+	padding: 10px;
+
+}
+.GenericDetailFoot{
+	width: calc(100% - 10px);
+	height: 50px;
+	margin-top: 10px;
+	background-color: var(--fo-bg4-color);
+	padding: 5px;
+	border-radius: 0 0 10px 10px;
+	display: flex;
+	flex-wrap: wrap;
+}
+.GenericDetailBody{
+	width: calc(100% - 10px);
+	height: calc(100% - 150px);
+	padding: 5px;
+	display: flex;
+	flex-wrap: wrap;
+	overflow-y: scroll;
+}
+.GenericDetailBodyImages{
+	width: calc(100% - 10px);
+	height: 300px;
+	padding: 5px;
+	display: flex;
+	flex-wrap: wrap;
+}
+.GenericDetailBodyImages img{
+	max-height: 290px;
+	display: flex;
+	flex-wrap: wrap;
+}
+.GenericDetailBodyCol{
+	display: flex;
+	flex-wrap: wrap;
+	width: calc(50% - 15px);
+	padding: 5px;
+	margin: 5px auto;
+	flex-direction: column;
+}
+.GenericDetailBlock{
+	display: flex;
+	flex-wrap: wrap;
+	width: calc(100% - 40px);
+	padding: 15px;
+	margin: 5px;
+	border-radius: 5px;
+	background-color: var(--fo-bg3-color);
+	min-height: 100px;
+	min-width: 300px;
+}
+.GenericDetailBlock>div{
+	display: flex;
+	flex-wrap: wrap;
+	flex-direction: column;
+	min-height: 30px;
+	min-width: 260px;
+	padding: 10px;
+	margin: 5px;
+	background-color: var(--fo-bg4-color);
+	color: var(--fo-text-color);
+	border-radius: 5px;
+}
+.GenericDetailBlock strong{
+	display: flex;
+	flex-wrap: wrap;
+	width: calc(100% - 40px);
+	padding: 15px;
+	margin: 5px;
+	border-radius: 5px;
+	min-height: 30px;
+	min-width: 300px;
+}
+.GenericRadioSec, .GenericRadioSec div{
+	display: flex;
+	flex-wrap: wrap;
+	padding: 10px;
+	margin: 5px;
+	border-radius: 5px;
+	align-items: center;
+    justify-content: center;
+    align-content: center;
+}
+
+
+.GenericCloud{
+	padding: 10px;
+	margin: 5px;
+	border-radius: 5px;
+	background-color: var(--fo-bg4-color);
+	color: var(--fo-text-color);
+
+}
+.GenericClose{
+	padding: 10px;
+	margin: 5px;
+	border-radius: 5px;
+	border: 1px solid #fff0;
+	background-color: var(--fo-bg3-color);
+	color: var(--fo-text-color);
+	cursor: pointer;
+	transition: var(--fo-main-tran);
+	display: flex;
+}
+.GenericClose:hover{
+	border-radius: 10px;
+	border: 1px solid var(--fo-high-color);
+	background-color: var(--fo-bg2-color);
+	color: var(--fo-text-color);
+	cursor: pointer;
+	transition: var(--fo-scnd-tran);
+}
+
