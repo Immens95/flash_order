@@ -2267,7 +2267,7 @@ function fo_change_order_status( order_id = '', status = '' ){
 		    url: flash_orders_ajax_view_orders_vars.ajaxurl,
 		    data: {
 		        action: 'FO_ajax_change_order_status',
-		        nonce: flash_orders_ajax_view_orders_vars.nonce,
+		        nonce: jQuery('#_fononce_insert_post_ajax_nonce').val(),
 		        order_id: order_id,
 		        status: status
 		    },
@@ -2302,7 +2302,6 @@ function fo_toggle_header_footer( check = false ){
 		jQuery('footer').css('display','none');
 	}
 }
-
 
 
 

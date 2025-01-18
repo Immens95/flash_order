@@ -813,7 +813,7 @@ td[identify="products"]{
 	z-index: 100000000;
 }
 .FOloadingMessage{
-	position: fixed;
+	position: fixed!important;
 	top: 0;
 	left: 0;
 	width: 100%;
@@ -2612,6 +2612,8 @@ background: linear-gradient(90deg, var(--fo-bg4-color) 0%, var(--fo-invert-color
 	color: var(--fo-text-color);
 	width: 100%;
     max-width: 100%;
+    display: flex;
+    flex-wrap: wrap;
 }
 .FOmniContent a{
 	color: var(--fo-text-color);
@@ -3824,7 +3826,7 @@ width: 100%;
 }
 
 .fo_story{
-	
+	border: 2px #0000 solid;
 }
 
 .fo_table_name{
@@ -4937,6 +4939,12 @@ width: 100%;
 	text-shadow: 2px 0 #000, -2px 0 #000, 0 2px #000, 0 -2px #000, 1px 1px #000, -1px -1px #000, 1px -1px #000, -1px 1px #000;
 }
 
+.fo_table_cell h6{
+	color: var(--fo-selection-color);
+	font-size: 25px;
+    margin: 10px;
+}
+
 .fo_order_table_story{
 	text-shadow: 2px 0 #000, -2px 0 #000, 0 2px #000, 0 -2px #000, 1px 1px #000, -1px -1px #000, 1px -1px #000, -1px 1px #000;
 	position: relative;
@@ -5008,6 +5016,10 @@ width: 100%;
     -webkit-box-align: center;
     -ms-flex-align: center;
         align-items: center;
+    background-color: var(--fo-bg5-color);
+    color: var(--fo-text-color);
+    padding: 10px;
+    margin: 5;
 }
 
 .fo_target_note_prod{
@@ -5027,8 +5039,18 @@ width: 100%;
 }
 
 .fo_story_menu_ajax{
-	background-color: var(--fo-tab-5);
+	border-color: var(--fo-tab-5);
 }
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -14,6 +14,11 @@ $user_id = get_current_user();
 
 $net_info = FO_get_connection_info();
 
+$settings = FO_get_meta( 'setting_page_id'.get_the_ID() );
+if ( isset($settings) && $settings != null ) {
+	$settings = json_decode($settings);
+}
+
 $options = array(
 	'menu' 		=> '',
 	'closebtn' 	=> '',
@@ -56,8 +61,39 @@ if ( isset($_GET['_fononce_tab_check']) && wp_verify_nonce( sanitize_text_field(
 	$net_info['is_local'] = false;
 }
 
+	if (isset($settings->showHead) && $settings->showHead == 'no' ) { ?>
+		<script type="text/javascript">
+			jQuery(window).on('load', function() {
+	        	jQuery('header').css('display','none');
+	        });
+		</script>
+	<?php }
+
+	if (isset($settings->showFoot) && $settings->showFoot == 'no' ) { ?>
+		<script type="text/javascript">
+			jQuery(window).on('load', function() {
+	        	jQuery('footer').css('display','none');
+	        });
+		</script>
+	<?php }
+
+    if (isset($settings->OverColor) && $settings->OverColor == 'yes' ) { ?>
+        <style type="text/css">
+        	<?php if (isset($settings->EXTCss) && $settings->EXTCss != '' ){
+        		echo esc_attr($settings->EXTCss);?>{
+	                background-color: <?php echo esc_attr($settings->BGColor);?>;
+	                color: <?php echo esc_attr($settings->TextColor);?>;
+	            }
+        	<?php } ?>
+        </style>
+    <?php }
+
 ?>
 <div class="FOmniContent">
+
+	<?php  if (isset($settings->showQR) && $settings->showQR == 'yes' ) {
+		echo FO_create_post_QR_code();//phpcs:ignore
+	}?>
 	
 	<div style="display:none!important;">
 		<div id="FO_select_variant_alert"><?php esc_html_e( 'Seleziona prima la variante', 'flash_order' );?></div>
@@ -221,9 +257,8 @@ if ( isset($_GET['_fononce_tab_check']) && wp_verify_nonce( sanitize_text_field(
 			fo_ajax_form_height();
 
 			jQuery(window).on('load', function() {
-            	jQuery(".FOloadingCardPublicMain").fadeOut(200);
-           		fo_toggle_header_footer(true);
-        	});
+				jQuery(".FOloadingCardPublicMain").fadeOut(200);
+			});
 		</script>
 	</div>
 </div>

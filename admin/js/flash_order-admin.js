@@ -36,7 +36,7 @@ jQuery(function($){
             var attachment = aw_uploader.state().get('selection').first().toJSON();
             $('#tax-image').val(attachment.url);
             $('#tax-img-src').attr('src',attachment.url);
-             $('#tax-img-src').css('display','block');
+            $('#tax-img-src').css('display','block');
         })
         .open();
     });
@@ -92,10 +92,17 @@ function FO_delete_page( page ){
 }
 
 
+function FO_show_pages_rapid_impost( pageId ){
+	jQuery('[fo_page_id="'+pageId+'"]').slideDown();
+}
 
+function FO_hide_pages_rapid_impost( pageId ){
+	jQuery('[fo_page_id="'+pageId+'"]').slideUp();
+}
 
-
-
+function FO_toggle_pages_rapid_impost( pageId ){
+	jQuery('[fo_page_id="'+pageId+'"]').slideToggle();
+}
 
 
 

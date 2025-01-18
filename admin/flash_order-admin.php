@@ -219,19 +219,44 @@ function FO_save_settings( $args, $assoc_id = '', $debug = false ){
         if ( isset( $_POST[$args] ) ) { 
             $sany_args = FO_recursive_sanitize_text_field(wp_unslash($_POST[$args]));//phpcs:ignore
             foreach ($sany_args as $key => $value) {
-                if ( isset( $_POST[$args][$key] ) ) {
-                // FO_debug($key);
-                    FO_update_meta( sanitize_text_field(wp_unslash($key)), sanitize_text_field(wp_unslash($value)), $assoc_id ); 
-                }
+                FO_update_meta( sanitize_text_field(wp_unslash($key)), sanitize_text_field(wp_unslash($value)), $assoc_id ); 
             }
-        } //$_SERVER['SERVER_NAME']
-        // if ($debug) {
+        }
+        if ( isset( $_POST['PGSett'] ) ) { 
+            $assoc_id = 'page_settings';
+            foreach ( $_POST['PGSett'] as $PGSett_K => $PGSett_V ) {
+                // foreach ( $PGSett as $key => $value ) {
+                //     FO_update_meta( sanitize_text_field(wp_unslash($PGSett_K)), sanitize_text_field(wp_unslash($vl)), $assoc_id ); 
+                // }
+                $settings = json_decode(FO_get_meta( sanitize_text_field(wp_unslash($PGSett_K)) ));
+
+                $default_sett = array(
+                  'showHead'    => 'yes',
+                  'showFoot'    => 'yes',
+                  'showQR'      => 'yes',
+                  'OverColor'   => 'no',
+                  'BGColor'     => '#00000f',
+                  'TextColor'   => '#ffffff',
+                  'EXTCss'      => 'body, header, footer',
+                  'info'        => '',
+                  'last_update' => wp_date('Y-m-d H:i:s')
+                  );
+
+                $new_sett = wp_parse_args( $settings, $default_sett );
+
+                $fin_sett = wp_parse_args( $PGSett_V, $new_sett );
+
+                FO_update_meta( sanitize_text_field(wp_unslash($PGSett_K)), wp_json_encode($fin_sett), $assoc_id ); 
+            }
+        }
+        if ($debug) {
             FO_debug($_POST);
-        // }
-        if (isset($_SERVER['REQUEST_URI'])) {
-            $req_uri = sanitize_text_field(wp_unslash($_SERVER['REQUEST_URI']));
-            $url = 'Location: '. $req_uri;
-            header( $url );
+        } else{
+            if (isset($_SERVER['REQUEST_URI'])) {
+                $req_uri = sanitize_text_field(wp_unslash($_SERVER['REQUEST_URI']));
+                $url = 'Location: '. $req_uri;
+                header( $url );
+            }
         }
     }
 }
@@ -265,9 +290,6 @@ function FO_manage_pages( $setting = array() ){
             <div class="FOsettingEl">
                 <strong class="FOtextSettings"style="flex-basis:100%;">
                     <?php 
-                    if ( get_post( $value->meta_value ) == null ) {
-                        echo '| ---non-esiste--- | - ';
-                    }
                     echo esc_attr(substr($value->meta_key, 8)); ?>
                 </strong>
                  <?php
@@ -275,9 +297,12 @@ function FO_manage_pages( $setting = array() ){
                     echo '<p class="FOtextSettings">'.esc_html__('l\'ID della pagina é: ', 'flash_order').esc_attr($value->meta_value).'</p>';
                     echo '<p class="FOtextSettings">'.esc_html__('la versione della pagina é: ', 'flash_order').esc_attr(FO_get_meta('page_version_'.substr($value->meta_key, 8))).'</p>';
                 ?>
-                <!-- <div class="FObutton" style="height:20px;">
-                    <?php esc_html_e('AGGIORNA pagina', 'flash_order');?>
-                </div> -->
+                <div class="FObutton" style="height:20px;cursor:pointer;" onclick="FO_toggle_pages_rapid_impost(<?php echo '`'.esc_attr($value->meta_value).'`'?>)">
+                    <?php esc_html_e('IMPOSTAZIONI', 'flash_order');?>
+                </div>
+
+                <?php FO_get_pages_impost($value->meta_value);?>
+
                 <div class="FObutton" style="height:20px;cursor:pointer;" onclick="FO_delete_page(<?php echo "'".esc_attr( substr($value->meta_key, 8) )."'"; ?>);">
                     <?php esc_html_e('ELIMINA pagina', 'flash_order');?>
                 </div>

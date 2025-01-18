@@ -34,6 +34,17 @@ if ( ! defined( 'ABSPATH' ) ) {
 //}
 //add_action( 'init', 'FO_add_endpoints' );
 
+function override_plugin_language() {
+    // Unload the default text domain of the plugin
+    unload_textdomain( 'flash_order' );
+    // // Load the translated strings from your child theme directory
+    // load_textdomain( 'flash_order', get_stylesheet_directory() . '/languages/flash_order/plugin-name-languagecode_COUNTRYCODE.mo' );
+    // Load the default .pot file from the plugin directory as fallback
+    load_textdomain( 'flash_order', WP_PLUGIN_DIR . '/flash_order/languages/flash_order.pot' );
+}
+
+// Hook the function to run after the theme setup
+add_action( 'after_setup_theme', 'override_plugin_language' );
 
 include_once ABSPATH . 'wp-admin/includes/plugin.php';
 if ( !is_plugin_active( 'woocommerce/woocommerce.php' ) ) {
@@ -249,7 +260,7 @@ function FO_create_page( $page_name, $content = '', $version = '1.0.0' ){
  * @return mixed
  */
 function FO_recursive_sanitize_text_field($array) {
-    foreach ( $array as $key => &$value ) {
+    foreach ( $array as $key => $value ) {
         if ( is_array( $value ) ) {
             $value = recursive_sanitize_text_field($value);
         }
@@ -533,7 +544,7 @@ function FO_add_special_pages_navigations(){
 	if ( $worker_checked == 'on' ) { 
 		$fo_pages = FO_get_meta_by_assoc_id('page_id','OBJECT');
 		?>
-		<div>
+		<div style="display:contents;">
 			<nav id="FOSpecialPagesNavigation" style=""> <strong><?php esc_html_e( 'Pagine Speciali:', 'flash_order' );?> </strong>
 				<?php foreach ($fo_pages as $key => $value) {
 					$post = get_post($value->meta_value);
@@ -572,40 +583,6 @@ function FO_admin_autorole(){
 
 
 
-function FO_header_special_pages_navigations(){
-	$user = wp_get_current_user();
-	$worker_checked = ( isset(get_user_meta($user->ID, 'flash_order_user_role_worker')[0]) ) ? get_user_meta($user->ID, 'flash_order_user_role_worker')[0] : false;
-	$supervisor_checked = ( isset(get_user_meta($user->ID, 'flash_order_user_role_supervisor')[0]) ) ? get_user_meta($user->ID, 'flash_order_user_role_supervisor')[0] : false;
-	$manager_checked = ( isset(get_user_meta($user->ID, 'flash_order_user_role_manager')[0]) ) ? get_user_meta($user->ID, 'flash_order_user_role_manager')[0] : false;
-$fo_pages = FO_get_meta_by_assoc_id('page_id','OBJECT');
-
-	$autorization = FO_access_autorization();
-	if ( $autorization ) { ?>
-		<div>
-			<nav id="FOSpecialPagesNavigation" style=""> <strong><?php esc_html_e( 'Pagine Speciali:', 'flash_order' );?> </strong>
-				<?php foreach ($fo_pages as $key => $value) {
-					$post = get_post($value->meta_value);
-
-					if ( !$worker_checked && substr($value->meta_key, 8) == 'flash-orders-ajax' ) { continue; }
-					if ( !$worker_checked && substr($value->meta_key, 8) == 'flash-orders' ) { continue; }
-
-					if ( !$supervisor_checked && substr($value->meta_key, 8) == 'manage-tables' ) { continue; }
-					if ( !$supervisor_checked && substr($value->meta_key, 8) == 'manage-orders' ) { continue; }
-					if( !$supervisor_checked && substr($value->meta_key, 8) == 'warehouse' ){ continue; }
-					if( !$manager_checked && substr($value->meta_key, 8) == 'manage-restaurant' ){ continue; }
-					?>
-					<a href="<?php echo esc_url(get_post_permalink($value->meta_value));?>">
-						<?php echo esc_attr($post->post_name);?>
-					</a>
-				<?php } ?>
-				<?php 
-				// do_action( 'FO_woocommerce_special_pages_navigations' );
-				?>
-			</nav>
-		</div>
-	<?php return; } 
-}
-
 
 
 include_once('template/front-order-ajax.php');
@@ -632,30 +609,30 @@ function FO_front_order_ajax_section(){
 
 add_shortcode( 'FO_manage_tables_section', 'FO_manage_tables_section' );
 function FO_manage_tables_section(){
-	if (!is_admin()) {
+	// if (!is_admin()) {
 		// FO_access_denied();
+		ob_start();
 		if ( FO_access_autorization() ){
 			FO_add_special_pages_navigations();
 			FO_pages_header_controls();
+			FO_manage_table();
 		}
-		ob_start();
-		FO_manage_table();
 		return ob_get_clean();
-	}
+	// }
 }
 
 add_shortcode( 'FO_manage_restaurant_section', 'FO_manage_restaurant_section' );
 function FO_manage_restaurant_section(){
-	if (!is_admin()) {
+	// if (!is_admin()) {
 		// FO_access_denied();
+		ob_start();
 		if ( FO_access_autorization() ){
 			FO_add_special_pages_navigations();
 			FO_pages_header_controls();
+			FO_manage_restaurant();
 		}
-		ob_start();
-		FO_manage_restaurant();
 		return ob_get_clean();
-	}
+	// }
 }
 
 
@@ -666,7 +643,7 @@ function FO_manage_restaurant_section(){
 
 function FO_pages_header_controls(){
 	?>
-	<div id="" style="width:100%;border-bottom:1px solid;">
+	<div id="" style="width:100%;border-bottom:1px solid;display:contents;">
 		<nav class="FO_nav_menu">
 			<button onclick="toggleFullScreen()" title="<?php echo esc_html__( 'imposta il sito a schermo intero..... clicca nuovamente per uscire dalla modalità', 'flash_order' ); ?>"><?php echo esc_html__( 'Schermo Intero', 'flash_order' ); ?></button>
 
@@ -1189,6 +1166,183 @@ function FOP_custom_taxonomy_zone() {
 
 
 
+
+
+
+
+
+
+
+
+function FO_get_pages_impost($page_id){
+$settings = FO_get_meta( 'setting_page_id'.$page_id );
+if ( isset($settings) && $settings != null ) {
+	$settings = json_decode($settings);
+}
+// FO_debug($settings);
+$page = get_post($page_id);
+?>
+<div class="GenericDetailSection" fo_page_id="<?php echo esc_attr($page_id);?>" style="display:none;">
+	<div class="GenericClose" onclick="FO_hide_pages_rapid_impost(<?php echo '`'.esc_attr($page_id).'`'?>)">
+		X<div style="margin-left:auto;"><?php esc_html_e('CHIUDI' , 'flash_order');?></div>
+	</div>
+	<div class="GenericDetailHead">
+
+		<strong>
+			<?php echo esc_attr($page->post_title);?>
+		</strong>
+
+		<strong> - </strong>
+
+		<strong>
+			<?php esc_html_e('id pagina: ' , 'flash_order');?>
+			<?php echo esc_attr($page_id);?>
+		</strong>
+
+		<div style="margin-left:auto;">
+			<?php esc_html_e('status della pagina: ' , 'flash_order');?>
+			<?php echo esc_attr($page->post_status);?>
+		</div>
+
+	</div>
+
+	<div class="GenericDetailBody">
+
+		<div class="GenericDetailBlock">
+
+			<div>
+				<?php esc_html_e('Mostra o Nascondi header al caricamento della pagina' , 'flash_order');?>
+				<div class="GenericRadioSec">
+					<div>
+						<input type="radio" name="<?php echo 'PGSett[setting_page_id'.esc_attr($page_id);?>][showHead]" value="yes" <?php if(isset($settings->showHead)&&$settings->showHead=='yes'){echo 'checked';}?>>
+						<?php esc_html_e('Mostra' , 'flash_order');?>
+					</div>
+					<div>
+						<input type="radio" name="<?php echo 'PGSett[setting_page_id'.esc_attr($page_id);?>][showHead]" value="no" <?php if(isset($settings->showHead)&&$settings->showHead=='no'){echo 'checked';}?>>
+						<?php esc_html_e('Nascondi' , 'flash_order');?>
+					</div>
+				</div>
+			</div>
+
+			<div>
+				<?php esc_html_e('Mostra o Nascondi footer al caricamento della pagina' , 'flash_order');?>
+				<div class="GenericRadioSec">
+					<div>
+						<input type="radio" name="<?php echo 'PGSett[setting_page_id'.esc_attr($page_id);?>][showFoot]" value="yes" <?php if(isset($settings->showFoot)&&$settings->showFoot=='yes'){echo 'checked';}?>>
+						<?php esc_html_e('Mostra' , 'flash_order');?>
+					</div>
+					<div>
+						<input type="radio" name="<?php echo 'PGSett[setting_page_id'.esc_attr($page_id);?>][showFoot]" value="no" <?php if(isset($settings->showFoot)&&$settings->showFoot=='no'){echo 'checked';}?>>
+						<?php esc_html_e('Nascondi' , 'flash_order');?>
+					</div>
+				</div>
+			</div>
+
+			<div>
+				<?php esc_html_e('Mostra o Nascondi QR code della pagina in testa' , 'flash_order');?>
+				<div class="GenericRadioSec">
+					<div>
+						<input type="radio" name="<?php echo 'PGSett[setting_page_id'.esc_attr($page_id);?>][showQR]" value="yes" <?php if(isset($settings->showQR)&&$settings->showQR=='yes'){echo 'checked';}?>>
+						<?php esc_html_e('Mostra' , 'flash_order');?>
+					</div>
+					<div>
+						<input type="radio" name="<?php echo 'PGSett[setting_page_id'.esc_attr($page_id);?>][showQR]" value="no" <?php if(isset($settings->showQR)&&$settings->showQR=='no'){echo 'checked';}?>>
+						<?php esc_html_e('Nascondi' , 'flash_order');?>
+					</div>
+				</div>
+			</div>
+
+		</div>
+
+		<div class="GenericDetailBlock">
+
+			<strong> <?php esc_html_e('Modifica i colori globali della pagina' ,'flash_order');?> </strong>
+			<div class="GenericRadioSec">
+				<div>
+					<input type="radio" name="<?php echo 'PGSett[setting_page_id'.esc_attr($page_id);?>][OverColor]" value="yes" <?php if(isset($settings->OverColor)&&$settings->OverColor=='yes'){echo 'checked';}?>>
+					<?php esc_html_e('Si' , 'flash_order');?>
+				</div>
+				<div>
+					<input type="radio" name="<?php echo 'PGSett[setting_page_id'.esc_attr($page_id);?>][OverColor]" value="no" <?php if(isset($settings->OverColor)&&$settings->OverColor=='no'){echo 'checked';}?>>
+					<?php esc_html_e('No' , 'flash_order');?>
+				</div>
+			</div>
+			<div>
+				<?php esc_html_e('Estendi l\'influenza ad altri selettori css' , 'flash_order');?>
+				<input type="text" name="<?php echo 'PGSett[setting_page_id'.esc_attr($page_id);?>][EXTCss]" value="<?php if(isset($settings->EXTCss) && $settings->EXTCss!=''){echo $settings->EXTCss;}else{echo 'body, header, footer';}?>">
+			</div>
+
+			<div>
+				<?php FO_setting_color( array(
+						'default' => '#00000f',
+						'name' => 'PGSett[setting_page_id'.$page_id.'][BGColor]',
+						'title' => esc_html__('Colore Sfondo ' , 'flash_order'),
+						'setting' => (isset($settings->BGColor))?$settings->BGColor:'',
+				) ) ?>
+			</div>
+			<div>
+				<?php FO_setting_color( array(
+						'default' => '#ffffff',
+						'name' => 'PGSett[setting_page_id'.$page_id.'][TextColor]',
+						'title' => esc_html__('Colore Testo ' , 'flash_order'),
+						'setting' => (isset($settings->TextColor))?$settings->TextColor:'',
+				) ) ?>
+			</div>
+			
+		</div>
+
+	</div>
+
+	<div class="GenericDetailFoot">
+		<button type="submit" name="update" value="update" class="FObutton pointer" form="general" style="margin: 0px 0px 0px auto;"> UPDATE </button>
+		
+	</div>
+	
+</div>
+	<div class="GenericBackGroundSection" fo_page_id="<?php echo esc_attr($page_id);?>" style="display:none;"></div>
+<?php
+}
+
+
+
+
+
+
+
+function FO_setting_color( $args = array() ){
+    $args['default'] = (isset($args['default']) && $args['default']!='')?$args['default']:'';
+    $args['id'] = (isset($args['id']) && $args['id']!='')?$args['id']:'';
+    $args['name'] = (isset($args['name']) && $args['name']!='')?$args['name']:'';
+    $args['title'] = (isset($args['title']) && $args['title']!='')?$args['title']:'';
+    $set_val = (isset($args['setting']) && $args['setting']!='')?$args['setting']:'';
+
+    if ( $set_val != null && $set_val != '') {
+    	$value = $set_val;
+    } else { $value = $args['default']; }
+    ?>
+    <div class="FOsettingStyle" id="<?php echo esc_attr($args['id']);?>"style="background-color:<?php echo esc_attr($value);?>" onclick="console.log(jQuery(this).find('input'));">
+        <p title="<?php echo esc_attr($args['title']);?>"> <?php echo esc_attr($args['title']);?>
+            <input type="color" name="<?php echo esc_attr($args['name']);?>" value="<?php echo esc_attr($value);?>" oninput="jQuery(this).parent().parent().css('backgroundColor',this.value);">
+            <span class="dashicons dashicons-image-rotate pointer" onclick="FO_restore_prev_value( this, <?php echo "'".esc_attr($args['default'])."'";?> )" title="<?php esc_html_e('Ripristina il valore di default', 'flash_order' );?>"></span>
+        </p>
+    </div>
+    <script type="text/javascript">
+    	function FO_restore_prev_value( target, value ){
+			target.previousElementSibling.value = value;
+			jQuery(target).closest('.FOsettingStyle').css('backgroundColor',value);
+		}
+    </script>
+    <?php
+}
+
+
+
+
+
+
+
+
+
 // add_filter( 'woocommerce_single_variations_taxonomies', 'FO_add_custom_taxonomies', 10, 1 );
 // function FO_add_custom_taxonomies( $taxonomies ) {
 //    $taxonomies[] = 'Ingredienti';
@@ -1521,7 +1675,8 @@ function FO_debug( $var ){
 	echo "</pre>";
 }
 function FO_access_autorization( $role = 'worker',  $mode = true ){
-	$user_id = get_current_user();
+	$user_id = wp_get_current_user()->ID;
+	// FO_debug($user_id);
 	$autorization = false;
 
 	$worker_checked = ( isset(get_user_meta($user_id, 'flash_order_user_role_worker')[0]) ) ? get_user_meta($user_id, 'flash_order_user_role_worker')[0] : false;
@@ -1542,7 +1697,7 @@ function FO_access_autorization( $role = 'worker',  $mode = true ){
 	return $autorization;
 }
 function FO_access_autorization_level(){
-	$user_id = get_current_user();
+	$user_id = wp_get_current_user()->ID;
 	$autorization = 0;
 
 	$worker_checked = ( isset(get_user_meta($user_id, 'flash_order_user_role_worker')[0]) ) ? get_user_meta($user_id, 'flash_order_user_role_worker')[0] : false;
@@ -1669,7 +1824,7 @@ function FO_create_post_QR_code() {
 	$qr_url = esc_url_raw( plugin_dir_url( dirname( __FILE__ ) ) . 'includes/phpqrcode/QRgenerate/post_' . $post_id . '.png' );
 	
 	$return = '<div class="fo_QR_pages">';
-	$return .= '<strong style="width:100%;">'.esc_html_e('Link per Questa Pagina:' , 'flash_order').'</strong>';
+	$return .= '<strong style="width:100%;">'.esc_html__('Link per Questa Pagina:' , 'flash_order').'</strong>';
 	$return .= '<strong style="margin:20px;">'.get_home_url().'?p='.$post_id.'</strong>';
 	$return .= '<img src="'.esc_attr($qr_url).'" height="'.esc_attr($size).'" width="'.esc_attr($size).'">';
 	$return .= '</div>';
@@ -4174,7 +4329,7 @@ function FO_flash_tab_order( $tavoli = array() ){
 <!-- <strong style=""><?php esc_html_e('RIEPILOGO:','flash_order'); ?></strong> -->
 				<div class="FO_flash_tab_column fo_column_riepilogo" style="width:calc(100% - 20px);padding-right:80px;" onclick="fo_tab_hystory_space(this,'.fo_column_story','.fo_column_products')">
 					<div class="fo_tab_tool_section fo_tool_riepilogo">
-						<div class="fo_button_thin" onclick="fo_tab_empty_section(jQuery('.fo_column_riepilogo'))" style="color: red;">
+						<div class="fo_button_thin" onclick="fo_tab_empty_section(jQuery('.fo_column_riepilogo'))" style="color:red;">
 							<span class="dashicons dashicons-trash"></span>
 							<?php esc_html_e('TUTTO','flash_order');?>
 						</div>
@@ -4183,7 +4338,9 @@ function FO_flash_tab_order( $tavoli = array() ){
 							<strong> - </strong>
 						</div>
 						<script type="text/javascript">
-							FO_calc_totals();
+							jQuery(window).on('load', function() {
+								FO_calc_totals();
+							});
 						</script>
 					</div>
 				</div>
@@ -6266,11 +6423,11 @@ function FO_get_status_changer( $order ){
 	$string .= esc_html__( 'CHIUDI', 'flash_order' );
 	$string .= '</div>';
 	// if ( $order->get_status() == 'pending' ) {
-		$string .= '<button onclick="FO_change_order_status(`'.$order->get_id().'`, `processing`, `'.esc_html__( 'Sei sicuro di voler cambiare lo status dell\'ordine?`', 'flash_order' ).');" title="'.esc_html__( 'cambia lo status dell\'ordine', 'flash_order' ).'">'.esc_html__( 'in lavorazione', 'flash_order' ).'</button>';
+		$string .= '<button onclick="fo_change_order_status(`'.$order->get_id().'`, `processing`, `'.esc_html__( 'Sei sicuro di voler cambiare lo status dell\'ordine?`', 'flash_order' ).');" title="'.esc_html__( 'cambia lo status dell\'ordine', 'flash_order' ).'">'.esc_html__( 'in lavorazione', 'flash_order' ).'</button>';
 	// }
-	$string .= '<button onclick="FO_change_order_status(`'.$order->get_id().'`, `cancelled`, `'.esc_html__( 'Sei sicuro di voler cambiare lo status dell\'ordine?`', 'flash_order' ).');" title="'.esc_html__( 'cambia lo status dell\'ordine', 'flash_order' ).'">'.esc_html__( 'cancellato', 'flash_order' ).'</button>';
-	$string .= '<button onclick="FO_change_order_status(`'.$order->get_id().'`, `refunded`, `'.esc_html__( 'Sei sicuro di voler cambiare lo status dell\'ordine?`', 'flash_order' ).');" title="'.esc_html__( 'cambia lo status dell\'ordine', 'flash_order' ).'">'.esc_html__( 'rimborsato', 'flash_order' ).'</button>';
-	$string .= '<button onclick="FO_change_order_status(`'.$order->get_id().'`, `completed`, `'.esc_html__( 'Sei sicuro di voler cambiare lo status dell\'ordine?`', 'flash_order' ).');" title="'.esc_html__( 'cambia lo status dell\'ordine', 'flash_order' ).'">'.esc_html__( 'completato', 'flash_order' ).'</button>';
+	$string .= '<button onclick="fo_change_order_status(`'.$order->get_id().'`, `cancelled`, `'.esc_html__( 'Sei sicuro di voler cambiare lo status dell\'ordine?`', 'flash_order' ).');" title="'.esc_html__( 'cambia lo status dell\'ordine', 'flash_order' ).'">'.esc_html__( 'cancellato', 'flash_order' ).'</button>';
+	$string .= '<button onclick="fo_change_order_status(`'.$order->get_id().'`, `refunded`, `'.esc_html__( 'Sei sicuro di voler cambiare lo status dell\'ordine?`', 'flash_order' ).');" title="'.esc_html__( 'cambia lo status dell\'ordine', 'flash_order' ).'">'.esc_html__( 'rimborsato', 'flash_order' ).'</button>';
+	$string .= '<button onclick="fo_change_order_status(`'.$order->get_id().'`, `completed`, `'.esc_html__( 'Sei sicuro di voler cambiare lo status dell\'ordine?`', 'flash_order' ).');" title="'.esc_html__( 'cambia lo status dell\'ordine', 'flash_order' ).'">'.esc_html__( 'completato', 'flash_order' ).'</button>';
 	$string .= '</div>';
 	return $string;
 }
@@ -6585,7 +6742,7 @@ add_action('wp_ajax_nopriv_FO_check_for_orders', 'FO_check_for_orders');
 
 
 function FO_ajax_change_order_status( $poste = '' ){
-	if ( !isset($_POST['_fononce_change_order_status']) && !wp_verify_nonce( sanitize_text_field(wp_unslash( $_POST['_fononce_change_order_status'])), 'FO_change_order_status' ) ) {
+	if ( !isset($_POST['nonce']) && !wp_verify_nonce( sanitize_text_field(wp_unslash( $_POST['nonce'])), 'FO_insert_post_ajax_nonce' ) ) {
 		return;
 	}
 	if (FOcheck($poste) && is_array($poste) ) {

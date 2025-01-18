@@ -13,6 +13,11 @@ function FO_manage_table(){
         'order'            => 'ASC',
         'post_type'        => 'tavoli',
     ) );
+
+    $settings = FO_get_meta( 'setting_page_id'.get_the_ID() );
+    if ( isset($settings) && $settings != null ) {
+        $settings = json_decode($settings);
+    }
     
     $nonce = wp_create_nonce( 'FO_insert_post_ajax_nonce' );
     echo '<input type="hidden" id="_fononce_insert_post_ajax_nonce" name="_fononce_insert_post_ajax_nonce" value="'.esc_attr($nonce).'" />';
@@ -21,6 +26,36 @@ function FO_manage_table(){
 
     // $tavoli_info = FO_get_all_tables_by_status_last();
     // FO_debug($tavoli_info);
+    if (isset($settings->showQR) && $settings->showQR == 'yes' ) {
+        echo FO_create_post_QR_code();//phpcs:ignore
+    }
+
+    if (isset($settings->showHead) && $settings->showHead == 'no' ) { ?>
+        <script type="text/javascript">
+            jQuery(window).on('load', function() {
+                jQuery('header').css('display','none');
+            });
+        </script>
+    <?php }
+
+    if (isset($settings->showFoot) && $settings->showFoot == 'no' ) { ?>
+        <script type="text/javascript">
+            jQuery(window).on('load', function() {
+                jQuery('footer').css('display','none');
+            });
+        </script>
+    <?php }
+
+    if (isset($settings->OverColor) && $settings->OverColor == 'yes' ) { ?>
+        <style type="text/css">
+            <?php if (isset($settings->EXTCss) && $settings->EXTCss != '' ){
+                echo esc_attr($settings->EXTCss);?>{
+                    background-color: <?php echo esc_attr($settings->BGColor);?>;
+                    color: <?php echo esc_attr($settings->TextColor);?>;
+                }
+            <?php } ?>
+        </style>
+    <?php }
 ?>
 <div id="FO_Front_Content">
     <?php 
@@ -40,7 +75,7 @@ function FO_manage_table(){
     <?php }?>
 
     <div class="FO_table_grid">
-        <div class="FOloadingCardPublic FOloadingCardPublicMain tab_fix_load" style="">
+        <div class="FOloadingMessage FOloadingCardPublic FOloadingCardPublicMain tab_fix_load" style="">
             <span style="animation: fospin 1s infinite;font-size:120px;width:120px;height:120px;" class="dashicons dashicons-update"></span>
         </div>
         
@@ -106,16 +141,7 @@ function FO_manage_table(){
         // console.log(window);
         jQuery(window).on('load', function() {
             jQuery(".FOloadingCardPublicMain").fadeOut(200);
-            fo_toggle_header_footer(true);
         });
-        //jQuery(document).bind("touchstart", function(e) {
-        //	if (true) {
-        //		if ( e.target == '.fo_tab_prod_story') {
-		//
-        //		}
-        //		
-        //	}
-		//});
     </script>
 
 </div>

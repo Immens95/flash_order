@@ -4,8 +4,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 function FO_manage_restaurant(){
-//test 
-echo FO_create_post_QR_code();//phpcs:ignore
+
+
 //------------------
 
 do_action( 'manage_restaurant_page_head' );

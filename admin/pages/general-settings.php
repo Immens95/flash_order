@@ -28,8 +28,10 @@ if ( isset($_GET['sub']) ){//phpcs:ignore
 
 
 
+wp_enqueue_style( 'flash_order_settings-css', get_home_url().'/wp-content/plugins/flash_order/public/css/settings-css.css', array(), '1.0', 'all' );
 
 ?>
+
 <nav>
     <?php do_action('fo_settings_navigation_start') ?>
     <button onclick="FO_settings_navigations( jQuery('#general') );">General</button>
