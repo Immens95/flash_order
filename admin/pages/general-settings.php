@@ -25,11 +25,14 @@ if ( isset($_GET['sub']) ){//phpcs:ignore
     $disp_general = 'display:flex;';
 }
 
+<<<<<<< HEAD
 
 
 
 wp_enqueue_style( 'flash_order_settings-css', get_home_url().'/wp-content/plugins/flash_order/public/css/settings-css.css', array(), '1.0', 'all' );
 
+=======
+>>>>>>> origin/main
 ?>
 
 <nav>
@@ -38,7 +41,6 @@ wp_enqueue_style( 'flash_order_settings-css', get_home_url().'/wp-content/plugin
 
     <?php do_action('fo_settings_navigation_end') ?>
 </nav>
-
 
 <div id="settSection">
 <form id="general" method="post" class="FOForm" style="<?php echo esc_attr($disp_general); ?>">
@@ -51,7 +53,6 @@ wp_enqueue_style( 'flash_order_settings-css', get_home_url().'/wp-content/plugin
 
 <!-- global --><div class="FOSetting_Board" board="global">
 <?php
-
 
     $nonce_save = wp_create_nonce( 'FO_save_settings' );
     echo '<input type="hidden" id="_fononce_save_settings" name="_fononce_save_settings" value="'.esc_attr($nonce_save).'" />';
@@ -113,21 +114,11 @@ FO_general_setting( array( 'name' => 'fo_pickup_delivery_checkout',
     'info'      => __('visualizza la sezione per scegliere la modalità di consegna (ritiro o consegna), la data e l\'ora, nella pagina (checkout)', 'flash_order')
 ) );
 
-FO_general_setting( array( 'name' => 'fo_allow_menu_order',
-    'options'   => array('yes','no'),
-    'type'      => 'select',
-    'class'     => '',
-    'text'      => __('abilita l\'inserimento ordini dalla pagina del menu ( flash-order-ajax )', 'flash_order'),
-    'info'      => __('i clienti potranno inserire gli ordini direttamente dalla pagina del menu', 'flash_order')
-) );
-
-/*
-
 ?>
     </div>
 
      <div class="FOFormSeparator" onclick="jQuery(`[board='page_flash_order']`).slideToggle()">
-        <b> <?php esc_html_e('Pagina creazione ordini flash (flash-orders)' , 'flash_order'); ?> </b>
+        <b> <?php esc_html_e('Pagina del menù (flash-orders-ajax)' , 'flash_order'); ?> </b>
         <span class="dashicons dashicons-arrow-down"></span>
     </div>
 
@@ -138,6 +129,42 @@ FO_general_setting( array( 'name' => 'fo_allow_menu_order',
         <b> <?php esc_html_e('impostazioni generali' , 'flash_order'); ?> </b>
     </div>
 <?php
+
+FO_conditional_setting( array( 'name' => 'fo_allow_menu_order',
+    'options'   => array('yes','no'),
+    'id'        => 'FO_allow_menu_order_div',
+    'type'      => 'select',
+    'bool'      => 'yes',
+    'target_bool' => '#FO_limit_ip_to_local_network',
+    'class'     => '',
+    'fo_dep'    => '',
+    'text'      => __('abilita l\'inserimento ordini dalla pagina del menu', 'flash_order'),
+    'info'      => __('i clienti potranno inserire gli ordini direttamente dalla pagina del menu ( flash-order-ajax )', 'flash_order')
+) );
+
+FO_conditional_setting( array( 'name' => 'fo_limit_ip_to_local_network',
+    'options'   => array('yes','no'),
+    'id'        => 'FO_limit_ip_to_local_network',
+    'type'      => 'select',
+    'bool'      => 'yes',
+    'target_bool' => '#FO_select_local_network',
+    'class'     => '',
+    'fo_dep'    => '#FO_allow_menu_order_div',
+    'text'      => __('limita l\'inserimento degli ordini solo a chi è connesso alla rete del locale', 'flash_order'),
+    'info'      => __('i clienti potranno inserire gli ordini soltanto se sono connessi alla rete del locale, questo può essere utile per evitare di creare ordini a vuoto', 'flash_order')
+) );
+
+FO_set_local_network();
+
+?>
+ <script type="text/javascript">
+    jQuery(window).on('load', function() {
+        FO_hide_condition_setting(jQuery('#FO_limit_ip_to_local_network'));
+        FO_hide_condition_setting(jQuery('#FO_select_local_network'));
+    });
+</script>
+<?php 
+/*
 // FO_general_setting( array( 'name' => 'flash_order_front_name',
 //     'default'   => __('TAVOLO','flash_order'),
 //     'options'   => '',

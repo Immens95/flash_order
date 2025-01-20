@@ -780,6 +780,7 @@ function FO_Advanced_Prod_Card( input ){
 	var AC_tax_ing = jQuery(input).closest('.foProdCard').attr('fo_tax_ing');
 	var AC_tax_allerg = jQuery(input).closest('.foProdCard').attr('fo_tax_allerg');
 
+	var AC_foindex = jQuery(input).closest('.foProdCard').attr('foindex');
 	var AC_tot = jQuery(input).closest('.foProdCard').attr('fo_tot');
 	var AC_Variant = jQuery(input).closest('.foProdCard').find('.fovariantcont').clone();
 	AC_Variant.show();
@@ -829,6 +830,7 @@ if (AC_tax_allerg == '[]') {jQuery('.AC_tax_allerg').hide();}else{jQuery('.AC_ta
 	jQuery(AC_tax_allerg).each(function(i,e){
 		jQuery('.AC_tax [fo_tax_id="'+e+'"]').show();
 	});
+	jQuery('.AC_foindex').val(AC_foindex);
 
 	jQuery('.AC_tot').text(AC_tot);
 	jQuery('.AC_Variant').append(AC_Variant);
@@ -848,6 +850,8 @@ function FO_Advanced_Prod_Card_hide( target ){
 	jQuery('.AC_Name').text('');
 	jQuery('.AC_description').text('');
 
+	jQuery('.AC_foindex').val('');
+
 	jQuery('.FOAdvIngredProdTab').hide();
 	jQuery('.fo_cont_gall_img').hide();
 
@@ -858,7 +862,6 @@ function FO_Advanced_Prod_Card_hide( target ){
 function FO_Advanced_Prod_Card_hide_all(){
 	jQuery('.Advanced_Card').hide();
 	jQuery('.Advanced_Card_background').hide();
-	
 }
 
 function FO_toggle_Favourite( input ){
@@ -960,14 +963,18 @@ function FO_ajax_Add_Item_to_Order(item){
 
 	copy.find('.foheart').remove();
 
-	copy.attr('fo_menu_prod','');
+	copy.attr('fo_menu_prod','fo_summary_prod');
 
 	copy.find('.fovariation_card').slideUp();
 
 //assign unique index
 	copy.attr('foindex', current_index);
 	copy.find('input, select, textarea').each(function(i,e){
-		jQuery(e).attr('name', stringToAdd+jQuery(e).attr('name'));
+		if ( /\d/.test(jQuery(e).attr('name').substr(1, 2)) ) {
+			jQuery(e).attr('name', '['+parseInt(current_index + 1)+']'+jQuery(e).attr('name'));
+		} else{
+			jQuery(e).attr('name', stringToAdd+jQuery(e).attr('name'));
+		}
 	});
 
 	copy.find('select').each(function(i,e){
@@ -980,7 +987,6 @@ function FO_ajax_Add_Item_to_Order(item){
 	jQuery('.FO_show_order_summary').addClass('foBorderPulse');
 	jQuery('.FO_show_order_summary img').attr('src', image);
 	jQuery('.FO_show_order_summary img').show();
-		
 
 	jQuery('#FO_sum_order').append( copy );
 
@@ -988,7 +994,7 @@ function FO_ajax_Add_Item_to_Order(item){
 }
 
 function FO_variant_set(input){
-	var prod = jQuery('.foProdCard[foid="'+jQuery('.AC_ID').text()+'"][fo_menu_prod="fo_menu_prod"]');
+	var prod = jQuery('.foProdCard[foid="'+jQuery('.AC_ID').text()+'"][foindex="'+jQuery('.AC_foindex').val()+'"]');
 
 	prod.find('select[name="'+jQuery(input).attr('name')+'"]').attr('value', jQuery(input).find('option[value="'+jQuery(input).val()+'"]').val() );
 
@@ -1079,7 +1085,7 @@ function FO_assign_index_to_ajax_inputs(){
 
 function FO_submit_flash_order_ajax_form(target){
 	var table = jQuery('#FO_sum_order').find('.foProdCard');
-	var foserial = jQuery(table).find('input, textarea').serializeArray();
+	var foserial = jQuery(table).find('input, textarea, select').serializeArray();
 	// foserial.filter(function(e){return e});
 	var foserialmap = foserial.map(({ name, value }) => ({ [name]: value }));
 
@@ -1097,8 +1103,8 @@ console.log(foserialmap);
 		data: {
 		    action: 'FO_submit_order_ajax',
 		    nonce: flash_orders_ajax_view_orders_vars.nonce,
-		    table_id: jQuery('select[name="table_name_cpt"]').val(),
-		    table_name_cpt: jQuery('select[name="table_name_cpt"]').text(),
+		    table_id: jQuery('[name="table_name_cpt"]').val(),
+		    table_name_cpt: jQuery('[name="table_name_cpt"]').text(),
 		    order_note: jQuery('#orderNote').val(),
 		    foserial: foserial,
 		    foserialmap: foserialmap,

@@ -92,6 +92,7 @@ function FO_delete_page( page ){
 }
 
 
+<<<<<<< HEAD
 function FO_show_pages_rapid_impost( pageId ){
 	jQuery('[fo_page_id="'+pageId+'"]').slideDown();
 }
@@ -103,6 +104,39 @@ function FO_hide_pages_rapid_impost( pageId ){
 function FO_toggle_pages_rapid_impost( pageId ){
 	jQuery('[fo_page_id="'+pageId+'"]').slideToggle();
 }
+=======
+
+
+function FO_condition_setting(input){
+	if (jQuery(input).val() == jQuery(input).attr('fo_bool')) {
+		jQuery( jQuery(input).attr('target_bool') ).slideDown();
+	} else{
+		jQuery( jQuery(input).attr('target_bool') ).slideUp();
+	}
+}
+
+
+
+function FO_hide_condition_setting(input){
+	if ( jQuery( jQuery(input).attr('fo_dep') ).attr('fo_val') != 'yes' || jQuery( jQuery(input).attr('fo_dep') ).attr('fo_val') != 'si') {
+		jQuery(input).hide();
+	} else{
+		jQuery(input).show();
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+>>>>>>> origin/main
 
 
 

@@ -2696,9 +2696,14 @@ $fo_gallery = array();
 	}
 	$fo_gallery = wp_json_encode( $fo_gallery );
 
+	if ($cat_slug == 'search') {
+		$fo_menu_prod = 'fo_search_prod';
+	} else{
+		$fo_menu_prod = 'fo_menu_prod';
+	}
 
 ?>
-	<div class="foProdCard" foware="<?php echo esc_attr($fo_ware);?>" focategories="<?php echo esc_attr($cat_slug);?>" focatid="<?php echo esc_attr($category);?>" id="<?php echo 'prod-'.esc_attr($id);?>" style="transition:var(--fo-main-tran);position:relative;" foid="<?php echo esc_attr($id);?>" foname="<?php echo esc_attr($product->get_name());?>" fovariations="<?php echo esc_attr($vari_arr);?>" nat-ing="<?php echo esc_attr($count_ing);?>" fo_gallery="<?php echo esc_attr($fo_gallery);?>" fo_description="<?php echo esc_attr($product->get_description());?>" fo_tot="<?php echo esc_attr(FO_price($product->get_price()));?>" fo_tax_cat="<?php echo esc_attr($fo_tax_cat);?>" fo_tax_tag="<?php echo esc_attr($fo_tax_tag);?>" fo_tax_ing="<?php echo esc_attr($fo_tax_ing);?>" fo_tax_allerg="<?php echo esc_attr($fo_tax_allerg);?>" fo_menu_prod="fo_menu_prod">
+	<div class="foProdCard" foware="<?php echo esc_attr($fo_ware);?>" focategories="<?php echo esc_attr($cat_slug);?>" focatid="<?php echo esc_attr($category);?>" id="<?php echo 'prod-'.esc_attr($id);?>" style="transition:var(--fo-main-tran);position:relative;" foid="<?php echo esc_attr($id);?>" foname="<?php echo esc_attr($product->get_name());?>" fovariations="<?php echo esc_attr($vari_arr);?>" nat-ing="<?php echo esc_attr($count_ing);?>" fo_gallery="<?php echo esc_attr($fo_gallery);?>" fo_description="<?php echo esc_attr($product->get_description());?>" fo_tot="<?php echo esc_attr(FO_price($product->get_price()));?>" fo_tax_cat="<?php echo esc_attr($fo_tax_cat);?>" fo_tax_tag="<?php echo esc_attr($fo_tax_tag);?>" fo_tax_ing="<?php echo esc_attr($fo_tax_ing);?>" fo_tax_allerg="<?php echo esc_attr($fo_tax_allerg);?>" fo_menu_prod="<?php echo esc_attr($fo_menu_prod);?>" foindex="0">
 
 		<input fo_tab_target="id" type="hidden" name="[id][<?php echo esc_attr($id);?>]" value="1">
 		<input fo_tab_target="qty" type="hidden" name="[qty][<?php echo esc_attr($id);?>]" value="1">
@@ -2902,13 +2907,15 @@ function FO_Advanced_prod_card(){
 
 		<div class="Advanced_Card_footer">
 
+			<input type="hidden" name="AC_foindex" class="AC_foindex">
+
 			<p class="fo_adv_tot AC_tot"></p>
 
 			<div class="AC_Variant">
 				
 			</div>
 
-			<div class="foadd" style="scale:0.8;bottom:25px;right:-10px;" onclick="FO_Advanced_Prod_Card_hide_all();FO_ajax_selectVarAfter_Add_Item_to_Order(this);"> +
+			<div class="foadd" style="scale:0.8;bottom:25px;right:-10px;" onclick="FO_ajax_selectVarAfter_Add_Item_to_Order(this);FO_Advanced_Prod_Card_hide();"> +
 			</div>
 
 		</div>
@@ -3714,8 +3721,6 @@ function FO_flash_tab_order_ajax( $poste = '', $clear = false ){
 			return;
 		}
 	}
-
-	
 	$check_for_pay = false;
 	if (FOcheck($poste) && is_array($poste) ) {
 		$_POST = $poste;
@@ -6627,23 +6632,28 @@ function FO_save_pickup_delivery_section($order_id){
 
 
 
-
-function FO_get_connection_info( $interfaces = false ){
+function FO_get_connection_info(){
 	$info = array();
 
 	$info['ip'] = gethostbyname( gethostname() );
 	$info['host'] = gethostname();
 
-	//get if host is connected in a local network ( router / modem ) or not
-	if ( !filter_var($info['ip'], FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE) ){
-	    $info['is_local'] = true;
+	$info['details'] = json_decode(file_get_contents("https://ipinfo.io"));
+
+	$ipinfo = FO_get_meta('ipinfo');
+
+	// FO_limit_ip_to_local_network
+
+	if ( FOcheck($ipinfo) && false ) {
+		$info['is_local'] = true;
 	} else{
 		$info['is_local'] = false;
 	}
-
-	if ($interfaces) {
-		$info['interfaces'] = net_get_interfaces();
-	}
+	// if ( !filter_var($info['ip'], FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE) ){
+	//     $info['is_local'] = true;
+	// } else{
+	// 	$info['is_local'] = false;
+	// }
 
 	// FO_debug( $info );
 	return $info;
