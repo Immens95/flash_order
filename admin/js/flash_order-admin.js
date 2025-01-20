@@ -92,7 +92,6 @@ function FO_delete_page( page ){
 }
 
 
-<<<<<<< HEAD
 function FO_show_pages_rapid_impost( pageId ){
 	jQuery('[fo_page_id="'+pageId+'"]').slideDown();
 }
@@ -104,7 +103,7 @@ function FO_hide_pages_rapid_impost( pageId ){
 function FO_toggle_pages_rapid_impost( pageId ){
 	jQuery('[fo_page_id="'+pageId+'"]').slideToggle();
 }
-=======
+
 
 
 function FO_condition_setting(input){
@@ -131,12 +130,6 @@ function FO_hide_condition_setting(input){
 
 
 
-
-
-
-
-
->>>>>>> origin/main
 
 
 
