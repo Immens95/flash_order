@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: IW Flash Order\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-01-18 01:41+0000\n"
-"PO-Revision-Date: 2025-01-18 02:08+0000\n"
+"PO-Revision-Date: 2025-01-22 11:51+0000\n"
 "Last-Translator: \n"
 "Language-Team: English (United States)\n"
 "Language: en_US\n"
@@ -15,15 +15,15 @@ msgstr ""
 "X-Loco-Version: 2.6.14; wp-6.7.1\n"
 "X-Domain: flash_order"
 
-#: public/flash_order-public.php:2742
+#: public/flash_order-public.php:2749
 msgid " - Seleziona - "
 msgstr "- Select -"
 
-#: admin/flash_order-admin.php:367
+#: admin/flash_order-admin.php:446
 msgid " Clicca QUI "
 msgstr "Click HERE"
 
-#: public/flash_order-public.php:1725 public/flash_order-public.php:1739
+#: public/flash_order-public.php:1727 public/flash_order-public.php:1741
 msgid " Clicca qui per Accedere "
 msgstr "Click here to Login"
 
@@ -31,23 +31,23 @@ msgstr "Click here to Login"
 msgid " Data di Consegna: "
 msgstr "Delivery Date:"
 
-#: admin/flash_order-admin.php:378
+#: admin/flash_order-admin.php:457
 msgid " Puoi vedere il Plugin Qui: "
 msgstr "You can see the Plugin Here:"
 
-#: admin/flash_order-admin.php:355
+#: admin/flash_order-admin.php:434
 msgid " Visita Questa Pagina "
 msgstr "Visit This Page"
 
-#: public/flash_order-public.php:3654
+#: public/flash_order-public.php:3659
 msgid "- zona -"
 msgstr "- area -"
 
-#: public/flash_order-public.php:2977
+#: public/flash_order-public.php:2982
 msgid "-scegli-"
 msgstr "-choose-"
 
-#: admin/flash_order-admin.php:356
+#: admin/flash_order-admin.php:435
 msgid ""
 ". Ogni tuo gesto è per noi un prezioso impegno, e siamo lieti di ascoltare "
 "le tue proposte e suggerimenti."
@@ -55,7 +55,7 @@ msgstr ""
 "Every gesture of yours is a precious commitment for us, and we are happy to "
 "listen to your proposals and suggestions."
 
-#: admin/flash_order-admin.php:368
+#: admin/flash_order-admin.php:447
 msgid ""
 ". Siamo sempre pronti ad ascoltare le tue opinioni e suggerimenti, "
 "impegnandoci al massimo per soddisfare ogni tua richiesta con attenzione e "
@@ -64,23 +64,23 @@ msgstr ""
 ". We are always ready to listen to your opinions and suggestions, making "
 "every effort to satisfy your every request with attention and dedication."
 
-#: public/flash_order-public.php:6512
+#: public/flash_order-public.php:6517
 msgid "[ALTRO]"
 msgstr "[OTHER]"
 
-#: public/flash_order-public.php:6461
+#: public/flash_order-public.php:6466
 msgid "[DATE]"
 msgstr "[DATE]"
 
-#: public/flash_order-public.php:6481
+#: public/flash_order-public.php:6486
 msgid "[FATTURAZIONE]"
 msgstr "[BILLING]"
 
-#: public/flash_order-public.php:6502
+#: public/flash_order-public.php:6507
 msgid "[INFO]"
 msgstr "[INFO]"
 
-#: public/flash_order-public.php:6490
+#: public/flash_order-public.php:6495
 msgid "[SPEDIZIONE]"
 msgstr "[SHIPPING]"
 
@@ -96,7 +96,7 @@ msgstr "Add New"
 msgid "Add New Catering"
 msgstr "Add New Catering"
 
-#: admin/flash_order-admin.php:37 admin/flash_order-admin.php:73
+#: admin/flash_order-admin.php:37 admin/flash_order-admin.php:74
 msgid "Addons"
 msgstr "Addons"
 
@@ -136,7 +136,7 @@ msgstr "Update Stickers"
 msgid "Aggiorna Temperatura"
 msgstr "Update Temperature"
 
-#: admin/flash_order-admin.php:314
+#: admin/flash_order-admin.php:393
 msgid ""
 "Aggiorna tutte le pagine necessarie al plugin, e se non sono ancora state "
 "create, le Crea."
@@ -153,7 +153,7 @@ msgstr "Update Zone"
 msgid "Aggiornato in questo tavolo"
 msgstr "Updated in this table"
 
-#: public/flash_order-public.php:2606 public/flash_order-public.php:4716
+#: public/flash_order-public.php:2608 public/flash_order-public.php:4722
 msgid "AGGIUNGI"
 msgstr "ADD"
 
@@ -258,17 +258,22 @@ msgstr "Add an image to the taxonomy for product ingredients"
 msgid "aggiungi un'immagine alla tassonomia per gli sticker dei prodotti"
 msgstr "Add an image to the taxonomy for product stickers"
 
-#: admin/pages/general-settings.php:484
+#: admin/pages/general-settings.php:493
 msgid "aggiungi un'immagine alla tassonomia per i tag dei post"
 msgstr "Add an image to the taxonomy for post tags"
 
-#: admin/pages/general-settings.php:474
+#: admin/pages/general-settings.php:483
 msgid "aggiungi un'immagine alla tassonomia per i tag dei prodotti"
 msgstr "Add an image to the taxonomy for product tags"
 
-#: admin/pages/general-settings.php:494
+#: admin/pages/general-settings.php:503
 msgid "aggiungi un'immagine alla tassonomia per le categorie dei post"
 msgstr "Add an image to the taxonomy for post categories"
+
+#: admin/pages/general-settings.php:474
+msgid ""
+"aggiungi un'immagine alla tassonomia per le macro categorie dei prodotti"
+msgstr "add an image to the taxonomy for product macro categories"
 
 #: admin/pages/general-settings.php:456
 msgid "aggiungi un'immagine alla tassonomia per le temperature dei prodotti"
@@ -286,7 +291,7 @@ msgstr "Allergen"
 msgid "ALLERGENI"
 msgstr "ALLERGENS"
 
-#: public/flash_order-public.php:817 public/flash_order-public.php:850
+#: public/flash_order-public.php:817
 msgid "Allergeni"
 msgstr "Allergens"
 
@@ -294,11 +299,11 @@ msgstr "Allergens"
 msgid "Allergeni Popolari"
 msgstr "Popular Allergens"
 
-#: public/flash_order-public.php:2894
+#: public/flash_order-public.php:2897
 msgid "Allergeni:"
 msgstr "Allergens:"
 
-#: public/flash_order-public.php:5402
+#: public/flash_order-public.php:5407
 msgid "Attesa"
 msgstr "Waiting"
 
@@ -306,7 +311,7 @@ msgstr "Waiting"
 msgid "Avanzate"
 msgstr "Advance"
 
-#: public/flash_order-public.php:4632 public/template/front-order-ajax.php:244
+#: public/flash_order-public.php:4638 public/template/front-order-ajax.php:243
 msgid "AVVIA ORDINE"
 msgstr "START ORDER"
 
@@ -314,33 +319,29 @@ msgstr "START ORDER"
 msgid "azioni"
 msgstr "shares"
 
-#: public/flash_order-public.php:2773
-msgid "BIOLOGICO"
-msgstr "ORGANIC"
-
-#: public/flash_order-public.php:6080 public/flash_order-public.php:6097
-#: public/flash_order-public.php:6426 public/flash_order-public.php:6428
-#: public/flash_order-public.php:6429 public/flash_order-public.php:6430
+#: public/flash_order-public.php:6085 public/flash_order-public.php:6102
+#: public/flash_order-public.php:6431 public/flash_order-public.php:6433
+#: public/flash_order-public.php:6434 public/flash_order-public.php:6435
 msgid "cambia lo status dell'ordine"
 msgstr "change the status of the order"
 
-#: public/flash_order-public.php:5237
+#: public/flash_order-public.php:5242
 msgid "Cancellato"
 msgstr "Deleted"
 
-#: public/flash_order-public.php:6145 public/flash_order-public.php:6428
+#: public/flash_order-public.php:6150 public/flash_order-public.php:6433
 msgid "cancellato"
 msgstr "deleted"
 
-#: public/flash_order-public.php:1563 public/flash_order-public.php:1577
+#: public/flash_order-public.php:1565 public/flash_order-public.php:1579
 msgid "Carica Immagine"
 msgstr "Load Image"
 
-#: admin/pages/general-settings.php:493
+#: admin/pages/general-settings.php:502
 msgid "CATEGORIE POST"
 msgstr "POST. CATEGORIES"
 
-#: public/flash_order-public.php:2876
+#: public/flash_order-public.php:2879
 msgid "Categorie:"
 msgstr "Categories:"
 
@@ -362,7 +363,7 @@ msgstr "Catering Attributes"
 msgid "Cerca Allergeni"
 msgstr "Search Allergens"
 
-#: public/flash_order-public.php:4721
+#: public/flash_order-public.php:4727
 msgid "Cerca cliente..."
 msgstr "Search for customer..."
 
@@ -370,7 +371,7 @@ msgstr "Search for customer..."
 msgid "Cerca Ingredienti"
 msgstr "Search for Ingredients"
 
-#: public/flash_order-public.php:2583
+#: public/flash_order-public.php:2585
 msgid "Cerca ingredienti da aggiungere..."
 msgstr "Search for ingredients to add..."
 
@@ -378,7 +379,7 @@ msgstr "Search for ingredients to add..."
 msgid "Cerca Macro Categoria"
 msgstr "Search Macro Category"
 
-#: public/flash_order-public.php:3556
+#: public/flash_order-public.php:3561
 msgid "Cerca prodotto..."
 msgstr "Search product..."
 
@@ -398,7 +399,7 @@ msgstr "Search table"
 msgid "Cerca Temperature"
 msgstr "Search Temperatures"
 
-#: public/flash_order-public.php:4720
+#: public/flash_order-public.php:4726
 msgid "Cerca un cliente:"
 msgstr "Search for a customer:"
 
@@ -406,11 +407,11 @@ msgstr "Search for a customer:"
 msgid "Cerca Zone"
 msgstr "Search Zones"
 
-#: public/flash_order-public.php:2625
+#: public/flash_order-public.php:2627
 msgid "Cerca..."
 msgstr "Search..."
 
-#: public/flash_order-public.php:6575
+#: public/flash_order-public.php:6580
 msgid ""
 "Cercheremo di rispettare questo orario con il massimo dell'impegno, tuttavia "
 "l'orario effettivo potrebbe non corrispondere."
@@ -418,27 +419,27 @@ msgstr ""
 "We will try to respect this time with our best efforts, however the actual "
 "time may not correspond."
 
-#: public/template/front-order-ajax.php:142
+#: public/template/front-order-ajax.php:141
 msgid "Cerchi Qualcosa?"
 msgstr "Are you looking for something?"
 
-#: public/flash_order-public.php:2974
+#: public/flash_order-public.php:2979
 msgid "Che temperatura gradisci? "
 msgstr "What temperature do you like? "
 
-#: public/flash_order-public.php:1187 public/flash_order-public.php:2572
-#: public/flash_order-public.php:2860 public/flash_order-public.php:2972
-#: public/flash_order-public.php:4157 public/flash_order-public.php:4172
-#: public/flash_order-public.php:4702 public/flash_order-public.php:5695
-#: public/flash_order-public.php:5804 public/flash_order-public.php:5956
-#: public/flash_order-public.php:6023 public/flash_order-public.php:6280
-#: public/flash_order-public.php:6368 public/flash_order-public.php:6423
-#: public/flash_order-public.php:6449 public/template/front-order-ajax.php:121
-#: public/template/front-order-ajax.php:204
+#: public/flash_order-public.php:1187 public/flash_order-public.php:2574
+#: public/flash_order-public.php:2863 public/flash_order-public.php:2977
+#: public/flash_order-public.php:4159 public/flash_order-public.php:4177
+#: public/flash_order-public.php:4708 public/flash_order-public.php:5700
+#: public/flash_order-public.php:5809 public/flash_order-public.php:5961
+#: public/flash_order-public.php:6028 public/flash_order-public.php:6285
+#: public/flash_order-public.php:6373 public/flash_order-public.php:6428
+#: public/flash_order-public.php:6454 public/template/front-order-ajax.php:120
+#: public/template/front-order-ajax.php:203
 msgid "CHIUDI"
 msgstr "CLOSE"
 
-#: public/flash_order-public.php:4707
+#: public/flash_order-public.php:4713
 msgid "Cliente Esistente ? "
 msgstr "Existing Customer? "
 
@@ -474,71 +475,71 @@ msgstr "Main Background Colors"
 msgid "Colori principali"
 msgstr "Main colors"
 
-#: public/flash_order-public.php:5412
+#: public/flash_order-public.php:5417
 msgid "Completa prima i campi obbligatori contrassegnati da: * ."
 msgstr "First complete the mandatory fields marked with: *."
 
-#: public/flash_order-public.php:5235
+#: public/flash_order-public.php:5240
 msgid "Completato"
 msgstr "Completed"
 
-#: public/flash_order-public.php:6149 public/flash_order-public.php:6430
+#: public/flash_order-public.php:6154 public/flash_order-public.php:6435
 msgid "completato"
 msgstr "completed"
 
-#: public/flash_order-public.php:6476
+#: public/flash_order-public.php:6481
 msgid "completato: "
 msgstr "completed: "
 
-#: public/flash_order-public.php:5428
+#: public/flash_order-public.php:5433
 msgid "Confermi di voler creare il Prodotto chiamato: "
 msgstr "You confirm that you want to create the Product called: "
 
-#: public/flash_order-public.php:6055
+#: public/flash_order-public.php:6060
 msgid "Consegna"
 msgstr "Delivery"
 
-#: public/flash_order-public.php:6593
+#: public/flash_order-public.php:6598
 msgid "Consegna a Domicilio"
 msgstr "Home delivery"
 
-#: public/flash_order-public.php:6558
+#: public/flash_order-public.php:6563
 msgid "Consegna a domicilio"
 msgstr "Home delivery"
 
-#: public/flash_order-public.php:5239
+#: public/flash_order-public.php:5244
 msgid "Consegnato"
 msgstr "Delivered"
 
-#: public/flash_order-public.php:5573
+#: public/flash_order-public.php:5578
 msgid "CONTATTO"
 msgstr "CONTACT"
 
-#: admin/flash_order-admin.php:315
+#: admin/flash_order-admin.php:394
 msgid "CREA o AGGIORNA pagine"
 msgstr "CREATE or UPDATE pages"
 
-#: public/flash_order-public.php:6503
+#: public/flash_order-public.php:6508
 msgid "creato da - "
 msgstr "created by - "
 
-#: public/flash_order-public.php:6464
+#: public/flash_order-public.php:6469
 msgid "creato: "
 msgstr "created: "
 
-#: public/flash_order-public.php:6475
+#: public/flash_order-public.php:6480
 msgid "data del completamento dell'ordine"
 msgstr "date of order completion"
 
-#: public/flash_order-public.php:6467
+#: public/flash_order-public.php:6472
 msgid "data dell'ultima modifica dell'ordine"
 msgstr "date of the last modification of the order"
 
-#: public/flash_order-public.php:6471
+#: public/flash_order-public.php:6476
 msgid "data della fatturazione dell'ordine"
 msgstr "order invoicing date"
 
-#: public/flash_order-public.php:6566
+#: public/flash_order-public.php:6571
 msgid "Data di consegna"
 msgstr "Delivery date"
 
@@ -547,16 +548,16 @@ msgstr "Delivery date"
 msgid "Data di Consegna: "
 msgstr "Delivery Date: "
 
-#: public/flash_order-public.php:6463
+#: public/flash_order-public.php:6468
 msgid "data di creazione dell'ordine"
 msgstr "order creation date"
 
-#: public/flash_order-public.php:6599
+#: public/flash_order-public.php:6604
 msgid "Data: "
 msgstr "Date: "
 
-#: public/flash_order-public.php:2556 public/flash_order-public.php:2566
-#: public/flash_order-public.php:2646
+#: public/flash_order-public.php:2558 public/flash_order-public.php:2568
+#: public/flash_order-public.php:2648
 msgid "Disponibile"
 msgstr "Available"
 
@@ -592,7 +593,7 @@ msgstr "Edit Temperature"
 msgid "Edita Zona"
 msgstr "Edit Area"
 
-#: admin/flash_order-admin.php:307
+#: admin/flash_order-admin.php:386
 msgid "ELIMINA pagina"
 msgstr "DELETE page"
 
@@ -605,11 +606,11 @@ msgstr "ERROR! "
 msgid "Estendi l'influenza ad altri selettori css"
 msgstr "Extend influence to other css selectors"
 
-#: public/flash_order-public.php:5557
+#: public/flash_order-public.php:5562
 msgid "FATTURAZIONE"
 msgstr "BILLING"
 
-#: public/flash_order-public.php:6472
+#: public/flash_order-public.php:6477
 msgid "fatturazione: "
 msgstr "billing: "
 
@@ -625,7 +626,7 @@ msgstr "Filter Catering list"
 msgid "Filtra lista tavoli"
 msgstr "Filter table list"
 
-#: admin/flash_order-admin.php:33 admin/flash_order-admin.php:67
+#: admin/flash_order-admin.php:33 admin/flash_order-admin.php:68
 msgid "FlashOrder"
 msgstr "FlashOrder"
 
@@ -689,15 +690,15 @@ msgstr "Parent of Sticker:"
 msgid "Genitore tavolo:"
 msgstr "Table parent:"
 
-#: admin/flash_order-admin.php:282
+#: admin/flash_order-admin.php:361
 msgid "Gestione Pagine del Plugin"
 msgstr "Plugin Page Management"
 
-#: public/flash_order-public.php:5706 public/flash_order-public.php:5725
-#: public/flash_order-public.php:5846 public/flash_order-public.php:5871
-#: public/flash_order-public.php:5966 public/flash_order-public.php:5985
-#: public/flash_order-public.php:6290 public/flash_order-public.php:6306
-#: public/flash_order-public.php:6378 public/flash_order-public.php:6394
+#: public/flash_order-public.php:5711 public/flash_order-public.php:5730
+#: public/flash_order-public.php:5851 public/flash_order-public.php:5876
+#: public/flash_order-public.php:5971 public/flash_order-public.php:5990
+#: public/flash_order-public.php:6295 public/flash_order-public.php:6311
+#: public/flash_order-public.php:6383 public/flash_order-public.php:6399
 msgid "gli ingredienti:"
 msgstr "the ingredients:"
 
@@ -726,13 +727,13 @@ msgstr "id"
 msgid "id pagina: "
 msgstr "page id: "
 
-#: public/flash_order-public.php:5721 public/flash_order-public.php:5867
-#: public/flash_order-public.php:5981 public/flash_order-public.php:6302
-#: public/flash_order-public.php:6390
+#: public/flash_order-public.php:5726 public/flash_order-public.php:5872
+#: public/flash_order-public.php:5986 public/flash_order-public.php:6307
+#: public/flash_order-public.php:6395
 msgid "il prodotto non ha nessun ingrediente associato ad esso"
 msgstr "The product does not have any ingredients associated with it"
 
-#: public/template/front-order-ajax.php:104
+#: public/template/front-order-ajax.php:103
 msgid "Il prodotto é già tra i favoriti"
 msgstr "The product is already among the favorites"
 
@@ -742,11 +743,11 @@ msgid ""
 msgstr ""
 "the minimum value is 500 i.e. 0.5 seconds (1000 milliseconds = 1 second)"
 
-#: public/flash_order-public.php:1562 public/flash_order-public.php:1575
+#: public/flash_order-public.php:1564 public/flash_order-public.php:1577
 msgid "Image"
 msgstr "Image"
 
-#: public/flash_order-public.php:1598
+#: public/flash_order-public.php:1600
 msgid "Immagine"
 msgstr "Image"
 
@@ -772,9 +773,13 @@ msgid ""
 "modalità"
 msgstr "set the site to full screen..... click again to exit the mode"
 
-#: admin/flash_order-admin.php:301
+#: admin/flash_order-admin.php:380
 msgid "IMPOSTAZIONI"
 msgstr "SETTINGS"
+
+#: admin/flash_order-admin.php:286
+msgid "Impostazioni di rete"
+msgstr "Network settings"
 
 #: admin/pages/general-settings.php:242
 msgid "impostazioni generali"
@@ -784,24 +789,24 @@ msgstr "general settings"
 msgid "Impostazioni Globali"
 msgstr "Global Settings"
 
-#: public/flash_order-public.php:5241
+#: public/flash_order-public.php:5246
 msgid "In Attesa"
 msgstr "Waiting"
 
-#: public/flash_order-public.php:5233
+#: public/flash_order-public.php:5238
 msgid "In Lavorazione"
 msgstr "In Process"
 
-#: public/flash_order-public.php:6143 public/flash_order-public.php:6426
+#: public/flash_order-public.php:6148 public/flash_order-public.php:6431
 msgid "in lavorazione"
 msgstr "in progress"
 
-#: public/flash_order-public.php:6506
+#: public/flash_order-public.php:6511
 msgid "indirizzo ip - "
 msgstr "ip address - "
 
-#: public/flash_order-public.php:4319 public/flash_order-public.php:5551
-#: public/flash_order-public.php:6446
+#: public/flash_order-public.php:4324 public/flash_order-public.php:5556
+#: public/flash_order-public.php:6451
 msgid "INFO"
 msgstr "INFO"
 
@@ -817,7 +822,7 @@ msgstr "Ingredient"
 msgid "INGREDIENTI"
 msgstr "INGREDIENTS"
 
-#: public/flash_order-public.php:768 public/flash_order-public.php:801
+#: public/flash_order-public.php:768
 msgid "Ingredienti"
 msgstr "Ingredients"
 
@@ -825,7 +830,7 @@ msgstr "Ingredients"
 msgid "Ingredienti Popolari"
 msgstr "Popular Ingredients"
 
-#: public/flash_order-public.php:2888
+#: public/flash_order-public.php:2891
 msgid "Ingredienti:"
 msgstr "Ingredients:"
 
@@ -833,7 +838,7 @@ msgstr "Ingredients:"
 msgid "InnovazioneWeb"
 msgstr "Web Innovation"
 
-#: public/flash_order-public.php:5416
+#: public/flash_order-public.php:5421
 msgid "Inserisci almeno la mail o il numero di telefono del Cliente!"
 msgstr "Enter at least the customer's email or telephone number!"
 
@@ -873,23 +878,23 @@ msgid ""
 msgstr ""
 "enter how many milliseconds the orders are updated on the page (manage-order)"
 
-#: public/flash_order-public.php:5415
+#: public/flash_order-public.php:5420
 msgid "Inserisci prima il Nome del Cliente!"
 msgstr "Enter Customer Name first!"
 
-#: public/flash_order-public.php:5406
+#: public/flash_order-public.php:5411
 msgid "Inserisci prima il nome del tavolo."
 msgstr "Enter the table name first."
 
-#: public/flash_order-public.php:5422
+#: public/flash_order-public.php:5427
 msgid "Inserisci prima il nome della categoria."
 msgstr "Enter the category name first."
 
-#: public/flash_order-public.php:5427
+#: public/flash_order-public.php:5432
 msgid "inserisci prima tutti i campi richiesti e contrassegnati da *"
 msgstr "first enter all the required fields marked with *"
 
-#: public/flash_order-public.php:4712
+#: public/flash_order-public.php:4718
 msgid "inserisci un nuovo cliente:"
 msgstr "enter a new customer:"
 
@@ -922,28 +927,28 @@ msgstr ""
 "IW Flash Order is the ultimate solution for streaming restaurant order "
 "management on your WooCommerce-powered website. "
 
-#: admin/flash_order-admin.php:297
+#: admin/flash_order-admin.php:376
 msgid "l'ID della pagina é: "
 msgstr "the page ID is: "
 
-#: admin/flash_order-admin.php:298
+#: admin/flash_order-admin.php:377
 msgid "la versione della pagina é: "
 msgstr "the version of the page is: "
 
-#: public/flash_order-public.php:5817
+#: public/flash_order-public.php:5822
 msgid "le varianti:"
 msgstr "the variants:"
 
-#: public/flash_order-public.php:4624
+#: public/flash_order-public.php:4630
 msgid "LIBERA TAVOLO"
 msgstr "CLEAR TABLE"
 
-#: public/flash_order-public.php:5401 public/template/manage-tables.php:96
-#: public/template/manage-tables.php:100
+#: public/flash_order-public.php:5406 public/template/manage-tables.php:98
+#: public/template/manage-tables.php:102
 msgid "Libero"
 msgstr "Free"
 
-#: public/flash_order-public.php:1827
+#: public/flash_order-public.php:1829
 msgid "Link per Questa Pagina:"
 msgstr "Link to This Page:"
 
@@ -995,11 +1000,12 @@ msgstr "Macro Categories"
 msgid "Macro Categorie Popolari"
 msgstr "Popular Category Macros"
 
-#: public/flash_order-public.php:1003
-msgid "macro_categories"
-msgstr "macro_categories"
+#: admin/pages/general-settings.php:473
+#| msgid "macro_categories"
+msgid "MACRO CATEGORIES"
+msgstr "MACRO CATEGORIES"
 
-#: public/flash_order-public.php:4714
+#: public/flash_order-public.php:4720
 msgid "mail Cliente"
 msgstr "Customer email"
 
@@ -1007,7 +1013,7 @@ msgstr "Customer email"
 msgid "Modifica i colori globali della pagina"
 msgstr "Modify the global colors of the page"
 
-#: public/flash_order-public.php:2570
+#: public/flash_order-public.php:2572
 msgid "MODIFICA INGREDIENTI"
 msgstr "EDIT INGREDIENTS"
 
@@ -1081,7 +1087,7 @@ msgstr ""
 "will show a new meta box to easily select the image to be associated with "
 "the sticker taxonomy, associated with woocommerce products"
 
-#: admin/pages/general-settings.php:485
+#: admin/pages/general-settings.php:494
 msgid ""
 "mostrerà un nuovo meta box per selezionare facilmente l' immagine da "
 "associare alla tassonomia dei tag, associata ai post di wordpress"
@@ -1089,7 +1095,7 @@ msgstr ""
 "will show a new meta box to easily select the image to associate with the "
 "tag taxonomy, associated with WordPress posts"
 
-#: admin/pages/general-settings.php:475
+#: admin/pages/general-settings.php:484
 msgid ""
 "mostrerà un nuovo meta box per selezionare facilmente l' immagine da "
 "associare alla tassonomia dei tag, associata ai prodotti di woocommerce"
@@ -1097,13 +1103,22 @@ msgstr ""
 "will show a new meta box to easily select the image to be associated with "
 "the tag taxonomy, associated with woocommerce products"
 
-#: admin/pages/general-settings.php:495
+#: admin/pages/general-settings.php:504
 msgid ""
 "mostrerà un nuovo meta box per selezionare facilmente l' immagine da "
 "associare alla tassonomia delle categorie, associate ai post di wordpress"
 msgstr ""
 "will show a new meta box to easily select the image to associate with the "
 "category taxonomy, associated with WordPress posts"
+
+#: admin/pages/general-settings.php:475
+msgid ""
+"mostrerà un nuovo meta box per selezionare facilmente l' immagine da "
+"associare alla tassonomia delle macro categorie, associate ai prodotti di "
+"woocommerce"
+msgstr ""
+"will show a new meta box to easily select the image to associate with the "
+"macro category taxonomy, associated with woocommerce products"
 
 #: admin/pages/general-settings.php:457
 msgid ""
@@ -1218,7 +1233,7 @@ msgstr "No table"
 msgid "Nessun tavolo in Trash"
 msgstr "No tables in Trash"
 
-#: public/flash_order-public.php:2864
+#: public/flash_order-public.php:2867
 msgid "Nessuna immagine di galleria"
 msgstr "No gallery images"
 
@@ -1254,29 +1269,29 @@ msgstr "No"
 msgid "nome"
 msgstr "name"
 
-#: public/flash_order-public.php:5277 public/flash_order-public.php:5318
-#: public/flash_order-public.php:5319
+#: public/flash_order-public.php:5282 public/flash_order-public.php:5323
+#: public/flash_order-public.php:5324
 msgid "Nome breve"
 msgstr "Short name"
 
-#: public/flash_order-public.php:4713
+#: public/flash_order-public.php:4719
 msgid "nome Cliente"
 msgstr "Customer name"
 
-#: admin/flash_order-admin.php:167
+#: admin/flash_order-admin.php:171 admin/flash_order-admin.php:241
 msgid "nome dell'impostazione nel database: ( "
 msgstr "name of setting in database: ( "
 
-#: public/flash_order-public.php:5278 public/flash_order-public.php:5331
-#: public/flash_order-public.php:5332
+#: public/flash_order-public.php:5283 public/flash_order-public.php:5336
+#: public/flash_order-public.php:5337
 msgid "Nome slang"
 msgstr "Slang name"
 
-#: public/flash_order-public.php:2556 public/flash_order-public.php:2646
+#: public/flash_order-public.php:2558 public/flash_order-public.php:2648
 msgid "Non Disponibile"
 msgstr "Not Available"
 
-#: public/flash_order-public.php:1724
+#: public/flash_order-public.php:1726
 msgid "NON Hai il permesso per accedere a questa pagina!"
 msgstr "You do NOT have permission to access this page!"
 
@@ -1288,21 +1303,21 @@ msgstr "Not found"
 msgid "Not found in Trash"
 msgstr "Not found in Trash"
 
-#: public/flash_order-public.php:4470
+#: public/flash_order-public.php:4476
 msgid "Note"
 msgstr "Notes"
 
-#: public/flash_order-public.php:2569 public/flash_order-public.php:4471
+#: public/flash_order-public.php:2571 public/flash_order-public.php:4477
 msgid "Note del prodotto..."
 msgstr "Product notes..."
 
-#: public/flash_order-public.php:6513
+#: public/flash_order-public.php:6518
 msgid "note dell'ordine: - "
 msgstr "order notes: - "
 
-#: public/flash_order-public.php:5736 public/flash_order-public.php:5891
-#: public/flash_order-public.php:5996 public/flash_order-public.php:6317
-#: public/flash_order-public.php:6405
+#: public/flash_order-public.php:5741 public/flash_order-public.php:5896
+#: public/flash_order-public.php:6001 public/flash_order-public.php:6322
+#: public/flash_order-public.php:6410
 msgid "Note prodotto:"
 msgstr "Product notes:"
 
@@ -1318,7 +1333,7 @@ msgstr "New Temperature"
 msgid "Nuova Zona"
 msgstr "New Zone"
 
-#: public/flash_order-public.php:6141
+#: public/flash_order-public.php:6146
 msgid "nuovo"
 msgstr "new"
 
@@ -1342,40 +1357,40 @@ msgstr "New Sticker"
 msgid "Nuovo tavolo"
 msgstr "New table"
 
-#: public/flash_order-public.php:4762
+#: public/flash_order-public.php:4767
 msgid "NUOVO!"
 msgstr "NEW!"
 
-#: public/flash_order-public.php:5403 public/template/manage-tables.php:98
+#: public/flash_order-public.php:5408 public/template/manage-tables.php:100
 msgid "Occupato"
 msgstr "Busy"
 
-#: public/flash_order-public.php:3648
+#: public/flash_order-public.php:3653
 msgid "oppure impostalo"
 msgstr "or set it"
 
-#: public/flash_order-public.php:6577
+#: public/flash_order-public.php:6582
 msgid "Ora di consegna"
 msgstr "Delivery time"
 
-#: public/template/manage-tables.php:130
+#: public/template/manage-tables.php:132
 msgid "Ora e data dell'ultima modifica"
 msgstr "Time and date of last modification"
 
-#: public/flash_order-public.php:6599
+#: public/flash_order-public.php:6604
 msgid "Ora: "
 msgstr "Time: "
 
-#: public/flash_order-public.php:5554 public/flash_order-public.php:6453
-#: public/template/front-order-ajax.php:194
+#: public/flash_order-public.php:5559 public/flash_order-public.php:6458
+#: public/template/front-order-ajax.php:193
 msgid "ORDINE"
 msgstr "ORDER"
 
-#: public/flash_order-public.php:4827
+#: public/flash_order-public.php:4832
 msgid "PAGA"
 msgstr "PAY"
 
-#: public/flash_order-public.php:4627
+#: public/flash_order-public.php:4633
 msgid "PAGA TALOLO"
 msgstr "PAY TOTAL"
 
@@ -1391,21 +1406,17 @@ msgstr "Special Pages:"
 msgid "Parent Catering:"
 msgstr "Parent Catering:"
 
-#: public/template/front-order-ajax.php:102
+#: public/template/front-order-ajax.php:101
 msgid ""
 "Per poter effettuare ordini su questa pagina, é neccessario Effettuare "
 "l'accesso!"
 msgstr "To place orders on this page, you must log in!"
 
-#: public/flash_order-public.php:1738
+#: public/flash_order-public.php:1740
 msgid ""
 "Per poter effettuare ordini su questa pagina, é necessario effettuare "
 "l'accesso."
 msgstr "To place orders on this page, you must log in."
-
-#: public/flash_order-public.php:2779
-msgid "PICCANTE"
-msgstr "SPICY"
 
 #: admin/pages/general-settings.php:88
 msgid "posizione del menù admin"
@@ -1415,19 +1426,19 @@ msgstr "position of the admin menu"
 msgid "Post Type for Catering"
 msgstr "Post Type for Catering"
 
-#: public/flash_order-public.php:4309 public/flash_order-public.php:4820
+#: public/flash_order-public.php:4314 public/flash_order-public.php:4825
 msgid "Preconto"
 msgstr "Prepayment"
 
-#: public/flash_order-public.php:3666
+#: public/flash_order-public.php:3671
 msgid "prezzo / sconto"
 msgstr "price / discount"
 
-#: admin/flash_order-admin.php:38 admin/flash_order-admin.php:75
+#: admin/flash_order-admin.php:38 admin/flash_order-admin.php:76
 msgid "Pro"
 msgstr "Pro"
 
-#: public/flash_order-public.php:4349
+#: public/flash_order-public.php:4355
 msgid "PRODOTTI"
 msgstr "PRODUCTS"
 
@@ -1435,16 +1446,16 @@ msgstr "PRODUCTS"
 msgid "prodotti"
 msgstr "products"
 
-#: public/template/front-order-ajax.php:123
-#: public/template/front-order-ajax.php:167
+#: public/template/front-order-ajax.php:122
+#: public/template/front-order-ajax.php:166
 msgid "Prodotti Preferiti"
 msgstr "Favorite Products"
 
-#: public/flash_order-public.php:3610 public/flash_order-public.php:3618
+#: public/flash_order-public.php:3615 public/flash_order-public.php:3623
 msgid "Prodotto Generico"
 msgstr "Generic Product"
 
-#: admin/flash_order-admin.php:330
+#: admin/flash_order-admin.php:409
 msgid ""
 "questa sezione è in costruzione, stiamo lavorando in continuazione e questa "
 "sezione sarà presto disponibile."
@@ -1452,19 +1463,23 @@ msgstr ""
 "this section is under construction, we are working continuously and this "
 "section will be available soon."
 
-#: admin/flash_order-admin.php:343
+#: admin/flash_order-admin.php:422
 msgid ""
 "Questa sezione é destinata alla versione pro del plugin (Flash Order Pro)"
 msgstr ""
 "This section is intended for the pro version of the plugin (Flash Order Pro)"
 
 #: public/flash_order-public.php:1053
+#| msgid ""
+#| "Questo post type generato dal plug-in: FlashOrderPRO, serve per "
+#| "controllare e gestire i tavoli(o anche le zone speciali come ad es. il "
+#| "bancone, il cortile, il gazebo etc...), del tuo ristorante."
 msgid ""
-"Questo post type generato dal plug-in: FlashOrderPRO, serve per controllare "
+"Questo post type generato dal plug-in: IW FlashOrder, serve per controllare "
 "e gestire i tavoli(o anche le zone speciali come ad es. il bancone, il "
 "cortile, il gazebo etc...), del tuo ristorante."
 msgstr ""
-"This post type generated by the plug-in: FlashOrderPRO, is used to control "
+"This post type generated by the plug-in: IW FlashOrder, is used to control "
 "and manage the tables (or even the special areas such as the counter, the "
 "courtyard, the gazebo etc...), of your restaurant."
 
@@ -1472,11 +1487,11 @@ msgstr ""
 msgid "Remove featured image"
 msgstr "Remove featured image"
 
-#: public/flash_order-public.php:4329
+#: public/flash_order-public.php:4334
 msgid "RIEPILOGO:"
 msgstr "SUMMARY:"
 
-#: public/flash_order-public.php:6147 public/flash_order-public.php:6429
+#: public/flash_order-public.php:6152 public/flash_order-public.php:6434
 msgid "rimborsato"
 msgstr "refunded"
 
@@ -1484,17 +1499,23 @@ msgstr "refunded"
 msgid "Rimuovi la featured image"
 msgstr "Remove featured image"
 
-#: admin/flash_order-admin.php:142 public/flash_order-public.php:1326
+#: admin/flash_order-admin.php:143 public/flash_order-public.php:1326
 msgid "Ripristina il valore di default"
 msgstr "Restore the default value"
 
-#: public/flash_order-public.php:6053
+#: public/flash_order-public.php:6058
 msgid "Ritiro"
 msgstr "Withdrawal"
 
-#: public/flash_order-public.php:6555 public/flash_order-public.php:6594
+#: public/flash_order-public.php:6560 public/flash_order-public.php:6599
 msgid "Ritiro in Sede"
 msgstr "Collection at headquarters"
+
+#: public/flash_order-public.php:1297 admin/pages/general-settings.php:45
+#: admin/pages/general-settings.php:520 admin/pages/style.php:10
+#: admin/pages/style.php:97
+msgid "SALVA"
+msgstr "UPDATE"
 
 #: public/flash_order-public.php:781 public/flash_order-public.php:830
 #: public/flash_order-public.php:879 public/flash_order-public.php:929
@@ -1514,15 +1535,15 @@ msgstr "choose whether to show the admin bar"
 msgid "Schermo Intero"
 msgstr "Full Screen"
 
-#: public/flash_order-public.php:4502
+#: public/flash_order-public.php:4508
 msgid "Sconto"
 msgstr "Discount"
 
-#: admin/flash_order-admin.php:366
+#: admin/flash_order-admin.php:445
 msgid "Se desideri darci un feedback o fare una richiesta, "
 msgstr "If you would like to give us feedback or make a request, "
 
-#: admin/flash_order-admin.php:354
+#: admin/flash_order-admin.php:433
 msgid "Se vuoi sostenerci con una donazione, "
 msgstr "If you want to support us with a donation, "
 
@@ -1530,56 +1551,56 @@ msgstr "If you want to support us with a donation, "
 msgid "Search Catering"
 msgstr "Search Catering"
 
-#: public/flash_order-public.php:5418
+#: public/flash_order-public.php:5423
 msgid "Sei sicuro di voler cambiare la categoria di questo prodotto?"
 msgstr "Are you sure you want to change the category of this product?"
 
-#: public/flash_order-public.php:6426 public/flash_order-public.php:6428
-#: public/flash_order-public.php:6429 public/flash_order-public.php:6430
+#: public/flash_order-public.php:6431 public/flash_order-public.php:6433
+#: public/flash_order-public.php:6434 public/flash_order-public.php:6435
 msgid "Sei sicuro di voler cambiare lo status dell'ordine?`"
 msgstr "Are you sure you want to change the order status?`"
 
-#: public/flash_order-public.php:5431
+#: public/flash_order-public.php:5436
 msgid "Sei sicuro di voler ELIMINARE il prodotto chiamato:"
 msgstr "Are you sure you want to DELETE the product called:"
 
-#: public/template/front-order-ajax.php:232
+#: public/template/front-order-ajax.php:231
 msgid "Seleziona il Tavolo"
 msgstr "Select the Table"
 
-#: admin/flash_order-admin.php:177
+#: admin/flash_order-admin.php:181
 msgid "Seleziona l'audio..."
 msgstr "Select audio..."
 
-#: public/flash_order-public.php:2724
+#: public/flash_order-public.php:2731
 msgid "Seleziona la variante: "
 msgstr "Select variant: "
 
-#: public/flash_order-public.php:5430
+#: public/flash_order-public.php:5435
 msgid "Seleziona prima il Prodotto da ELIMINARE"
 msgstr "First select the Product to DELETE"
 
-#: public/flash_order-public.php:5408
+#: public/flash_order-public.php:5413
 msgid "seleziona prima il tavolo da eliminare."
 msgstr "First select the table to delete."
 
-#: public/flash_order-public.php:5424
+#: public/flash_order-public.php:5429
 msgid "seleziona prima la categoria da eliminare."
 msgstr "First select the category to delete."
 
-#: public/template/front-order-ajax.php:100
+#: public/template/front-order-ajax.php:99
 msgid "Seleziona prima la variante"
 msgstr "Select variant first"
 
-#: public/flash_order-public.php:3642
+#: public/flash_order-public.php:3647
 msgid "Seleziona Tavolo"
 msgstr "Select Table"
 
-#: public/flash_order-public.php:6608
+#: public/flash_order-public.php:6613
 msgid "Seleziona un'orario!"
 msgstr "Select a time!"
 
-#: public/flash_order-public.php:6607
+#: public/flash_order-public.php:6612
 msgid "Seleziona una data!"
 msgstr "Select a date!"
 
@@ -1615,7 +1636,7 @@ msgstr "Separate Zones with commas"
 msgid "Set featured image"
 msgstr "Set featured image"
 
-#: admin/flash_order-admin.php:34 admin/flash_order-admin.php:69
+#: admin/flash_order-admin.php:34 admin/flash_order-admin.php:70
 msgid "Settings"
 msgstr "Settings"
 
@@ -1623,31 +1644,31 @@ msgstr "Settings"
 msgid "Si"
 msgstr "Yes"
 
-#: public/template/front-order-ajax.php:101
+#: public/template/front-order-ajax.php:100
 msgid "Siamo spiacenti ma il prodotto non é al momento disponibile"
 msgstr "We are sorry but the product is not currently available"
 
-#: public/flash_order-public.php:5399
+#: public/flash_order-public.php:5404
 msgid "Sicuro di voler LIBERARE il tavolo?"
 msgstr "Are you sure you want to CLEAR the table?"
 
-#: public/flash_order-public.php:5400
+#: public/flash_order-public.php:5405
 msgid "Sicuro di voler LIBERARE tutti i tavoli?"
 msgstr "Are you sure you want to CLEAR all the tables?"
 
-#: public/flash_order-public.php:5398
+#: public/flash_order-public.php:5403
 msgid "Sicuro di voler procedere con l'Ordinazione?"
 msgstr "Are you sure you want to proceed with the ordination?"
 
-#: public/flash_order-public.php:6014 public/flash_order-public.php:6029
+#: public/flash_order-public.php:6019 public/flash_order-public.php:6034
 msgid "Special"
 msgstr "Special"
 
-#: public/flash_order-public.php:5565
+#: public/flash_order-public.php:5570
 msgid "SPEDIZIONE"
 msgstr "EXPEDITION"
 
-#: public/flash_order-public.php:5582
+#: public/flash_order-public.php:5587
 msgid "Stampa scontrino"
 msgstr "Print receipt"
 
@@ -1659,7 +1680,7 @@ msgstr "state"
 msgid "Status"
 msgstr "Status"
 
-#: public/flash_order-public.php:1080 public/flash_order-public.php:1113
+#: public/flash_order-public.php:1080
 msgid "status"
 msgstr "status"
 
@@ -1676,7 +1697,7 @@ msgid "STICKER"
 msgstr "STICKER"
 
 #: public/flash_order-public.php:916 public/flash_order-public.php:917
-#: public/flash_order-public.php:918 public/flash_order-public.php:949
+#: public/flash_order-public.php:918
 msgid "Sticker"
 msgstr "Sticker"
 
@@ -1684,27 +1705,27 @@ msgstr "Sticker"
 msgid "Sticker Popolari"
 msgstr "Popular Stickers"
 
-#: public/flash_order-public.php:4193
+#: public/flash_order-public.php:4198
 msgid "STORICO:"
 msgstr "HISTORY:"
 
-#: public/flash_order-public.php:4198
+#: public/flash_order-public.php:4203
 msgid "STORY"
 msgstr "STORY"
 
-#: admin/flash_order-admin.php:35 admin/flash_order-admin.php:71
+#: admin/flash_order-admin.php:35 admin/flash_order-admin.php:72
 msgid "Style"
 msgstr "Style"
 
-#: admin/pages/general-settings.php:483
+#: admin/pages/general-settings.php:492
 msgid "TAG POST"
 msgstr "POST TAG"
 
-#: admin/pages/general-settings.php:473
+#: admin/pages/general-settings.php:482
 msgid "TAG PRODOTTI"
 msgstr "PRODUCT TAGS"
 
-#: public/flash_order-public.php:2882
+#: public/flash_order-public.php:2885
 msgid "Tag:"
 msgstr "Tag:"
 
@@ -1721,11 +1742,11 @@ msgstr "Tables"
 msgid "tavoli"
 msgstr "tables"
 
-#: public/flash_order-public.php:3375
+#: public/flash_order-public.php:3380
 msgid "TAVOLO"
 msgstr "TABLE"
 
-#: public/flash_order-public.php:3146 public/flash_order-public.php:6049
+#: public/flash_order-public.php:3151 public/flash_order-public.php:6054
 msgid "Tavolo"
 msgstr "Table"
 
@@ -1733,11 +1754,11 @@ msgstr "Table"
 msgid "tavolo"
 msgstr "table"
 
-#: public/flash_order-public.php:4620
+#: public/flash_order-public.php:4626
 msgid "TAVOLO: "
 msgstr "TABLE: "
 
-#: public/flash_order-public.php:4715
+#: public/flash_order-public.php:4721
 msgid "telefono Cliente"
 msgstr "Customer telephone"
 
@@ -1745,7 +1766,7 @@ msgstr "Customer telephone"
 msgid "Temperatura"
 msgstr "Temperature"
 
-#: public/flash_order-public.php:5832
+#: public/flash_order-public.php:5837
 msgid "Temperatura:"
 msgstr "Temperature:"
 
@@ -1753,10 +1774,9 @@ msgstr "Temperature:"
 msgid "TEMPERATURE"
 msgstr "TEMPERATURES"
 
-#: public/flash_order-public.php:866 public/flash_order-public.php:899
-#: public/flash_order-public.php:4455
+#: public/flash_order-public.php:866 public/flash_order-public.php:4461
 msgid "Temperature"
-msgstr "Temperatures"
+msgstr "Temperature"
 
 #: public/flash_order-public.php:880
 msgid "Temperature Popolari"
@@ -1766,11 +1786,11 @@ msgstr "Popular Temperatures"
 msgid "Tempi delle animazioni"
 msgstr "Animation times"
 
-#: public/flash_order-public.php:6060 public/flash_order-public.php:6457
+#: public/flash_order-public.php:6065 public/flash_order-public.php:6462
 msgid "Tipo di ordine"
 msgstr "Order type"
 
-#: public/flash_order-public.php:6598
+#: public/flash_order-public.php:6603
 msgid "Tipo Ordine: "
 msgstr "Order Type: "
 
@@ -1778,7 +1798,7 @@ msgstr "Order Type: "
 msgid "totale"
 msgstr "total"
 
-#: public/flash_order-public.php:4810
+#: public/flash_order-public.php:4815
 msgid "TOTALE: "
 msgstr "TOTAL: "
 
@@ -1814,15 +1834,15 @@ msgstr "All tables"
 msgid "Tutti le Zone"
 msgstr "All Zones"
 
-#: public/flash_order-public.php:4334
+#: public/flash_order-public.php:4339
 msgid "TUTTO"
 msgstr "ALL"
 
-#: admin/flash_order-admin.php:296
+#: admin/flash_order-admin.php:375
 msgid "Ultima modifica della pagina: "
 msgstr "Last modification of the page: "
 
-#: public/flash_order-public.php:6468
+#: public/flash_order-public.php:6473
 msgid "ultima modifica: "
 msgstr "last modified: "
 
@@ -1842,7 +1862,7 @@ msgstr "Use as featured image"
 msgid "Use as featured image"
 msgstr "Use as featured image"
 
-#: public/flash_order-public.php:6507
+#: public/flash_order-public.php:6512
 msgid "user agent - "
 msgstr "user agents - "
 
@@ -1866,27 +1886,19 @@ msgstr "Use taxonomy for macro categories"
 msgid "utilizza la tassonomia per le temperature"
 msgstr "Use taxonomy for temperatures"
 
-#: public/template/front-order-ajax.php:225
+#: public/template/front-order-ajax.php:224
 msgid "Varianti Prodotti"
 msgstr "Product Variants"
 
-#: public/flash_order-public.php:4399
+#: public/flash_order-public.php:4405
 msgid "VARIANTI:"
 msgstr "VARIANTS:"
-
-#: public/flash_order-public.php:2761
-msgid "VEGANO"
-msgstr "VEGAN"
-
-#: public/flash_order-public.php:2767
-msgid "VEGETARIANO"
-msgstr "VEGETARIAN"
 
 #: public/flash_order-public.php:682 public/flash_order-public.php:683
 msgid "View Catering"
 msgstr "View Catering"
 
-#: admin/flash_order-admin.php:310
+#: admin/flash_order-admin.php:389
 msgid "VISITA pagina"
 msgstr "VISIT page"
 
@@ -1994,31 +2006,31 @@ msgstr "Display Temperature"
 msgid "Visualizza Zona"
 msgstr "View Area"
 
-#: public/flash_order-public.php:5411
+#: public/flash_order-public.php:5416
 msgid "Vuoi aggiornare l'evento chiamato: "
 msgstr "Do you want to update the event called: "
 
-#: public/flash_order-public.php:5410
+#: public/flash_order-public.php:5415
 msgid "Vuoi creare un nuovo evento chiamato: "
 msgstr "Do you want to create a new event called: "
 
-#: public/flash_order-public.php:5405
+#: public/flash_order-public.php:5410
 msgid "Vuoi creare un nuovo tavolo chiamato: "
 msgstr "Do you want to create a new table called: "
 
-#: public/flash_order-public.php:5421
+#: public/flash_order-public.php:5426
 msgid "Vuoi creare una nuova macro categoria chiamata: "
 msgstr "Do you want to create a new macro category called: "
 
-#: public/flash_order-public.php:5407
+#: public/flash_order-public.php:5412
 msgid "Vuoi ELIMINARE il tavolo chiamato: "
 msgstr "Do you want to DELETE the table called: "
 
-#: public/flash_order-public.php:5413
+#: public/flash_order-public.php:5418
 msgid "Vuoi ELIMINARE in modo definitivo questo evento, chiamato: "
 msgstr "Do you want to permanently DELETE this event, called: "
 
-#: public/flash_order-public.php:5423
+#: public/flash_order-public.php:5428
 msgid "Vuoi ELIMINARE la categoria chiamata: "
 msgstr "Do you want to DELETE the category called: "
 
@@ -2030,9 +2042,9 @@ msgstr "Zone"
 msgid "Zone"
 msgstr "Zones"
 
-#: public/flash_order-public.php:1123 public/flash_order-public.php:1156
+#: public/flash_order-public.php:1123
 msgid "zone"
-msgstr "zones"
+msgstr "zone"
 
 #: public/flash_order-public.php:1137
 msgid "Zone Popolari"

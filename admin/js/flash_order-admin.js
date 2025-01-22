@@ -1,10 +1,6 @@
 (function( $ ) {
 	//'use strict';
-
-
 $.noConflict();
-
-
 
 })( jQuery );
 
@@ -24,7 +20,7 @@ function addSrcToAudio(value){
 
 
 jQuery(function($){
-    $('body').on('click', '.aw_upload_image_button', function(e){
+	jQuery('body').on('click', '.aw_upload_image_button', function(e){
         e.preventDefault();
         aw_uploader = wp.media({
             title: 'Custom image',
@@ -34,9 +30,9 @@ jQuery(function($){
             multiple: false
         }).on('select', function() {
             var attachment = aw_uploader.state().get('selection').first().toJSON();
-            $('#tax-image').val(attachment.url);
-            $('#tax-img-src').attr('src',attachment.url);
-            $('#tax-img-src').css('display','block');
+            jQuery('#tax-image').val(attachment.url);
+            jQuery('#tax-img-src').attr('src',attachment.url);
+            jQuery('#tax-img-src').css('display','block');
         })
         .open();
     });

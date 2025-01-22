@@ -143,6 +143,18 @@
 	        animation: foygreecol 2s alternate infinite;
 }
 
+@keyframes foscale {
+  0% { scale: 1; }
+  70% { scale: 1.1; }
+  85% { scale: 0.9; }
+  95% { scale: 1.3; }
+  100% {  scale: 1.2; }
+}
+.foscale{
+	-webkit-animation: foscale 2s alternate infinite;
+	        animation: foscale 2s alternate infinite;
+}
+
 html, body{
 	width: 100%!important;
 	margin: 0px!important;
@@ -908,7 +920,7 @@ td[identify="products"]{
     position: absolute;
     top: 80px;
     text-align: center;
-    text-shadow: 4px 0px 7px black;
+    text-shadow: var(--fo-text-shadow);
     background: -o-radial-gradient(circle, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 100%);
     background: radial-gradient(circle, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 100%);
     padding: 10px;
@@ -1389,7 +1401,7 @@ td[identify="products"]{
 	padding: 5px 0px;
 	left: 0;
 	bottom: 0;
-	text-shadow: 2px 2px 7px black;
+	text-shadow: var(--fo-text-shadow);
 /*	animation: fopulse 3s alternate infinite;*/
 }
 
@@ -1574,7 +1586,7 @@ img[color="red"]{
 .fowarehouse p{
 	padding: 5px;
 	margin: 0px;
-	text-shadow: 1px 1px 1px black;
+	text-shadow: var(--fo-text-shadow);
 	-webkit-animation: foopenclose 2s ease-in-out alternate infinite;
 	        animation: foopenclose 2s ease-in-out alternate infinite;
 }
@@ -1603,7 +1615,7 @@ img[color="red"]{
     border-radius: 5px;
     padding: 5px;
     margin: 10px;
-    text-shadow: 2px 2px 5px black;
+    text-shadow: var(--fo-text-shadow);
     overflow: hidden;
     position: relative;
 }
@@ -1618,7 +1630,7 @@ img[color="red"]{
 .focatsearch, .focatsearchall{
 	padding: 10px;
 	margin: 5px;
-	text-shadow: 2px 2px 5px black;
+	text-shadow: var(--fo-text-shadow);
 		background-color: var(--fo-bg5-color);
 	-webkit-transition: var(--fo-main-tran);
 	-o-transition: var(--fo-main-tran);
@@ -1684,8 +1696,8 @@ img[color="red"]{
 	left: 20px;
 	right: 20px;
 	max-width: 320px;
-	font-weight: 600;
-	text-shadow: 2px 2px 5px black;
+	font-weight: 900;
+	text-shadow: var(--fo-text-shadow);
 	opacity: 0.9;
 	-webkit-transition: var(--fo-main-tran);
 	-o-transition: var(--fo-main-tran);
@@ -1694,7 +1706,7 @@ img[color="red"]{
 }
 .foProdCard:hover .foname, .foProdCard:focus .foname{
 	opacity: 1;
-	text-shadow: 3px 3px 6px black;
+	text-shadow: var(--fo-text-shadow);
 	-webkit-transition: var(--fo-scnd-tran);
 	-o-transition: var(--fo-scnd-tran);
 	transition: var(--fo-scnd-tran);
@@ -1743,7 +1755,7 @@ img[color="red"]{
     -webkit-transition: var(--fo-main-tran);
     -o-transition: var(--fo-main-tran);
     transition: var(--fo-main-tran);
-    text-shadow: 2px 2px 5px black;
+    text-shadow: var(--fo-text-shadow);
     background-color: var(--fo-bg4-color);
     color: var(--fo-text-color);
     border: none;
@@ -1755,6 +1767,35 @@ img[color="red"]{
 	height: 25px;
 	margin-top: 10px;
 }
+
+.foadd_fix {
+    position: absolute;
+    bottom: 10px!important;
+    right: 10px!important;
+    width: 90px;
+    height: 90px;
+    color: var(--fo-text-color);
+    text-shadow: var(--fo-text-shadow);
+/*    border-radius: 30% 0 0 0;*/
+/*    background: -o-radial-gradient(var(--fo-bg-color) 45%, #fff0 50%);
+    background: radial-gradient(var(--fo-bg-color) 45%, #fff0 50%);*/
+    font-size: 120px;
+    opacity: 0.7;
+    text-align: center;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    cursor: pointer;
+    		-webkit-transition: var(--fo-main-tran);
+	-o-transition: var(--fo-main-tran);
+	transition: var(--fo-main-tran);
+}
 .foadd, .foheart {
     position: absolute;
     bottom: 0px;
@@ -1762,7 +1803,7 @@ img[color="red"]{
     width: 90px;
     height: 90px;
     color: var(--fo-text-color);
-    text-shadow: 2px 2px 5px black;
+    text-shadow: var(--fo-text-shadow);
     border-radius: 30% 0 0 0;
     background: -o-radial-gradient(var(--fo-bg-color) 45%, #fff0 50%);
     background: radial-gradient(var(--fo-bg-color) 45%, #fff0 50%);
@@ -1783,6 +1824,7 @@ img[color="red"]{
 	-o-transition: var(--fo-main-tran);
 	transition: var(--fo-main-tran);
 }
+
 .foheart {
 	top: 0;
 }
@@ -1903,6 +1945,7 @@ div[focategories="search"]{
     left: 0px;
     right: 0px;
     width: 100%;
+    height: auto;
     		-webkit-transition: var(--fo-main-tran);
 		-o-transition: var(--fo-main-tran);
 	transition: var(--fo-main-tran);
@@ -1944,7 +1987,7 @@ div[focategories="search"]{
 	left: 0;
 	right: 0;
 	padding: 5px;
-	text-shadow: 2px 2px 5px black;
+	text-shadow: var(--fo-text-shadow);
 	line-height: 20px;
 }
 .FOeditTemp{
@@ -2168,7 +2211,7 @@ div[focategories="search"]{
         flex-wrap: wrap;
     border-bottom: 2px solid var(--fo-bg3-color);
     font-weight: 400;
-    text-shadow: 2px 2px 5px black;
+    text-shadow: var(--fo-text-shadow);
     overflow: hidden;
     background-color: var(--fo-bg4-color);
     position: sticky;
@@ -2180,7 +2223,7 @@ div[focategories="search"]{
 	margin: 1px 10px;
 	height: 30px;
     border-right: 1px solid var(--fo-bg3-color);
-    text-shadow: 2px 2px 5px black;
+    text-shadow: var(--fo-text-shadow);
 }
 .Advanced_Card_gallery{
 	width: 100%;
@@ -2257,7 +2300,7 @@ img[foprod="gallery"]:hover, img[foprod="gallery"]:focus{
         flex-wrap: wrap;
     border-top: 2px solid var(--fo-invert-color);
     font-weight: 400;
-    text-shadow: 2px 2px 5px black;
+    text-shadow: var(--fo-text-shadow);
     color: var(--fo-text-color);
     background-color: var(--fo-bg4-color);
     z-index: 999;
@@ -2351,7 +2394,7 @@ background: linear-gradient(90deg, var(--fo-bg4-color) 0%, var(--fo-invert-color
 .FOAdvIngredProdTab p{
 	font-size: 18px;
 	font-weight: 400;
-    text-shadow: 2px 2px 5px black;
+    text-shadow: var(--fo-text-shadow);
     z-index: 9;
     text-align: center;
     background: -o-radial-gradient(var(--fo-bg-color) 0%, #fff0 50%);
@@ -2478,7 +2521,7 @@ background: linear-gradient(90deg, var(--fo-bg4-color) 0%, var(--fo-invert-color
 		-o-transition: var(--fo-main-tran);
 	transition: var(--fo-main-tran);
 	font-weight: 600;
-    text-shadow: 3px 3px 4px black;
+    text-shadow: var(--fo-text-shadow);
     text-align: center;
 }
 
@@ -2486,7 +2529,7 @@ background: linear-gradient(90deg, var(--fo-bg4-color) 0%, var(--fo-invert-color
 	        -webkit-transition: var(--fo-scnd-tran);
 		-o-transition: var(--fo-scnd-tran);
 	transition: var(--fo-scnd-tran);
-    text-shadow: 4px 4px 8px black;
+    text-shadow: var(--fo-text-shadow);
 }
 
 .fotemp_card{
@@ -2543,7 +2586,7 @@ background: linear-gradient(90deg, var(--fo-bg4-color) 0%, var(--fo-invert-color
 		-o-transition: var(--fo-main-tran);
 	transition: var(--fo-main-tran);
 	opacity: 0.75;
-	text-shadow: 4px 0px 8px black;
+	text-shadow: var(--fo-text-shadow);
 	position: relative;
 }
 
@@ -2554,7 +2597,7 @@ background: linear-gradient(90deg, var(--fo-bg4-color) 0%, var(--fo-invert-color
 		-o-transition: var(--fo-main-tran);
 	transition: var(--fo-main-tran);
 	display: block;
-	text-shadow: 4px 0px 8px black;
+	text-shadow: var(--fo-text-shadow);
 	margin: 0;
 }
 .fovariantag_container .fotype{
@@ -2595,7 +2638,7 @@ background: linear-gradient(90deg, var(--fo-bg4-color) 0%, var(--fo-invert-color
 	height: 40px;
 }
 .fosticker p{
-	text-shadow: 4px 0px 8px black;
+	text-shadow: var(--fo-text-shadow);
 	    	-webkit-transition: var(--fo-main-tran);
 		-o-transition: var(--fo-main-tran);
 	transition: var(--fo-main-tran);
@@ -2865,14 +2908,22 @@ select[foview="normal"] .foProdCard{
 	height: 200px;
 	width: 200px;
 }*/
-.foProdCard[foview="list"], .foProdCard[foview="list"] img[foprod="foprod"]{
+.foProdCard[foview="list"]{
 	height: 100px;
 	width: 90vw;
 	font-size: 15px;
 }
+.foProdCard[foview="list"] img[foprod="foprod"]{
+    height: 100px;
+    width: auto;
+    max-width: 100px;
+    max-height: 100px;
+    margin: 0px auto 0px 40px;
+    border-bottom: 1px solid #000;
+}
 .foProdCard[foview="small"], .foProdCard[foview="small"] img[foprod="foprod"]{
 	height: 140px;
-	width: 40%;
+	width: 140px;
 	font-size: 15px;
 }
 .foProdCard[foview="normal"], .foProdCard[foview="normal"] img[foprod="foprod"]{
@@ -3215,14 +3266,13 @@ width: 100%;
     bottom: 15px;
     overflow: hidden;
     text-align: center;
-/*    text-shadow: 4px 0px 7px black;*/
 /*    background: -o-radial-gradient(circle, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0) 70%);*/
 /*    background: radial-gradient(circle, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0) 70%);*/
     padding: 5px;
     -webkit-box-align: center;
         -ms-flex-align: center;
             align-items: center;
-    text-shadow: 2px 0 #000, -2px 0 #000, 0 2px #000, 0 -2px #000, 1px 1px #000, -1px -1px #000, 1px -1px #000, -1px 1px #000;
+    text-shadow: var(--fo-text-shadow);
 }
 
 .FO_info_section .title {
@@ -3428,6 +3478,9 @@ width: 100%;
             align-items: center;
     text-align: center;
     overflow: hidden;
+    background-position-x: center;
+    background-size: cover;
+    background-position-y: center;
 }
 .fo_button:hover, .fo_button:focus,
 .fo_button_fix:hover, .fo_button_fix:focus,
@@ -3495,7 +3548,6 @@ width: 100%;
     bottom: 0px;
     overflow: hidden;
     text-align: center;
-/*    text-shadow: 4px 0px 7px black;*/
     background: -o-radial-gradient(circle, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.1) 100%);
     background: radial-gradient(circle, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.1) 100%);
     padding: 0px;
@@ -3509,7 +3561,7 @@ width: 100%;
         -ms-user-select: none;
             user-select: none;
     cursor: pointer;
-    text-shadow: 2px 0 #000, -2px 0 #000, 0 2px #000, 0 -2px #000, 1px 1px #000, -1px -1px #000, 1px -1px #000, -1px 1px #000;
+   text-shadow: var(--fo-text-shadow);
 }
 .fo_tab_variantcont, .FO_flash_tab_temperature, .FO_flash_tab_note {
     -webkit-transition: var(--fo-main-tran);
@@ -4533,7 +4585,7 @@ width: 100%;
 	margin: 5px;
 	border-radius: 5px;
 	background-color: var(--fo-bg3-color);
-	text-shadow: 2px 0 #000, -2px 0 #000, 0 2px #000, 0 -2px #000, 1px 1px #000, -1px -1px #000, 1px -1px #000, -1px 1px #000;
+	text-shadow: var(--fo-text-shadow);
 	position: relative;
 	cursor: pointer;
 }
@@ -4927,7 +4979,7 @@ width: 100%;
     margin: 10px;
     overflow: hidden;
     position: relative;
-    text-shadow: 2px 0 #000, -2px 0 #000, 0 2px #000, 0 -2px #000, 1px 1px #000, -1px -1px #000, 1px -1px #000, -1px 1px #000;
+    text-shadow: var(--fo-text-shadow);
 }
 
 .FO_finish{
@@ -4936,7 +4988,7 @@ width: 100%;
 }
 
 .fo_table_cell, .fo_tab_table_name, .fo_table_name {
-	text-shadow: 2px 0 #000, -2px 0 #000, 0 2px #000, 0 -2px #000, 1px 1px #000, -1px -1px #000, 1px -1px #000, -1px 1px #000;
+	text-shadow: var(--fo-text-shadow);
 }
 
 .fo_table_cell h6{
@@ -4946,7 +4998,7 @@ width: 100%;
 }
 
 .fo_order_table_story{
-	text-shadow: 2px 0 #000, -2px 0 #000, 0 2px #000, 0 -2px #000, 1px 1px #000, -1px -1px #000, 1px -1px #000, -1px 1px #000;
+	text-shadow: var(--fo-text-shadow);
 	position: relative;
 	overflow: visible;
 }
@@ -4968,19 +5020,37 @@ width: 100%;
 }
 
 .fo_area_expanded_full .fo_tab_prod{
+	transition: var(--fo-main-tran);
 	height: 90px;
 	width: 90px;
+}
+.fo_area_expanded_full .fo_tab_prod img{
+	transition: var(--fo-main-tran);
+	width: 90px;
+	height: auto;
 }
 .fo_area_expanded_full{
 	height: calc(100% - 110px)!important;
 }
 .fo_area_expanded_med .fo_tab_prod{
+	transition: var(--fo-main-tran);
 	height: 90px;
 	width: 90px;
 }
+.fo_area_expanded_med .fo_tab_prod img{
+	transition: var(--fo-main-tran);
+	width: 90px;
+	height: auto;
+}
 .fo_area_expanded_thin .fo_tab_prod{
+	transition: var(--fo-main-tran);
 	height: 30px;
 	width: 45px;
+}
+.fo_area_expanded_thin .fo_tab_prod img{
+	transition: var(--fo-main-tran);
+	width: 45px;
+	height: auto;
 }
 .fo_area_expanded_thin{
 	height: 40px!important;
@@ -4989,7 +5059,9 @@ width: 100%;
 .fo_area_expanded_thin .fo_tab_prod_remove {
 	display: none!important;
 }
-
+ .fo_tab_prod img{
+ 	transition: var(--fo-main-tran);
+ }
 
 .fo_touch_drag{
 	opacity: 0.7;
@@ -5019,7 +5091,7 @@ width: 100%;
     background-color: var(--fo-bg5-color);
     color: var(--fo-text-color);
     padding: 10px;
-    margin: 5;
+    margin: 5px auto;
 }
 
 .fo_target_note_prod{

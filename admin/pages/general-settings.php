@@ -42,7 +42,7 @@ wp_enqueue_style( 'flash_order_settings-css', get_home_url().'/wp-content/plugin
 
 <div id="settSection">
 <form id="general" method="post" class="FOForm" style="<?php echo esc_attr($disp_general); ?>">
-    <button name="update" value="update" class="FObutton pointer" style="position:sticky;margin: 10px 10px 10px auto;top:45px;"> UPDATE </button>
+    <button name="update" value="update" class="FObutton pointer" style="position:sticky;margin: 10px 10px 10px auto;top:45px;"> <?php esc_html_e( 'SALVA', 'flash_order' ); ?> </button>
 
     <div class="FOFormSeparator" onclick="jQuery(`[board='global']`).slideToggle()">
         <b> <?php esc_html_e('Impostazioni Globali' , 'flash_order'); ?> </b>
@@ -465,6 +465,15 @@ FO_general_setting( array( 'name' => 'product_sticker_images',
     'text'      => __('aggiungi un\'immagine alla tassonomia per gli sticker dei prodotti' , 'flash_order'),
     'info'      => __('mostrerà un nuovo meta box per selezionare facilmente l\' immagine da associare alla tassonomia degli sticker, associata ai prodotti di woocommerce', 'flash_order')
 ) );
+FO_general_setting( array( 'name' => 'product_macro_categories_images',
+    //'default'   => '',
+    'options'   => array( 'yes', 'no' ),
+    'type'      => 'select',
+    'class'     => '',
+    'title'      => __('MACRO CATEGORIES', 'flash_order'),
+    'text'      => __('aggiungi un\'immagine alla tassonomia per le macro categorie dei prodotti' , 'flash_order'),
+    'info'      => __('mostrerà un nuovo meta box per selezionare facilmente l\' immagine da associare alla tassonomia delle macro categorie, associate ai prodotti di woocommerce', 'flash_order')
+) );
 FO_general_setting( array( 'name' => 'product_tags_images',
     //'default'   => '',
     'options'   => array( 'yes', 'no' ),
@@ -508,7 +517,7 @@ FO_general_setting( array( 'name' => 'posts_category_images',
 <?php
 do_action('fo_setting_general_foot');
 ?>
-<button name="update" value="update" class="FObutton pointer" style="margin: 10px auto;">UPDATE</button>
+<button name="update" value="update" class="FObutton pointer" style="margin: 10px auto;"><?php esc_html_e( 'SALVA', 'flash_order' ); ?></button>
 </form>
 
 

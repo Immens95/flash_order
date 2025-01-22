@@ -798,7 +798,7 @@ function FO_custom_taxonomy_ingredients() {
 		'show_tagcloud'     => true,
 		'show_in_rest'      => true,
 	);
-	register_taxonomy( esc_html__( 'Ingredienti', 'flash_order' ), array( 'product', 'product_variation','flash_product'  ), $args );
+	register_taxonomy( 'Ingredienti', array( 'product', 'product_variation','flash_product'  ), $args );
 }
 if (FO_get_meta('product_ingredients_tax') == 'yes') {
 	add_action( 'init', 'FO_custom_taxonomy_ingredients', 0 );
@@ -847,7 +847,7 @@ function FO_custom_taxonomy_allergens() {
 		'show_tagcloud'     	=> true,
 		'show_in_rest'      	=> true,
 	);
-	register_taxonomy( esc_html__( 'Allergeni', 'flash_order' ), array( 'product', 'product_variation','flash_product' ), $args );
+	register_taxonomy( 'Allergeni', array( 'product', 'product_variation','flash_product' ), $args );
 }
 if (FO_get_meta('product_allergens_tax') == 'yes') {
 	add_action( 'init', 'FO_custom_taxonomy_allergens', 0 );
@@ -896,7 +896,7 @@ function FO_custom_taxonomy_temperature() {
 		'show_tagcloud'     => true,
 		'show_in_rest'      => true,
 	);
-	register_taxonomy( esc_html__( 'Temperature', 'flash_order' ), array( 'product', 'product_variation','flash_product' ), $args );
+	register_taxonomy( 'Temperature', array( 'product', 'product_variation','flash_product' ), $args );
 }
 if (FO_get_meta('product_temperature_tax') == 'yes') {
 	add_action( 'init', 'FO_custom_taxonomy_temperature', 0 );
@@ -946,7 +946,7 @@ function FO_custom_taxonomy_sticker() {
 		'show_tagcloud'     => true,
 		'show_in_rest'      => true,
 	);
-	register_taxonomy( esc_html__( 'Sticker', 'flash_order' ), array( 'product', 'product_variation','flash_product' ), $args );
+	register_taxonomy( 'Sticker', array( 'product', 'product_variation','flash_product' ), $args );
 }
 if (FO_get_meta('product_sticker_tax') == 'yes') {
 	add_action( 'init', 'FO_custom_taxonomy_sticker', 0 );
@@ -1000,7 +1000,7 @@ function FO_custom_taxonomy_macro_categories() {
 		'show_tagcloud'     => true,
 		'show_in_rest'      => true,
 	);
-	register_taxonomy( esc_html__( 'macro_categories', 'flash_order' ), array( 'product','flash_product' ), $args );
+	register_taxonomy( 'macro_categories', array( 'product','flash_product' ), $args );
 }
 if (FO_get_meta('product_macro_categories_tax') == 'yes') {
 	add_action( 'init', 'FO_custom_taxonomy_macro_categories', 0 );
@@ -1050,7 +1050,7 @@ function FOP_tables_cpt() {
 	);
 	$args = array(
 		'label'                 => esc_html__( 'tavolo', 'flash_order' ),
-		'description'           => esc_html__( 'Questo post type generato dal plug-in: FlashOrderPRO, serve per controllare e gestire i tavoli(o anche le zone speciali come ad es. il bancone, il cortile, il gazebo etc...), del tuo ristorante.', 'flash_order' ),
+		'description'           => esc_html__( 'Questo post type generato dal plug-in: IW FlashOrder, serve per controllare e gestire i tavoli(o anche le zone speciali come ad es. il bancone, il cortile, il gazebo etc...), del tuo ristorante.', 'flash_order' ),
 		'labels'                => $labels,
 		'supports'              => array( 'title', 'editor', 'thumbnail', 'revisions', 'custom-fields' ),
 		'taxonomies'            => array( 'category', 'post_tag' ),
@@ -1110,7 +1110,7 @@ function FOP_custom_taxonomy_status() {
 		'show_tagcloud'     => true,
 		'show_in_rest'      => true,
 	);
-	register_taxonomy( esc_html__( 'status', 'flash_order' ), array( 'tavoli' ), $args );
+	register_taxonomy( 'status', array( 'tavoli' ), $args );
 }
 // if (FO_get_meta('product_sticker_tax') == 'yes') {
 	add_action( 'init', 'FOP_custom_taxonomy_status', 0 );
@@ -1153,7 +1153,7 @@ function FOP_custom_taxonomy_zone() {
 		'show_tagcloud'     => true,
 		'show_in_rest'      => true,
 	);
-	register_taxonomy( esc_html__( 'zone', 'flash_order' ), array( 'tavoli' ), $args );
+	register_taxonomy( 'zone', array( 'tavoli' ), $args );
 }
 // if (FO_get_meta('product_sticker_tax') == 'yes') {
 	add_action( 'init', 'FOP_custom_taxonomy_zone', 0 );
@@ -1269,7 +1269,7 @@ $page = get_post($page_id);
 			</div>
 			<div>
 				<?php esc_html_e('Estendi l\'influenza ad altri selettori css' , 'flash_order');?>
-				<input type="text" name="<?php echo 'PGSett[setting_page_id'.esc_attr($page_id);?>][EXTCss]" value="<?php if(isset($settings->EXTCss) && $settings->EXTCss!=''){echo $settings->EXTCss;}else{echo 'body, header, footer';}?>">
+				<input type="text" name="<?php echo 'PGSett[setting_page_id'.esc_attr($page_id);?>][EXTCss]" value="<?php if(isset($settings->EXTCss) && $settings->EXTCss!=''){echo esc_attr($settings->EXTCss);}else{echo 'body, header, footer';}?>">
 			</div>
 
 			<div>
@@ -1277,7 +1277,7 @@ $page = get_post($page_id);
 						'default' => '#00000f',
 						'name' => 'PGSett[setting_page_id'.$page_id.'][BGColor]',
 						'title' => esc_html__('Colore Sfondo ' , 'flash_order'),
-						'setting' => (isset($settings->BGColor))?$settings->BGColor:'',
+						'setting' => (isset($settings->BGColor))?esc_attr($settings->BGColor):'',
 				) ) ?>
 			</div>
 			<div>
@@ -1285,7 +1285,7 @@ $page = get_post($page_id);
 						'default' => '#ffffff',
 						'name' => 'PGSett[setting_page_id'.$page_id.'][TextColor]',
 						'title' => esc_html__('Colore Testo ' , 'flash_order'),
-						'setting' => (isset($settings->TextColor))?$settings->TextColor:'',
+						'setting' => (isset($settings->TextColor))?esc_attr($settings->TextColor):'',
 				) ) ?>
 			</div>
 			
@@ -1294,7 +1294,7 @@ $page = get_post($page_id);
 	</div>
 
 	<div class="GenericDetailFoot">
-		<button type="submit" name="update" value="update" class="FObutton pointer" form="general" style="margin: 0px 0px 0px auto;"> UPDATE </button>
+		<button type="submit" name="update" value="update" class="FObutton pointer" form="general" style="margin: 0px 0px 0px auto;"> <?php esc_html_e( 'SALVA', 'flash_order' ); ?> </button>
 		
 	</div>
 	
@@ -1557,11 +1557,13 @@ function FO_save_wc_attribute_price_to_add( $term_id ) {
 
 function FO_taxonomy_add_custom_field() {
 	$nonce = wp_create_nonce( 'FO_tax_image_nonce' );
+	// $placeholder_image = get_option( 'woocommerce_placeholder_image', 0 );
+	// FO_debug($placeholder_image);
     ?>
     <div class="form-field term-image-wrap">
         <label for="cat-image"><?php esc_html_e( 'Image', 'flash_order' ); ?></label>
         <p><a href="#" class="aw_upload_image_button button button-secondary"><?php esc_html_e('Carica Immagine', 'flash_order' ); ?></a></p>
-        <img width="250px" src="" id="tax-img-src" style="display:none;padding:10px;margin:10px;" />
+        <img width="250px" src="" id="tax-img-src" style="padding:10px;margin:10px;" /><?php //phpcs:ignore ?>
         <input type="text" name="taxonomy_image" id="tax-image" size="40" />
         <input type="hidden" id="_fononce_tax_image" name="_fononce_tax_image" value="<?php echo esc_attr($nonce);?>"/>
     </div>
@@ -1575,7 +1577,7 @@ function FO_taxonomy_edit_custom_field($term) {
         <th scope="row"><label for="taxonomy_image"><?php esc_html_e( 'Image', 'flash_order' ); ?></label></th>
         <td>
             <p><a href="#" class="aw_upload_image_button button button-secondary"><?php esc_html_e('Carica Immagine', 'flash_order' ); ?></a></p><br/>
-            <img width="250px" src="<?php echo esc_attr($image); ?>" id="tax-img-src" style="padding:10px;margin:10px;" />
+            <img width="250px" src="<?php echo esc_attr($image); ?>" id="tax-img-src" style="padding:10px;margin:10px;" /><?php //phpcs:ignore ?>
             <input type="text" name="taxonomy_image" id="tax-image" placeholder="image url" value="<?php echo esc_attr($image); ?>" size="40" />
             <input type="hidden" id="_fononce_tax_image" name="_fononce_tax_image" value="<?php echo esc_attr($nonce);?>"/>
         </td>
@@ -1590,7 +1592,7 @@ function FO_taxonomy_column_content( $content, $column_name, $term_id ) {
     }
         switch ( $column_name ) {
         case 'image' :
-        echo '<img style="max-width:80px;max-height:60px" src="'.esc_attr($image).'" />';
+        echo '<img style="max-width:80px;max-height:60px" src="'.esc_attr($image).'" />';//phpcs:ignore 
         break;
     }
 }
@@ -1636,9 +1638,9 @@ function FO_add_image_custom_field_to_tax(){
 		} 
 	}
 	if ( FO_get_meta('product_macro_categories_tax') == 'yes' ) {
-		// if ( FO_get_meta('product_macro_categories_images') == 'yes' ) {
+		if ( FO_get_meta('product_macro_categories_images') == 'yes' ) {
 			FO_taxonomy_add_meta_image('macro_categories');
-		// } 
+		} 
 	}
 	if ( FO_get_meta('product_tags_images') == 'yes' ) {
 		FO_taxonomy_add_meta_image('product_tag');
@@ -1761,44 +1763,6 @@ function FO_soft_access_denied(){
 
 
 
-
-
-
-function FO_create_post_QR_code_shortcode( $atts ) {
- 
-	// The file responsible for defining qr code generator library
-	require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/phpqrcode/qrlib.php';
-
-	// Extract shortcode attributes.
-	$atts = shortcode_atts(
-		array(
-			'size'    	=> '150', // Default size.
-			'post_id' 	=> get_the_ID(), // Default post ID.
-		),
-		$atts,
-		'fo_qr_code' // Shortcode tag.
-	);
-	$def_class = 'fo_qr_image ';
-
-	$post_id = absint( $atts['post_id'] );
-	$size    = absint( $atts['size'] );
-	// $class   = $def_class . $atts['class'];
-
-	$url = esc_url_raw( trailingslashit( get_site_url() ) . '?p=' . $post_id );
-
-	$qr_dir   = plugin_dir_path( dirname( __FILE__ ) ) . 'includes/phpqrcode/QRgenerate/';
-	$filename = $qr_dir . 'post_' . $post_id . '.png';
-
-	// Check if the file exists.
-	if ( ! file_exists( $filename ) ) {
-		QRcode::png( $url, $filename, 'L', 10, 2 ); // Create the QR code.
-	}
-	// Return the image tag.
-	$qr_url = esc_url_raw( plugin_dir_url( dirname( __FILE__ ) ) . 'includes/phpqrcode/QRgenerate/post_' . $post_id . '.png' );
-	return '<img src="'.$qr_url.'" height="'.$size.'" width="'.$size.'">';
-}
-add_shortcode( 'fo_qr_code', 'FO_create_post_QR_code_shortcode' );
-
 function FO_create_post_QR_code() {
 	// The file responsible for defining qr code generator library
 	require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/phpqrcode/qrlib.php';
@@ -1826,42 +1790,71 @@ function FO_create_post_QR_code() {
 	$return = '<div class="fo_QR_pages">';
 	$return .= '<strong style="width:100%;">'.esc_html__('Link per Questa Pagina:' , 'flash_order').'</strong>';
 	$return .= '<strong style="margin:20px;">'.get_home_url().'?p='.$post_id.'</strong>';
-	$return .= '<img src="'.esc_attr($qr_url).'" height="'.esc_attr($size).'" width="'.esc_attr($size).'">';
+	$return .= '<img src="'.esc_attr($qr_url).'" height="'.esc_attr($size).'" width="'.esc_attr($size).'">';//phpcs:ignore
 	$return .= '</div>';
 	return $return;
 }
 
 
 
-
-
-function FO_create_any_QR_code( $atts ) {
-	// The file responsible for defining qr code generator library
+function FO_create_post_QR_code_shortcode( $atts ) {
+// The file responsible for defining qr code generator library
 	require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/phpqrcode/qrlib.php';
-
-	$def_atts = array(
-		'size'    	=> '150', // Default size.
-		'content' 	=> get_home_url(), // Default post ID.
-		'name'		=> 'Home Url',
+// Extract shortcode attributes.
+	$atts = shortcode_atts(
+		array(
+			'size'    	=> '150', // Default size.
+			'post_id' 	=> get_the_ID(), // Default post ID.
+		),
+		$atts,
+		'fo_qr_code' // Shortcode tag.
 	);
-	$size 	 = absint( $atts['size'] );
-	$content = sanitize_text_field( $atts['content'] );
-	$name 	 = sanitize_text_field( $atts['name'] );
+	$post_id = absint( $atts['post_id'] );
+	$size    = absint( $atts['size'] );
+
+	$url = esc_url_raw( trailingslashit( get_site_url() ) . '?p=' . $post_id );
 
 	$qr_dir   = plugin_dir_path( dirname( __FILE__ ) ) . 'includes/phpqrcode/QRgenerate/';
-	$filename = $qr_dir . 'any - ' . $name . '.png';
+	$filename = $qr_dir . 'post_' . $post_id . '.png';
+// Check if the file exists.
+	if ( ! file_exists( $filename ) ) {
+		QRcode::png( $url, $filename, 'L', 10, 2 ); // Create the QR code.
+	}
+// Return the image tag.
+	$qr_url = esc_url_raw( plugin_dir_url( dirname( __FILE__ ) ) . 'includes/phpqrcode/QRgenerate/post_' . $post_id . '.png' );
+	return '<img src="'.$qr_url.'" height="'.$size.'" width="'.$size.'">';//phpcs:ignore
+}
+add_shortcode( 'fo_qr_code', 'FO_create_post_QR_code_shortcode' );
 
-	// Check if the file exists.
+function FO_create_any_QR_code( $atts ) {
+// The file responsible for defining qr code generator library
+	require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/phpqrcode/qrlib.php';
+// Extract shortcode attributes.
+	$atts = shortcode_atts(
+		array(
+			'size'    	=> '150', // Default size.
+			'content' 	=> get_home_url(), // Default post ID.
+		),
+		$atts,
+		'fo_qr_code_content' // Shortcode tag.
+	);
+
+	$size 	 = absint( $atts['size'] );
+	$content = sanitize_text_field( $atts['content'] );
+	$name 	 = md5(sanitize_text_field( $atts['content'] ));
+
+
+	$qr_dir   = plugin_dir_path( dirname( __FILE__ ) ) . 'includes/phpqrcode/QRgenerate/';
+	$filename = $qr_dir.'any-'.$name.'.png';
+// Check if the file exists.
 	if ( ! file_exists( $filename ) ) {
 		QRcode::png( $content, $filename, 'L', 10, 2 ); // Create the QR code.
 	}
-	// Return the image tag.
-	$qr_url = esc_url_raw( plugin_dir_url( dirname( __FILE__ ) ) . 'includes/phpqrcode/QRgenerate/any - ' . $name . '.png' );
-	return '<img src="'.$qr_url.'" height="'.$size.'" width="'.$size.'">';
+// Return the image tag.
+	$qr_url = esc_url_raw( plugin_dir_url( dirname( __FILE__ ) ) . 'includes/phpqrcode/QRgenerate/any-'.$name.'.png' );
+	return '<img src="'.$qr_url.'" height="'.$size.'" width="'.$size.'">';//phpcs:ignore
 }
-
-
-
+add_shortcode( 'fo_qr_code_content', 'FO_create_any_QR_code' );
 
 
 
@@ -2622,9 +2615,9 @@ function FO_products_for_div_loop( $object ){
 		<div class="title" style="font-weight:800;font-size:30px;z-index:10;">
 			<?php echo esc_attr($key); ?>
 		</div>
-		<input type="search" fotargetcat="<?php echo esc_attr($key);?>" onkeyup="FO_refine_search(this)" class="focatsearch" placeholder="<?php esc_html_e('Cerca...','flash_order');?>" style="z-index:10;">
+		<input type="search" fotargetcat="<?php echo esc_attr($key);?>" onclick="FO_refine_search(this)" onkeyup="FO_refine_search(this)" class="focatsearch" placeholder="<?php esc_html_e('Cerca...','flash_order');?>" style="z-index:10;">
 		<span class="focatnumber" style="z-index:10;"><?php echo count($value);?></span>
-		<img src="<?php echo esc_attr($image[0]) ?>" style="<?php echo esc_attr($style);?>">
+		<img src="<?php echo esc_attr($image[0]) ?>" style="<?php echo esc_attr($style);?>"><?php //phpcs:ignore ?>
 	</div>
 
 	<?php 
@@ -2763,26 +2756,22 @@ $fo_gallery = array();
 	<?php foreach ($sticker as $key => $value) { ?>
 		<?php if ( $value == 'fo-vegan' ) { ?>
 			<div>
-				<p style="display:none;" onclick="jQuery(this).toggle()"><?php esc_html_e('VEGANO','flash_order');?></p>
-				<img width="50"height="50"src="<?php echo wp_kses_post('https://innovazioneweb.com/wp-content/uploads/2024/09/vegan.webp');?>" onclick="jQuery(this).prev().toggle()">
+				<img width="50"height="50"src="<?php echo wp_kses_post('https://innovazioneweb.com/wp-content/uploads/2024/09/vegan.webp');//phpcs:ignore?>">
 			</div>
 		<?php } ?>
 		<?php if ( $value == 'fo-veget' ) { ?>
 			<div>
-				<p style="display:none;" onclick="jQuery(this).toggle()"><?php esc_html_e('VEGETARIANO','flash_order');?></p>
-				<img width="50"height="50"src="<?php echo wp_kses_post('https://innovazioneweb.com/wp-content/uploads/2024/09/veget.webp');?>" onclick="jQuery(this).prev().toggle()">
+				<img width="50"height="50"src="<?php echo wp_kses_post('https://innovazioneweb.com/wp-content/uploads/2024/09/veget.webp');//phpcs:ignore?>">
 			</div>
 		<?php } ?>
 		<?php if ( $value == 'fo-bio' ) { ?>
 			<div>
-				<p style="display:none;" onclick="jQuery(this).toggle()"><?php esc_html_e('BIOLOGICO','flash_order');?></p>
-				<img width="50"height="50"src="<?php echo wp_kses_post('https://innovazioneweb.com/wp-content/uploads/2024/09/bio.webp');?>" onclick="jQuery(this).prev().toggle()">
+				<img width="50"height="50"src="<?php echo wp_kses_post('https://innovazioneweb.com/wp-content/uploads/2024/09/bio.webp');//phpcs:ignore?>">
 			</div>
 		<?php } ?>
 		<?php if ( $value == 'fo-spicy' ) { ?>
 			<div>
-				<p style="display:none;" onclick="jQuery(this).toggle()"><?php esc_html_e('PICCANTE','flash_order');?></p>
-				<img width="50"height="50"src="<?php echo wp_kses_post('https://innovazioneweb.com/wp-content/uploads/2024/09/spicy.webp');?>" onclick="jQuery(this).prev().toggle()">
+				<img width="50"height="50"src="<?php echo wp_kses_post('https://innovazioneweb.com/wp-content/uploads/2024/09/spicy.webp');//phpcs:ignore?>">
 			</div>
 		<?php } ?>
 
@@ -2795,7 +2784,7 @@ $fo_gallery = array();
 			?>
 			<div>
 				<p style="display:<?php echo esc_attr($stick_disp);?>" onclick="jQuery(this).toggle()" title="<?php echo esc_attr($value->description);?>"><?php echo esc_attr($value->name);?></p>
-				<img width="50"height="50"src="<?php echo esc_attr($sticker_img[0]);?>" onclick="jQuery(this).prev().toggle()">
+				<img width="50"height="50"src="<?php echo esc_attr($sticker_img[0]);?>" onclick="jQuery(this).prev().toggle()"><?php //phpcs:ignore ?>
 			</div>
 		<?php } ?>
 	<?php } ?>
@@ -2857,7 +2846,7 @@ function FO_Advanced_prod_card(){
 	</div>
 	<div class="Advanced_Card_header">
 		<div class="fowarehouse fixware" foware="" style="display:contents;">
-			<img color="" style="padding:0;" src="<?php echo wp_kses_post('https://innovazioneweb.com/wp-content/uploads/2024/09/sphere4.webp');?>"/>
+			<img color="" style="padding:0;" src="<?php echo wp_kses_post('https://innovazioneweb.com/wp-content/uploads/2024/09/sphere4.webp');?>"/><?php //phpcs:ignore ?>
 		</div>
 		<p class="AC_ID" style="width:80px;"></p>
 		<p class="AC_Name" style="max-width:calc(100% - 250px);"></p>
@@ -2915,7 +2904,7 @@ function FO_Advanced_prod_card(){
 				
 			</div>
 
-			<div class="foadd" style="scale:0.8;bottom:25px;right:-10px;" onclick="FO_ajax_selectVarAfter_Add_Item_to_Order(this);FO_Advanced_Prod_Card_hide();"> +
+			<div class="foadd_fix foscale" style="scale:0.8;bottom:25px;right:-10px;" onclick="FO_ajax_selectVarAfter_Add_Item_to_Order(this);FO_Advanced_Prod_Card_hide();"> +
 			</div>
 
 		</div>
@@ -2957,7 +2946,7 @@ function FO_get_tax_cloud( $terms = array() ){
 		$return .= '<div class="FOAdvIngredProdTab" fo_tax_id="'.esc_attr($value->term_id).'" style="display:none;">';
 		$return .= '<p>'.esc_attr($value->name).'</p>';
 		if ( FOcheck($tax_img) && isset($tax_img[0]) && $tax_img[0] != '' ) { 
-			$return .= '<img class="fotax_image"width="30"height="30"src="'.esc_attr($tax_img[0]).'">';
+			$return .= '<img class="fotax_image"width="30"height="30"src="'.esc_attr($tax_img[0]).'">';//phpcs:ignore
 		}
 		$return .= '</div>';
 	}
@@ -2971,8 +2960,8 @@ function FO_get_product_temperature_options( $product ){
 		if ( $Temperature != null ) {
 	?>
 		<div class="fothermo foboxclick">
-			<img color="" width="50" height="50" class="FOthermometer" src="<?php echo esc_url( get_home_url() ).'/wp-content/plugins/flash_order/includes/img/thermometer2.webp'?>" onclick="jQuery(this).parent().parent().find('.fotemp_card').slideToggle();"/>
-				<img class="fotax_image_temp" width="30" height="30" src="" onclick="jQuery(this).parent().parent().find('.fotemp_card').slideToggle();" style="display:none;">
+			<img color="" width="50" height="50" class="FOthermometer" src="<?php echo esc_url( get_home_url() ).'/wp-content/plugins/flash_order/includes/img/thermometer2.webp'?>" onclick="jQuery(this).parent().parent().find('.fotemp_card').slideToggle();"/><?php //phpcs:ignore ?>
+				<img class="fotax_image_temp" width="30" height="30" src="" onclick="jQuery(this).parent().parent().find('.fotemp_card').slideToggle();" style="display:none;"><?php //phpcs:ignore ?>
 		</div>
 
 		<div id="FOeditIngTab" class="FOEditProdTab fo_ajax_edit_tab fotemp_card" style="display:none;overflow:auto;">
@@ -4156,7 +4145,6 @@ function FO_flash_tab_order( $tavoli = array() ){
 	
 	$nonce = wp_create_nonce( 'FO_flash_tab_order' );
     echo '<input type="hidden" id="_fononce_flash_tab_order" name="_fononce_flash_tab_order" value="'.esc_attr($nonce).'" />';
-
 	?>
 	<div class="FO_flash_tab_order_container fo_tab_show" style="display:none;">
 		<!-- <div class="Advanced_Card_Close"onclick="FO_tab_Card_hide()"><?php esc_html_e('CHIUDI','flash_order');?></div> -->
@@ -4165,11 +4153,14 @@ function FO_flash_tab_order( $tavoli = array() ){
 		</div>
 
 		<div class="FO_flash_tab_header">
-			<div class="fo_button fo_cat_butt" onclick="FO_filter_tab_product(<?php echo "'-BLANK-'"; ?>);fo_tab_hystory_space('.fo_column_products','.fo_column_story','.fo_column_riepilogo')" ondrop="FOdrop(event)" ondragover="FOallowDrop(event)" fo_cat_name="-BLANK-" fo_cat_id="-BLANK-" fo_cat_ceck="<?php echo esc_attr($m_cat_check);?>">
+			<div class="fo_button fo_cat_butt fo_shadow" onclick="FO_filter_tab_product(<?php echo "'-BLANK-'"; ?>);fo_tab_hystory_space('.fo_column_products','.fo_column_story','.fo_column_riepilogo')" ondrop="FOdrop(event)" ondragover="FOallowDrop(event)" fo_cat_name="-BLANK-" fo_cat_id="-BLANK-" fo_cat_ceck="<?php echo esc_attr($m_cat_check);?>">
 				<span class="dashicons dashicons-editor-customchar" fo_cat_name="-BLANK-" fo_cat_id="-BLANK-" fo_cat_ceck="<?php echo esc_attr($m_cat_check);?>"></span>
 			</div>
-			<?php foreach ($products_macro_categories->terms as $key => $value) { ?>
-				<div class="fo_button fo_cat_butt" onclick="FO_filter_tab_product(<?php echo "'".esc_attr($value->slug)."'"; ?>);fo_tab_hystory_space('.fo_column_products','.fo_column_story','.fo_column_riepilogo')" ondrop="FOdrop(event)" ondragover="FOallowDrop(event)" fo_cat_name="<?php echo esc_attr($value->slug);?>" fo_cat_id="<?php echo esc_attr($value->term_id);?>" fo_cat_ceck="<?php echo esc_attr($m_cat_check);?>">
+			<?php foreach ($products_macro_categories->terms as $key => $value) { 
+				$MC_img = get_term_meta($value->term_id, 'taxonomy_image');
+				$MC_img = ( FOcheck($MC_img) && isset($MC_img[0]) && $MC_img[0] !='')? $MC_img[0]:'';
+				?>
+				<div class="fo_button fo_cat_butt fo_shadow" onclick="FO_filter_tab_product(<?php echo "'".esc_attr($value->slug)."'"; ?>);fo_tab_hystory_space('.fo_column_products','.fo_column_story','.fo_column_riepilogo')" ondrop="FOdrop(event)" ondragover="FOallowDrop(event)" fo_cat_name="<?php echo esc_attr($value->slug);?>" fo_cat_id="<?php echo esc_attr($value->term_id);?>" fo_cat_ceck="<?php echo esc_attr($m_cat_check);?>" style="background-image:url(<?php echo esc_attr($MC_img);?>);">
 					<?php echo esc_attr($value->name);?>
 				</div>
 			<?php } ?>
@@ -4294,7 +4285,7 @@ function FO_flash_tab_order( $tavoli = array() ){
 											<?php echo esc_attr($fee_name);?>
 										</div>
 										<div class="FO_prod_img" style="border-radius:5px;">
-											<img width="300" height="300" src="<?php echo esc_url(wc_placeholder_img_src( 300 )); ?>">
+											<img width="300" height="300" src="<?php echo esc_url(wc_placeholder_img_src( 300 )); ?>"><?php //phpcs:ignore ?>
 										</div>
 										<input fo_tab_target="id" type="hidden" name="[<?php echo esc_attr($f_i);?>][id][<?php echo esc_attr($fee_name);?>]" value="1">
 										<input fo_tab_target="qty" type="hidden" name="[<?php echo esc_attr($f_i);?>][qty][<?php echo esc_attr($fee_name);?>]" value="1">
@@ -4345,6 +4336,7 @@ function FO_flash_tab_order( $tavoli = array() ){
 						<script type="text/javascript">
 							jQuery(window).on('load', function() {
 								FO_calc_totals();
+								FO_reorder_story();
 							});
 						</script>
 					</div>
@@ -4491,7 +4483,7 @@ function FO_flash_tab_order( $tavoli = array() ){
 							Special
 						</div>
 						<div class="FO_prod_img" style="border-radius:5px;">
-							<img width="300" height="300" src="<?php echo esc_url(wc_placeholder_img_src( 300 )); ?>">
+							<img width="300" height="300" src="<?php echo esc_url(wc_placeholder_img_src( 300 )); ?>"><?php //phpcs:ignore ?>
 						</div>
 						<input fo_tab_target="id" type="hidden" name="[prod_generic]" value="">
 						<input fo_tab_target="qty" type="hidden" name="[qty]" value="1">
@@ -4509,7 +4501,7 @@ function FO_flash_tab_order( $tavoli = array() ){
 						<span class="fo_tab_prod_price"> 0.00 </span>
 
 						<div class="FO_prod_img" style="border-radius:5px;">
-							<img width="300" height="300" src="<?php echo esc_url(wc_placeholder_img_src( 300 )); ?>">
+							<img width="300" height="300" src="<?php echo esc_url(wc_placeholder_img_src( 300 )); ?>"><?php //phpcs:ignore ?>
 						</div>
 						<input fo_tab_target="id" type="hidden" name="[sconto]" value="">
 						<input fo_tab_target="qty" type="hidden" name="[qty]" value="1">
@@ -4762,7 +4754,6 @@ function FO_pay_this_order_tab(){
 			</div>
 
 			<div class="FO_example FO_pay_customer_card FO_exemple_customer_card" style="display:none;">
-				<!-- <img class="FO_pay_customer_img" src=""> -->
 				<span class="fo_tab_remove dashicons dashicons-trash" onclick="jQuery(this).parent().remove();"></span>
 				<span class="FO_pay_customer_id"> <?php esc_html_e('NUOVO!','flash_order'); ?> </span>
 				<span class="FO_pay_customer_name"> name </span>
@@ -5481,13 +5472,13 @@ $ajax_refresh_table_seconds = ( intval( FO_get_meta('ajax_refresh_table_seconds'
 
 function FO_save_post_extra_field( $post_id, $post, $update ) {
 	// Only want to set if this is a new post!
-		// if ( $update ){
-		// 	return;
-		// }
-	// Only set for post_type = post!
-		// if ( 'post' !== $post->post_type ) {
-		// 	return;
-		// }_fononce_post_extra_field
+		if ( !$update ){
+			return;
+		}
+	// Only set for post_type = product!
+		if ( 'product' !== $post->post_type ) {
+			return;
+		}
 	if ( !isset($_POST['_fononce_post_extra_field']) && !wp_verify_nonce(sanitize_text_field(wp_unslash( $_POST['_fononce_post_extra_field'])), 'FO_post_extra_field_nonce' ) ) {
 		return;
 	}//_fononce_post_extra_field: jQuery('input[name="_fononce_post_extra_field"]').val(),
@@ -5507,7 +5498,7 @@ add_action('save_post','FO_save_post_extra_field',10,3);
 
 
 
-function isNumber($s) { 
+function FOisNumber($s) { 
 	$ss = str_split($s);
     for ($i = 0; $i < strlen($s); $i++) 
         if (is_numeric($s[$i]) == false) {
@@ -5787,7 +5778,7 @@ if ( isset($visualize['div']) && $visualize['div'] ) {
 						$string .= wp_kses_post($products->get_image());
 						$string .= '<span class="FO_id_info">#'.$products->get_id().'</span>';
 						if (count($varianti) || $products->get_type() == 'variation') {
-							$string .= '<span class="FO_id_variant" title="'.count($varianti).'"><img src="'.esc_url( get_home_url() ).'/wp-content/plugins/flash_order/includes/img/cycle.webp"></span>';
+							$string .= '<span class="FO_id_variant" title="'.count($varianti).'"><img src="'.esc_url( get_home_url() ).'/wp-content/plugins/flash_order/includes/img/cycle.webp"></span>';//phpcs:ignore
 						}
 						$string .= '<div class="FO_prod_name_manage">';
 							$string .= $slang_title;
@@ -5797,9 +5788,9 @@ if ( isset($visualize['div']) && $visualize['div'] ) {
 						$string .= '</div>';
 						if ($temperature!='') {
 							$string .= '<span class="FO_id_temperature" title="'.$temperature.'">';
-								$string .= '<img src="'.esc_url( get_home_url() ).'/wp-content/plugins/flash_order/includes/img/thermometer2.webp">';
+								$string .= '<img src="'.esc_url( get_home_url() ).'/wp-content/plugins/flash_order/includes/img/thermometer2.webp">';//phpcs:ignore
 								if ( FOcheck($tax_img) && isset($tax_img[0]) && $tax_img[0] != '' ) {
-									$string .= '<img class="fotemper_image"width="20"height="20"src="'.$tax_img[0].'">';
+									$string .= '<img class="fotemper_image"width="20"height="20"src="'.$tax_img[0].'">';//phpcs:ignore
 								}
 							$string .= '</span>';
 						}
@@ -5837,10 +5828,10 @@ if ( isset($visualize['div']) && $visualize['div'] ) {
 									$string .= esc_html__( 'Temperatura:', 'flash_order' );
 								$string .= '</div>';
 
-								$string .= '<img src="'.esc_url( get_home_url() ).'/wp-content/plugins/flash_order/includes/img/thermometer2.webp">';
+								$string .= '<img src="'.esc_url( get_home_url() ).'/wp-content/plugins/flash_order/includes/img/thermometer2.webp">';//phpcs:ignore
 
 									if ( FOcheck($tax_img) && isset($tax_img[0]) && $tax_img[0] != '' ) {
-										$string .= '<img class="fotemper_image"width="20"height="20"src="'.$tax_img[0].'">';
+										$string .= '<img class="fotemper_image"width="20"height="20"src="'.$tax_img[0].'">';//phpcs:ignore
 									}
 								$string .= '<span class="FO_temperature" title="'.$temperature.'">'.$temperature.'</span>';
 							$string .= '</div>';
@@ -5861,7 +5852,7 @@ if ( isset($visualize['div']) && $visualize['div'] ) {
 								$string .= '<div class="FOAdvIngredProdTab '.$clssmod.'">';
 									$string .= '<p>'.$value->name.'</p>';
 									if ( FOcheck($tax_img) && isset($tax_img[0]) && $tax_img[0] != '' ) {
-										$string .= '<img class="fotax_image"width="30"height="30"src="'.$tax_img[0].'">';
+										$string .= '<img class="fotax_image"width="30"height="30"src="'.$tax_img[0].'">';//phpcs:ignore
 									}
 								$string .= '</div>';
 							}
@@ -5884,7 +5875,7 @@ if ( isset($visualize['div']) && $visualize['div'] ) {
 										$string .= '<p>'.$ing_name.'</p>';
 										// $string .= $ing_name;
 										if ( FOcheck($tax_img) && isset($tax_img[0]) && $tax_img[0] != '' ) {
-											$string .= '<img class="fotax_image"width="30"height="30"src="'.$tax_img[0].'">';
+											$string .= '<img class="fotax_image"width="30"height="30"src="'.$tax_img[0].'">';//phpcs:ignore
 										}
 									$string .= '</div>';
 								}
@@ -6638,7 +6629,8 @@ function FO_get_connection_info(){
 	$info['ip'] = gethostbyname( gethostname() );
 	$info['host'] = gethostname();
 
-	$info['details'] = json_decode(file_get_contents("https://ipinfo.io"));
+	// $info['details'] = json_decode(file_get_contents("https://ipinfo.io"));
+	$info['details'] = wp_remote_get("https://ipinfo.io");
 
 	$ipinfo = FO_get_meta('ipinfo');
 
@@ -6807,3 +6799,8 @@ function enqueue_ajax_manage_restaurant_scripts() {
     ));
 }
 add_action('wp_enqueue_scripts', 'enqueue_ajax_manage_restaurant_scripts');
+
+function FO_load_media_files() {
+    wp_enqueue_media();
+}
+add_action( 'admin_enqueue_scripts', 'FO_load_media_files' );

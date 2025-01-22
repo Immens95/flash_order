@@ -50,8 +50,8 @@ function FO_manage_table(){
         <style type="text/css">
             <?php if (isset($settings->EXTCss) && $settings->EXTCss != '' ){
                 echo esc_attr($settings->EXTCss);?>{
-                    background-color: <?php echo esc_attr($settings->BGColor);?>;
-                    color: <?php echo esc_attr($settings->TextColor);?>;
+                    background-color: <?php echo esc_attr($settings->BGColor);?>!important;
+                    color: <?php echo esc_attr($settings->TextColor);?>!important;
                 }
             <?php } ?>
         </style>
@@ -122,7 +122,7 @@ function FO_manage_table(){
                 </div>
                 <h6> <?php echo esc_attr($tavolo->post_title);?> </h6>
                 <?php if ( $zone != false ) {
-                foreach ($zone as $k => $zona) { ?>
+                foreach ($zone as $k => $zona) { FO_debug($zona) ?>
                     <strong> <?php echo esc_attr($zona->name);?> </strong>
                 <?php } } ?>
                 <p class="fo_status_string"> <?php echo esc_attr($status_string);?> </p>

@@ -81,8 +81,8 @@ if ( isset($_GET['_fononce_tab_check']) && wp_verify_nonce( sanitize_text_field(
         <style type="text/css">
         	<?php if (isset($settings->EXTCss) && $settings->EXTCss != '' ){
         		echo esc_attr($settings->EXTCss);?>{
-	                background-color: <?php echo esc_attr($settings->BGColor);?>;
-	                color: <?php echo esc_attr($settings->TextColor);?>;
+	                background-color: <?php echo esc_attr($settings->BGColor);?>!important;
+	                color: <?php echo esc_attr($settings->TextColor);?>!important;
 	            }
         	<?php } ?>
         </style>
@@ -193,7 +193,7 @@ if ( isset($_GET['_fononce_tab_check']) && wp_verify_nonce( sanitize_text_field(
 				<?php esc_html_e( 'ORDINE', 'flash_order' ); ?> 
 			</strong>
 			<strong id="FO_order_live_count" class="text_white" style="z-index:99;">0</strong>
-			<img class="FO_img_summary" src="" style="display:none;">
+			<img class="FO_img_summary" src="" style="display:none;"><?php //phpcs:ignore ?>
 		</div>
 		
 		<?php FO_Advanced_prod_card(); ?>

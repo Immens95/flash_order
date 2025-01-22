@@ -40,12 +40,13 @@ function FO_menu_page(){
 add_action( 'admin_menu', 'FO_menu_page' );
 
 function FO_head_menu_page(){
+    // FO_debug(wp_get_attachment_image(1));
     ?>
     <div id="FOadminContent">
     <h1 style="margin:30px 0px;display:flex;"> 
-        <img src="<?php echo wp_kses_post('https://innovazioneweb.com/wp-content/uploads/2023/10/cropped-logo-512-transparent-bg.png');?>" width="50" height="50" alt="light logo">
+        <img src="<?php echo wp_kses_post('https://innovazioneweb.com/wp-content/uploads/2023/10/cropped-logo-512-transparent-bg.png');//phpcs:ignore?>" width="50" height="50" alt="light logo">
         Flash Order 
-        <img src="<?php echo wp_kses_post('https://innovazioneweb.com/wp-content/uploads/2024/09/logo-512.png'); ?>" width="50" height="50" alt="light logo">
+        <img src="<?php echo wp_kses_post('https://innovazioneweb.com/wp-content/uploads/2024/09/logo-512.png');//phpcs:ignore?>" width="50" height="50" alt="light logo">
         <!-- <button class="FOzero FObutton" onclick="FOtutorialPage();" style="margin: 0px 20px 0px auto!important;padding: 0px 10px!important;"> tutorial </button>  -->
     </h1>
     <?php
@@ -302,7 +303,7 @@ function FO_save_settings( $args, $assoc_id = '', $debug = false ){
         }
         if ( isset( $_POST['PGSett'] ) ) { 
             $assoc_id = 'page_settings';
-            foreach ( $_POST['PGSett'] as $PGSett_K => $PGSett_V ) {
+            foreach ( $_POST['PGSett'] as $PGSett_K => $PGSett_V ) {//phpcs:ignore
                 // foreach ( $PGSett as $key => $value ) {
                 //     FO_update_meta( sanitize_text_field(wp_unslash($PGSett_K)), sanitize_text_field(wp_unslash($vl)), $assoc_id ); 
                 // }
