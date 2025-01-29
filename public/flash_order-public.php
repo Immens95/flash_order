@@ -176,12 +176,14 @@ function FO_create_all_necessary_pages(){
 	FO_create_page( 'manage-restaurant','<!-- wp:shortcode -->[FO_manage_restaurant_section]<!-- /wp:shortcode -->', '1.0.1' );
 		$response['manage-restaurant'] = '1.0.1';
 
-	wp_send_json(array(
-    	'response' 	=> $response,
-    	// 'time_exec' => $time,
-		// 'post' => $_POST,
-	));
-	die();
+	if (isset($_POST['from'])&& sanitize_text_field(wp_unslash($_POST['from'])) == 'ajax') {
+		wp_send_json(array(
+	    	'response' 	=> $response,
+	    	// 'time_exec' => $time,
+			// 'post' => $_POST,
+		));
+		die();
+	}
 }
 add_action('wp_ajax_FO_create_all_necessary_pages', 'FO_create_all_necessary_pages');
 add_action('wp_ajax_nopriv_FO_create_all_necessary_pages', 'FO_create_all_necessary_pages');
@@ -808,7 +810,7 @@ if (FO_get_meta('product_ingredients_tax') == 'yes') {
 }
 
 function FO_show_ingredients_tax_to_product_page(){
- echo get_the_term_list( get_the_ID(), 'Ingredienti', '<span class="tagged_as">Ingredienti: ', ', ', '</span>' );
+ echo get_the_term_list( get_the_ID(), 'Ingredienti', '<span class="FO_front_tax tagged_as wp-block-post-terms">Ingredienti: ', ', ', '</span>' );
 }
 
 // Register Custom Taxonomy
@@ -857,7 +859,7 @@ if (FO_get_meta('product_allergens_tax') == 'yes') {
 }
 
 function FO_show_allergeni_tax_to_product_page(){
- echo get_the_term_list( get_the_ID(), 'Allergeni', '<span class="tagged_as">Allergeni: ', ', ', '</span>' );
+ echo get_the_term_list( get_the_ID(), 'Allergeni', '<span class="FO_front_tax tagged_as wp-block-post-terms">Allergeni: ', ', ', '</span>' );
 }
 
 // Register Custom Taxonomy
@@ -1908,7 +1910,6 @@ function fo_load_dashicons(){
 add_action('wp_enqueue_scripts', 'fo_load_dashicons', 999);
 
 
-// FO_init_css_activator();
 function FO_init_css_activator(){
 	$default_css = FO_default_css();
 	foreach ($default_css as $key => $value) {
@@ -1916,7 +1917,7 @@ function FO_init_css_activator(){
 		FO_clear_meta_database( $key );
 	}
 }
-// FO_default_css();
+
 function FO_default_css(){
 	// $data_css = (array)json_decode( FO_get_meta('default_css') );
 	$default_css = array(
@@ -2496,7 +2497,7 @@ add_action('wp_ajax_nopriv_flash_orders_ajax_ordination', 'flash_orders_ajax_ord
 
 */
 
-add_action( 'init', 'FO_get_category_by_slug', 999, 1 );
+// add_action( 'init', 'FO_get_category_by_slug', 999, 1 );
 function FO_get_category_by_slug( $value = '' ){
     $term = get_term_by( 'slug', $value, 'category' );
     // var_dump($term);
@@ -6527,12 +6528,16 @@ add_action('wp_ajax_nopriv_FO_get_order_info_button_tab_string', 'FO_get_order_i
 
 
 
+add_action('woocommerce_before_checkout_form', 'hizlicicek_test');
 
+function hizlicicek_test() {
+echo "yjjfjhghghj";
+}
 
 
 if ( FO_get_meta('fo_pickup_delivery_checkout') == 'yes' ) {
 	/* Add Checkout field*/
-	add_action('woocommerce_checkout_before_customer_details','FO_add_pickup_delivery_section');
+	add_action('woocommerce_before_checkout_form','FO_add_pickup_delivery_section');
 	/* Validate Checkout field*/
 	add_action('woocommerce_checkout_process', 'FO_validate_pickup_delivery_section');
 	/* Save Checkout field*/

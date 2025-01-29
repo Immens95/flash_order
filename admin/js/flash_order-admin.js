@@ -59,6 +59,7 @@ function FO_create_refresh_pages(){
 		url: ajaxurl,
 		data: {
 			action: 'FO_create_all_necessary_pages',
+			from: 'ajax',
 			// nonce: flash_orders_ajax_vars.nonce,
 		},
 		success: function(response) {

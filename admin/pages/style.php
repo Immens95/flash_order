@@ -7,7 +7,7 @@ $style = FO_customized_css();
 ?>
 <div id="settSection">
 <form id="" method="post" class="FOForm">
-    <button name="update" value="update" class="FObutton pointer" style="position:sticky;margin: 10px 10px 10px auto;top:45px;"> <?php esc_html__( 'SALVA', 'flash_order' ); ?> </button>
+    <button name="update" value="update" class="FObutton pointer" style="position:sticky;margin: 10px 10px 10px auto;top:45px;"> <?php esc_html_e( 'SALVA', 'flash_order' ); ?> </button>
 
     <?php 
     $nonce = wp_create_nonce( 'FO_save_settings' );
@@ -94,7 +94,7 @@ $style = FO_customized_css();
     <?php FO_new_style_setting('--fo-timer-3', array('type'=>'color')); ?>
     </div>
 <!-- </div> -->
-  <button name="update" value="update" class="FObutton pointer" style="margin: 10px auto;"> <?php esc_html__( 'SALVA', 'flash_order' ); ?> </button>
+  <button name="update" value="update" class="FObutton pointer" style="margin: 10px auto;"> <?php esc_html_e( 'SALVA', 'flash_order' ); ?> </button>
 </form>
 </div>
 <?php
