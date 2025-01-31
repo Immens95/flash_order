@@ -47,6 +47,7 @@ function FO_head_menu_page(){
         <img src="<?php echo wp_kses_post('https://innovazioneweb.com/wp-content/uploads/2023/10/cropped-logo-512-transparent-bg.png');//phpcs:ignore?>" width="50" height="50" alt="light logo">
         Flash Order 
         <img src="<?php echo wp_kses_post('https://innovazioneweb.com/wp-content/uploads/2024/09/logo-512.png');//phpcs:ignore?>" width="50" height="50" alt="light logo">
+        <a class="FO_abutton" href="https://innovazioneweb.com/flash-order/" style="margin: 0px 20px 0px auto!important;padding: 0px 10px!important;"><?php esc_html_e( 'GUIDA', 'flash_order' );?></a>
         <!-- <button class="FOzero FObutton" onclick="FOtutorialPage();" style="margin: 0px 20px 0px auto!important;padding: 0px 10px!important;"> tutorial </button>  -->
     </h1>
     <?php
@@ -466,11 +467,124 @@ function FO_watch_flash_order_pro(){
 
 
 
+function FO_statistics_in_flash(){
+    ?>
+    <div class="FOForm">
 
+        <div class="FOsettingEl">
+            <strong class="FOtextSettings">
+                <?php echo esc_html__( ' Statistiche in Flash: ', 'flash_order' ); ?>
+            </strong>
 
+        </div>
 
+    </div>
+    <?php
+}
 
+function FO_manage_QR_codes(){
+    ?>
+    <div class="FOForm">
 
+        <div class="FOsettingEl"  style="max-width:100%;flex-basis:100%;">
+            <strong class="FOtextSettings" style="max-width:100%;flex-basis:100%;">
+                <?php esc_html_e( ' Gestore QR codes: ', 'flash_order' ); ?>
+            </strong>
+
+            <div class="FOSetting_Board FOsettingEl" style="max-width:100%;flex-basis:100%;">
+                <div class="FOtextSettings">
+                    <b><?php esc_html_e( ' Shortcodes disponibili: ', 'flash_order' ); ?></b>
+                </div>
+
+                <div class="FOtextSettings" style="max-width:100%;flex-basis:100%;text-align:left;">
+                </div>
+
+                <strong class="FOtextSettings">[fo_qr_code]</strong>
+                <div style="width:100%;height:1px"></div>
+
+                <p class="FOtextSettings">
+                    <?php esc_html_e('Questo shortcode va utilizzato direttamente sulla pagina di cui vuoi visualizzare il QRcode.','flash_order');?>
+                </p>
+                <div style="width:100%;height:1px"></div>
+
+                <div class="FOtextSettings">
+                    <?php esc_html_e( 'I parametri disponibili sono:' , 'flash_order' ); ?>
+                    <strong class="FOtextSettings">size</strong> <?php esc_html_e( '(default: 150)' , 'flash_order' ); ?>
+                </div>
+                <div style="width:100%;height:1px"></div>
+
+                <div class="FOtextSettings">
+                     <?php esc_html_e( 'Esempio di utilizzo:' , 'flash_order' ); ?>
+                     <?php echo '[fo_qr_code size="300"]'; ?>
+                </div>
+                <div style="width:100%;height:20px"></div>
+
+                <div style="width:100%;height:1px;border-top:1px solid black;"></div>
+
+                <strong class="FOtextSettings">[fo_qr_code_content]</strong>
+                <div style="width:100%;height:1px"></div>
+
+                <p class="FOtextSettings">
+                    <?php esc_html_e('Questo shortcode va utilizzato sulla pagina su cui vuoi visualizzare il QRcode, ma il contenuto del QRcode è definito dal parametro content.','flash_order');?>
+                </p>
+                <div style="width:100%;height:1px"></div>
+
+                <div class="FOtextSettings">
+                    <?php esc_html_e( 'I parametri disponibili sono:' , 'flash_order' ); ?>
+                    <strong class="FOtextSettings">size</strong> <?php esc_html_e( '(default: 150)' , 'flash_order' ); ?>
+                    <strong class="FOtextSettings">content</strong> <?php esc_html_e( '(default: home url)' , 'flash_order' ); ?>
+                </div>
+                <div style="width:100%;height:1px"></div>
+
+                <div class="FOtextSettings">
+                    <?php esc_html_e( 'Esempio di utilizzo:' , 'flash_order' ); ?>
+                    <?php echo '[fo_qr_code_content size="300" content="'.esc_html__( 'La frase o il link che volete utilizzare per il QR' , 'flash_order' ).'"]'; ?>
+                </div>
+                <div style="width:100%;height:20px"></div>
+            </div>
+
+            <div class="FOQRCloud">
+
+                <div class="FO_NEW_QR FOtextSettings FOsettingEl" style="max-width:100%;flex-basis:100%;">
+                    <span id="FO_fill_content_QR" style="display:none;"><?php esc_html_e( 'Per poter creare il QRcode, devi inserire il contenuto nel campo content!', 'flash_order' ); ?></span>
+                    <input type="text" class="FOtextSettings" name="NEW_QR_size" placeholder="size (default 150)">
+                    <input type="text" class="FOtextSettings" name="NEW_QR_content" placeholder="content*" style="width:calc(80% - 40px);">
+                    <button class="FObutton" onclick="fo_create_QR(jQuery(this).parent());">
+                        <?php esc_html_e('CREA','flash_order');?>
+                    </button>
+                </div>
+
+                <input type="text" class="FOtextSettings" target="QR_search_target" onkeyup="fo_search_for_file(this)" onkeydown="fo_search_for_file(this)" style="max-width:100%;flex-basis:100%;text-align:left;margin:15px;" placeholder="<?php esc_html_e(' Cerca QR ... ','flash_order' );?>">
+            <?php $QR_img = scandir( plugin_dir_path( dirname( __FILE__ ) ) . 'includes/phpqrcode/QRgenerate/' );
+                foreach ($QR_img as $key => $value) {
+                    if ($value != '.' && $value != '..') {
+                        $QR_url = esc_url_raw( plugin_dir_url( dirname(__FILE__) ) . 'includes/phpqrcode/QRgenerate/' . $value);
+                        $size = substr($value,strpos($value,'(')+1, -5);
+                        $size = ($size >= '450' )?'450':$size;
+                        $RealName = (!str_contains($value,'any-')) ? esc_attr($value): str_replace('any-', '', $value);
+                        ?>
+                            <div target="<?php echo esc_attr($RealName);?>" class="FOsettingEl FOtextSettings QR_search_target">
+                                <img src="<?php echo esc_attr($QR_url);?>" width="<?php echo esc_attr($size);?>" height="<?php echo esc_attr($size);?>">
+
+                                <strong class="FOtextSettings" style="display:flex;flex-wrap:wrap;flex-direction:column;"> 
+                                    <?php echo esc_attr($RealName);?>
+                                    <a class="FO_link" href="<?php echo esc_attr($QR_url);?>" download="<?php echo esc_attr($RealName);?>">
+                                        <?php esc_html_e('Scarica Immagine','flash_order');?>
+                                    </a>
+                                    <a class="FO_link_del" del_path="<?php echo esc_attr(plugin_dir_path(dirname(__FILE__))).'includes/phpqrcode/QRgenerate/'.esc_attr($value);?>" onclick="FO_delete_QR_images(this);">
+                                        <?php esc_html_e('Elimina Immagine','flash_order');?>
+                                    </a>
+                                </strong>
+                            </div>
+                        <?php 
+                    }
+                }
+            ?>          
+            </div><!-- FOQRCloud -->
+        </div>
+    </div><!-- FOForm -->
+    <?php
+}
 
 
 

@@ -1780,14 +1780,14 @@ function FO_create_post_QR_code() {
 
 	$qr_dir   = plugin_dir_path( dirname( __FILE__ ) ) . 'includes/phpqrcode/QRgenerate/';
 	// $qr_dir   = content_url() . 'uploads/';
-	$filename = $qr_dir . 'post_' . $post_id . '.png';
+	$filename = $qr_dir . 'post_' . $post_id .'('.$size.').png';
 
 	// Check if the file exists.
 	if ( ! file_exists( $filename ) ) {
 		QRcode::png( $url, $filename, 'L', 10, 2 ); // Create the QR code.
 	}
 	// Return the image tag.
-	$qr_url = esc_url_raw( plugin_dir_url( dirname( __FILE__ ) ) . 'includes/phpqrcode/QRgenerate/post_' . $post_id . '.png' );
+	$qr_url = esc_url_raw( plugin_dir_url( dirname( __FILE__ ) ) . 'includes/phpqrcode/QRgenerate/post_' . $post_id .'('.$size.').png' );
 	
 	$return = '<div class="fo_QR_pages">';
 	$return .= '<strong style="width:100%;">'.esc_html__('Link per Questa Pagina:' , 'flash_order').'</strong>';
@@ -1817,13 +1817,13 @@ function FO_create_post_QR_code_shortcode( $atts ) {
 	$url = esc_url_raw( trailingslashit( get_site_url() ) . '?p=' . $post_id );
 
 	$qr_dir   = plugin_dir_path( dirname( __FILE__ ) ) . 'includes/phpqrcode/QRgenerate/';
-	$filename = $qr_dir . 'post_' . $post_id . '.png';
+	$filename = $qr_dir . 'post_' . $post_id .'('.$size.').png';
 // Check if the file exists.
 	if ( ! file_exists( $filename ) ) {
 		QRcode::png( $url, $filename, 'L', 10, 2 ); // Create the QR code.
 	}
 // Return the image tag.
-	$qr_url = esc_url_raw( plugin_dir_url( dirname( __FILE__ ) ) . 'includes/phpqrcode/QRgenerate/post_' . $post_id . '.png' );
+	$qr_url = esc_url_raw( plugin_dir_url( dirname( __FILE__ ) ) . 'includes/phpqrcode/QRgenerate/post_' . $post_id .'('.$size.').png' );
 	return '<img src="'.$qr_url.'" height="'.$size.'" width="'.$size.'">';//phpcs:ignore
 }
 add_shortcode( 'fo_qr_code', 'FO_create_post_QR_code_shortcode' );
@@ -1845,21 +1845,61 @@ function FO_create_any_QR_code( $atts ) {
 	$content = sanitize_text_field( $atts['content'] );
 	$name 	 = md5(sanitize_text_field( $atts['content'] ));
 
-
 	$qr_dir   = plugin_dir_path( dirname( __FILE__ ) ) . 'includes/phpqrcode/QRgenerate/';
-	$filename = $qr_dir.'any-'.$name.'.png';
+	$filename = $qr_dir.'any-'.$content.'('.$size.').png';
 // Check if the file exists.
 	if ( ! file_exists( $filename ) ) {
 		QRcode::png( $content, $filename, 'L', 10, 2 ); // Create the QR code.
 	}
 // Return the image tag.
-	$qr_url = esc_url_raw( plugin_dir_url( dirname( __FILE__ ) ) . 'includes/phpqrcode/QRgenerate/any-'.$name.'.png' );
+	$qr_url = esc_url_raw( plugin_dir_url( dirname( __FILE__ ) ) . 'includes/phpqrcode/QRgenerate/any-'.$content.'('.$size.').png' );
 	return '<img src="'.$qr_url.'" height="'.$size.'" width="'.$size.'">';//phpcs:ignore
 }
 add_shortcode( 'fo_qr_code_content', 'FO_create_any_QR_code' );
 
+function FO_create_any_QR_code_ajax() {
+	if ( !isset($_POST['nonce']) && !wp_verify_nonce( sanitize_text_field(wp_unslash($_POST['nonce'])), 'FO_main_page' ) ) {
+		return;
+	}
+	require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/phpqrcode/qrlib.php';
+
+	$size = (isset($_POST['size']) && sanitize_text_field(wp_unslash($_POST['size'])) != '')? sanitize_text_field(wp_unslash($_POST['size'])): '150';
+	$content = (isset($_POST['content']) && sanitize_text_field(wp_unslash($_POST['content'])) != '')? sanitize_text_field(wp_unslash($_POST['content'])): get_home_url();
+
+	$qr_dir   = plugin_dir_path( dirname( __FILE__ ) ) . 'includes/phpqrcode/QRgenerate/';
+	$filename = $qr_dir.'any-'.$content.'('.$size.').png';
+// Check if the file exists.
+	if ( ! file_exists( $filename ) ) {
+		QRcode::png( $content, $filename, 'L', 10, 2 ); // Create the QR code.
+	}
+	$qr_url = plugin_dir_url( dirname( __FILE__ ) ) . 'includes/phpqrcode/QRgenerate/any-'.$content.'('.$size.').png';
+
+	wp_send_json(array(
+		'size' 		=> esc_attr($size),
+		'content' 	=> esc_attr($content),
+		'qr_url' 	=> esc_url_raw($qr_url),
+	));
+	die();
+}
+add_action('wp_ajax_FO_create_any_QR_code_ajax', 'FO_create_any_QR_code_ajax');
+add_action('wp_ajax_nopriv_FO_create_any_QR_code_ajax', 'FO_create_any_QR_code_ajax');
 
 
+function FO_delete_QR_images(){
+	if ( !isset($_POST['nonce']) && !wp_verify_nonce( sanitize_text_field(wp_unslash($_POST['nonce'])), 'FO_main_page' ) ) {
+		return;
+	}
+    if(isset($_POST['del_path'])&& sanitize_text_field($_POST['del_path'])!='') {
+        unlink(sanitize_text_field($_POST['del_path']));
+    }
+
+    wp_send_json(array(
+		'del_path' 	=> sanitize_text_field($_POST['del_path']),
+	));
+	die();
+}
+add_action('wp_ajax_FO_delete_QR_images', 'FO_delete_QR_images');
+add_action('wp_ajax_nopriv_FO_delete_QR_images', 'FO_delete_QR_images');
 
 
 
@@ -4396,9 +4436,9 @@ function FO_flash_tab_order( $tavoli = array() ){
 			<div class="FO_flash_tab_column fo_tab_col_2" style="">
 				<strong class="fo_col_2_name" style=""><?php esc_html_e('VARIANTI:','flash_order'); ?></strong>
 				<div class="FO_flash_tab_qty" style="display:none;"> Quantità
-					<div class="spinner-button-big" onclick="fo_keyboard_qty_value(-1)">-</div>
+					<div class="spinner-button-big" onclick="if (jQuery('.fo_target_qty_prod').attr('fo_modificable') == 'true' ){fo_keyboard_qty_value(-1)}">-</div>
 						<input class="fo_target_qty_prod" type="number" name="qty" step="1" value="1" fo_modificable="" onchange="fo_tab_parse_qty(this);">
-					<div class="spinner-button-big" onclick="fo_keyboard_qty_value(+1)">+</div>
+					<div class="spinner-button-big" onclick="if (jQuery('.fo_target_qty_prod').attr('fo_modificable') == 'true' ){fo_keyboard_qty_value(+1)}">+</div>
 					<script type="text/javascript">
 						jQuery('.fo_target_qty_prod').on('DOMSubtreeModified', function(){
 						  fo_tab_parse_qty(jQuery('.fo_target_qty_prod'));
@@ -4437,7 +4477,7 @@ function FO_flash_tab_order( $tavoli = array() ){
 												$price_to_add = get_string_between(get_term_by('name', $opt, $attr_term )->description,'[',']');
 											}
 											?>
-											<div class="fo_button_thin" fo_prod_id="<?php echo esc_attr($product->get_id());?>" onclick="jQuery(this).find('input').prop('checked', true);fo_tab_parse_variant(jQuery(this).find('input'));" fo_price="<?php echo esc_attr($product->get_price());?>" fo_price_to_add="<?php echo esc_attr($price_to_add);?>"><?php echo esc_attr($opt);?>
+											<div class="fo_button_thin" fo_prod_id="<?php echo esc_attr($product->get_id());?>" onclick="if (jQuery('.fo_target_qty_prod').attr('fo_modificable') == 'true' ){jQuery(this).find('input').prop('checked', true);fo_tab_parse_variant(jQuery(this).find('input'));}" fo_price="<?php echo esc_attr($product->get_price());?>" fo_price_to_add="<?php echo esc_attr($price_to_add);?>"><?php echo esc_attr($opt);?>
 											<input name="[Variante][<?php echo esc_attr($product->get_id());?>][<?php echo esc_attr($k);?>]" type="radio" value="<?php echo esc_attr($opt);?>" fovariant="<?php echo esc_attr($k);?>">
 											</div>
 										<?php } ?>
@@ -4454,7 +4494,7 @@ function FO_flash_tab_order( $tavoli = array() ){
 								<?php 
 								// FO_debug($temperature_terms);
 								foreach ($temperature as $key => $term) { ?>
-									<div class="fo_button_thin" fo_prod_id="<?php echo esc_attr($product->get_id());?>" onclick="jQuery(this).find('input').prop('checked', true);fo_tab_parse_temp(jQuery(this).find('input'));"><?php echo esc_attr($term->name);?>
+									<div class="fo_button_thin" fo_prod_id="<?php echo esc_attr($product->get_id());?>" onclick="if (jQuery('.fo_target_qty_prod').attr('fo_modificable') == 'true' ){jQuery(this).find('input').prop('checked', true);fo_tab_parse_temp(jQuery(this).find('input'));}"><?php echo esc_attr($term->name);?>
 										<input name="[Temperature][<?php echo esc_attr($product->get_id());?>]" type="radio" value="<?php echo esc_attr($term->slug);?>">
 									</div>
 								<?php } ?>
@@ -4550,59 +4590,59 @@ function FO_flash_tab_order( $tavoli = array() ){
 						</div>
 					</div> -->
 					<div class="fo_tab_calc_keyboard_row">
-						<div class="fo_tab_calc_keyboard_key" onclick="fo_keyboard_price('7')">
+						<div class="fo_tab_calc_keyboard_key" onclick="if (jQuery('.fo_target_qty_prod').attr('fo_modificable') == 'true' ){fo_keyboard_price('7')}">
 							<strong>7</strong>
 						</div>
-						<div class="fo_tab_calc_keyboard_key" onclick="fo_keyboard_price('8')">
+						<div class="fo_tab_calc_keyboard_key" onclick="if (jQuery('.fo_target_qty_prod').attr('fo_modificable') == 'true' ){fo_keyboard_price('8')}">
 							<strong>8</strong>
 						</div>
-						<div class="fo_tab_calc_keyboard_key" onclick="fo_keyboard_price('9')">
+						<div class="fo_tab_calc_keyboard_key" onclick="if (jQuery('.fo_target_qty_prod').attr('fo_modificable') == 'true' ){fo_keyboard_price('9')}">
 							<strong>9</strong>
 						</div>
 					</div>
 					<div class="fo_tab_calc_keyboard_row">
-						<div class="fo_tab_calc_keyboard_key" onclick="fo_keyboard_price('4')">
+						<div class="fo_tab_calc_keyboard_key" onclick="if (jQuery('.fo_target_qty_prod').attr('fo_modificable') == 'true' ){fo_keyboard_price('4')}">
 							<strong>4</strong>
 						</div>
-						<div class="fo_tab_calc_keyboard_key" onclick="fo_keyboard_price('5')">
+						<div class="fo_tab_calc_keyboard_key" onclick="if (jQuery('.fo_target_qty_prod').attr('fo_modificable') == 'true' ){fo_keyboard_price('5')}">
 							<strong>5</strong>
 						</div>
-						<div class="fo_tab_calc_keyboard_key" onclick="fo_keyboard_price('6')">
+						<div class="fo_tab_calc_keyboard_key" onclick="if (jQuery('.fo_target_qty_prod').attr('fo_modificable') == 'true' ){fo_keyboard_price('6')}">
 							<strong>6</strong>
 						</div>
 					</div>
 					<div class="fo_tab_calc_keyboard_row">
-						<div class="fo_tab_calc_keyboard_key" onclick="fo_keyboard_price('1')">
+						<div class="fo_tab_calc_keyboard_key" onclick="if (jQuery('.fo_target_qty_prod').attr('fo_modificable') == 'true' ){fo_keyboard_price('1')}">
 							<strong>1</strong>
 						</div>
-						<div class="fo_tab_calc_keyboard_key" onclick="fo_keyboard_price('2')">
+						<div class="fo_tab_calc_keyboard_key" onclick="if (jQuery('.fo_target_qty_prod').attr('fo_modificable') == 'true' ){fo_keyboard_price('2')}">
 							<strong>2</strong>
 						</div>
-						<div class="fo_tab_calc_keyboard_key" onclick="fo_keyboard_price('3')">
+						<div class="fo_tab_calc_keyboard_key" onclick="if (jQuery('.fo_target_qty_prod').attr('fo_modificable') == 'true' ){fo_keyboard_price('3')}">
 							<strong>3</strong>
 						</div>
 					</div>
 					<div class="fo_tab_calc_keyboard_row">
-						<div class="fo_tab_calc_keyboard_key" onclick="fo_keyboard_price('.')">
+						<div class="fo_tab_calc_keyboard_key" onclick="if (jQuery('.fo_target_qty_prod').attr('fo_modificable') == 'true' ){fo_keyboard_price('.')}">
 							<strong>.</strong>
 						</div>
-						<div class="fo_tab_calc_keyboard_key" onclick="fo_keyboard_price('0')">
+						<div class="fo_tab_calc_keyboard_key" onclick="if (jQuery('.fo_target_qty_prod').attr('fo_modificable') == 'true' ){fo_keyboard_price('0')}">
 							<strong>0</strong>
 						</div>
-						<div class="fo_tab_calc_keyboard_key" onclick="fo_keyboard_price('.')">
+						<div class="fo_tab_calc_keyboard_key" onclick="if (jQuery('.fo_target_qty_prod').attr('fo_modificable') == 'true' ){fo_keyboard_price('.')}">
 							<strong>.</strong>
 						</div>
 					</div>
 					<div class="fo_tab_calc_keyboard_row">
-						<div class="fo_tab_calc_keyboard_key fo_tab_reset_price" fovalue="" onclick="fo_tab_price_default(this);">
+						<div class="fo_tab_calc_keyboard_key fo_tab_reset_price" fovalue="" onclick="if (jQuery('.fo_target_qty_prod').attr('fo_modificable') == 'true' ){fo_tab_price_default(this);}">
 							<span class="dashicons dashicons-image-rotate"></span>
 						</div>
 
-						<div class="fo_tab_calc_keyboard_key" onclick="fo_tab_price_del();">
+						<div class="fo_tab_calc_keyboard_key" onclick="if (jQuery('.fo_target_qty_prod').attr('fo_modificable') == 'true' ){fo_tab_price_del();}">
 							<span class="dashicons dashicons-minus"></span>
 						</div>
 
-						<div class="fo_tab_calc_keyboard_key" onclick="fo_tab_price_ac();">
+						<div class="fo_tab_calc_keyboard_key" onclick="if (jQuery('.fo_target_qty_prod').attr('fo_modificable') == 'true' ){fo_tab_price_ac();}">
 							<span class="dashicons dashicons-no"></span>
 						</div>
 					</div>
@@ -6783,6 +6823,8 @@ function enqueue_ajax_scripts() {
     wp_localize_script('flash-order-public', 'flash_orders_ajax_vars', array(
         'ajaxurl' => admin_url('admin-ajax.php'),
         'nonce' => wp_create_nonce('flash_orders_ajax_vars'),
+        'in_footer' => true,
+        'strategy'  => 'async',
     ));
 }
 add_action('wp_enqueue_scripts', 'enqueue_ajax_scripts');
@@ -6793,6 +6835,8 @@ function enqueue_ajax_view_orders_scripts() {
     wp_localize_script('flash-order-ajax-view-orders', 'flash_orders_ajax_view_orders_vars', array(
         'ajaxurl' => admin_url('admin-ajax.php'),
         'nonce' => wp_create_nonce('flash_orders_ajax_view_orders_vars'),
+        'in_footer' => true,
+        'strategy'  => 'async',
     ));
 }
 add_action('wp_enqueue_scripts', 'enqueue_ajax_view_orders_scripts');
@@ -6801,8 +6845,11 @@ function enqueue_ajax_manage_restaurant_scripts() {
     wp_localize_script('flash-order-ajax-manage-tables', 'flash_orders_ajax_manage_restaurant_vars', array(
         'ajaxurl' => admin_url('admin-ajax.php'),
         'nonce' => wp_create_nonce('flash_orders_ajax_manage_restaurant_vars'),
+        'in_footer' => true,
+        'strategy'  => 'async',
     ));
 }
+
 add_action('wp_enqueue_scripts', 'enqueue_ajax_manage_restaurant_scripts');
 
 function FO_load_media_files() {

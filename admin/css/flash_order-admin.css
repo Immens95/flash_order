@@ -2,6 +2,9 @@
  * All of the CSS for your admin-specific functionality should be
  * included in this file.
  */
+br {
+    clear: both;
+}
 #FOadminContent pre{
 	color: var(--fo-text-color)!important;
 	background-color: var(--fo-bg-color)!important;
@@ -86,7 +89,7 @@
 }
 .FOMainNav{
 	margin: 30px 0px;
-	background-color: var(--fo-bg6-color);;
+	background-color: var(--fo-bg6-color);
 	padding: 25px;
 }
 .FOMainNavEl{
@@ -150,7 +153,29 @@
 	background-color: var(--fo-bg2-color);
 	transition: var(--fo-scnd-tran);
 }
-
+.FO_abutton{
+	margin: 10px;
+	padding: 10px;
+	border-radius: 5px;
+	color: var(--fo-text-color);
+	background-color: var(--fo-bg3-color);
+	transition: var(--fo-main-tran);
+	height: 50px;
+	text-align: center;
+	justify-content: center;
+	align-items: center;
+	text-decoration: none;
+	cursor: pointer;
+	line-height: normal;
+}
+.FO_abutton:hover, .FO_abutton:focus{
+	margin: 10px;
+	padding: 10px;
+	border-radius: 10px;
+	color: var(--fo-text-color);
+	background-color: var(--fo-bg4-color);
+	transition: var(--fo-scnd-tran);
+}
 .FOzero{
 	margin: 0px!important;
 	padding: 0px!important;
@@ -207,22 +232,42 @@
 	right: 0;
 }
 
-
-.FOSetting_Board{
-
+.FOQRCloud{
+	padding: 10px;
+	margin: 10px;
+	width: calc(100% - 40px);
+	max-width: 100%;
+	height: auto;
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: center;
+	text-align: center;
+}
+.QR_search_target{
+	margin: 10px auto!important;
 }
 
+.FO_link{
+	padding: 5px;
+	margin: 0px 5px;
+	cursor: pointer;
+}
 
+.FO_link_del{
+	padding: 5px;
+	margin: 0px 5px;
+	color: red;
+	cursor: pointer;
+}
 
+.FO_link_del:hover{
+/*	color: red;*/
+}
 
+.FO_NEW_QR{
 
-
-
-
-
-
-
-
+}
 
 
 

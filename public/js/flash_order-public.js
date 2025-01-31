@@ -1437,6 +1437,17 @@ function FO_filter_tab_variant( input, slug_target ){
 		fo_tab_add_product_to_order();
 	}
 	FO_calc_totals();
+	if ( jQuery(input).attr('fo_modificable') == 'false' ) {
+		jQuery('input[type="radio"]').attr('onclick','return false;');
+		jQuery('.fo_target_note_prod, .fo_target_qty_prod').attr('disabled',true);
+		jQuery('.fo_tab_col_2, .fo_tab_col_3').removeClass('FO_new_background');
+		jQuery('.fo_tab_col_2, .fo_tab_col_3').addClass('FO_story_background');
+	} else{
+		jQuery('input[type="radio"]').attr('onclick','');
+		jQuery('.fo_target_note_prod, .fo_target_qty_prod').attr('disabled',false);
+		jQuery('.fo_tab_col_2, .fo_tab_col_3').removeClass('FO_story_background');
+		jQuery('.fo_tab_col_2, .fo_tab_col_3').addClass('FO_new_background');
+	}
 }
 
 function FO_calc_totals(){
@@ -1521,6 +1532,9 @@ function fo_tab_add_product_to_order(){
 function fo_tab_prod_remove( input ){
 	jQuery('.FO_flash_tab_header').removeClass('fo_tab_prod_modify');
 	jQuery('.FO_flash_tab_footer').removeClass('fo_tab_prod_modify');
+
+	jQuery('.fo_tab_col_2, .fo_tab_col_3').removeClass('FO_story_background');
+	jQuery('.fo_tab_col_2, .fo_tab_col_3').removeClass('FO_new_background');
 
 	jQuery(input).parent().remove();
 	FO_calc_totals();

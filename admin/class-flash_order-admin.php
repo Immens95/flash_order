@@ -96,7 +96,7 @@ class Flash_order_Admin {
 		 * class.
 		 */
 
-		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/flash_order-admin.js', array( 'jquery' ), $this->version, false );
+		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/flash_order-admin.js', array( 'jquery' ), $this->version, array('in_footer' => true, 'strategy'  => 'async') );
 
 	}
 
