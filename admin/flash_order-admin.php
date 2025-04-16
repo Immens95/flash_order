@@ -546,6 +546,7 @@ function FO_manage_QR_codes(){
             <div class="FOQRCloud">
 
                 <div class="FO_NEW_QR FOtextSettings FOsettingEl" style="max-width:100%;flex-basis:100%;">
+                    <div class="FOtextSettings"><?php esc_html_e( 'Crea un nuovo shortcode:' , 'flash_order' ); ?></div>
                     <span id="FO_fill_content_QR" style="display:none;"><?php esc_html_e( 'Per poter creare il QRcode, devi inserire il contenuto nel campo content!', 'flash_order' ); ?></span>
                     <input type="text" class="FOtextSettings" name="NEW_QR_size" placeholder="size (default 150)">
                     <input type="text" class="FOtextSettings" name="NEW_QR_content" placeholder="content*" style="width:calc(80% - 40px);">

@@ -4224,7 +4224,7 @@ function FO_flash_tab_order( $tavoli = array() ){
 <!-- COL 1: -->
 			<div class="FO_flash_tab_max_column fo_tab_col_1" style="">
 	<!-- RIEPILOGO: -->
-				<div class="FO_flash_tab_column fo_column_story" style="width:calc(100% - 20px);height:calc(50% - 55px);padding-right:80px;" onclick="fo_tab_hystory_space(this,'.fo_column_riepilogo', '.fo_column_products')">
+				<div class="FO_flash_tab_column fo_column_story FO_story_background" style="width:calc(100% - 20px);height:calc(50% - 55px);padding-right:80px;" onclick="fo_tab_hystory_space(this,'.fo_column_riepilogo', '.fo_column_products')">
 
 					<div class="fo_ghost_draft" style="display:none;"></div>
 					<!-- <strong class="fo_title_" style=""><?php esc_html_e('STORICO:','flash_order'); ?></strong> -->
@@ -4364,7 +4364,7 @@ function FO_flash_tab_order( $tavoli = array() ){
 					</div>
 				</div>
 <!-- <strong style=""><?php esc_html_e('RIEPILOGO:','flash_order'); ?></strong> -->
-				<div class="FO_flash_tab_column fo_column_riepilogo" style="width:calc(100% - 20px);padding-right:80px;" onclick="fo_tab_hystory_space(this,'.fo_column_story','.fo_column_products')">
+				<div class="FO_flash_tab_column fo_column_riepilogo FO_new_background" style="width:calc(100% - 20px);padding-right:80px;" onclick="fo_tab_hystory_space(this,'.fo_column_story','.fo_column_products')">
 					<div class="fo_tab_tool_section fo_tool_riepilogo">
 						<div class="fo_button_thin" onclick="fo_tab_empty_section(jQuery('.fo_column_riepilogo'))" style="color:red;">
 							<span class="dashicons dashicons-trash"></span>
