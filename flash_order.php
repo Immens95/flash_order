@@ -24,6 +24,11 @@ if ( ! defined( 'WPINC' ) ) {
 }
 
 /**
+ * Register with WP Consent API to declare support and follow guidelines.
+ */
+add_filter( 'wp_consent_api_registered_' . plugin_basename( __FILE__ ), '__return_true' );
+
+/**
  * Currently plugin version.
  * Start at version 1.0.0
  */
